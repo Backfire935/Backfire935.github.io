@@ -6,19 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Hexo</title>
+  <title>UE 网络同步和框架 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="title: UE 网络同步和框架date: 2022-12-02 14:51:57tags: UE 网络同步和框架为一个UE引擎的初学者基于现有知识储备和见识的限制下，对UE网络和游戏框架的粗鄙之见，文中多有错误敬请指出以较后文。 1.网络复制​	不论是服务端还是客户端，代码都是一样的，客户端和服务端拥有相同的变量和函数，只是有的函数可能只在服务端执行，有的变量可能只在某个客户端发生变化。 ​">
+  <meta name="description" content="UE 网络同步和框架为一个UE引擎的初学者基于现有知识储备和见识的限制下，对UE网络和游戏框架的粗鄙之见，文中多有错误敬请指出以较后文。 1.网络复制​	不论是服务端还是客户端，代码都是一样的，客户端和服务端拥有相同的变量和函数，只是有的函数可能只在服务端执行，有的变量可能只在某个客户端发生变化。 ​	在多人网络游戏中，可以看到来自不同的玩家在同一个场景中，操作各自的武器或者道具，在游戏场景中进行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/2022/12/02/UE%20%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:title" content="UE 网络同步和框架">
+<meta property="og:url" content="http://example.com/2022/12/02/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="title: UE 网络同步和框架date: 2022-12-02 14:51:57tags: UE 网络同步和框架为一个UE引擎的初学者基于现有知识储备和见识的限制下，对UE网络和游戏框架的粗鄙之见，文中多有错误敬请指出以较后文。 1.网络复制​	不论是服务端还是客户端，代码都是一样的，客户端和服务端拥有相同的变量和函数，只是有的函数可能只在服务端执行，有的变量可能只在某个客户端发生变化。 ​">
+<meta property="og:description" content="UE 网络同步和框架为一个UE引擎的初学者基于现有知识储备和见识的限制下，对UE网络和游戏框架的粗鄙之见，文中多有错误敬请指出以较后文。 1.网络复制​	不论是服务端还是客户端，代码都是一样的，客户端和服务端拥有相同的变量和函数，只是有的函数可能只在服务端执行，有的变量可能只在某个客户端发生变化。 ​	在多人网络游戏中，可以看到来自不同的玩家在同一个场景中，操作各自的武器或者道具，在游戏场景中进行">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-12-02T06:53:39.716Z">
-<meta property="article:modified_time" content="2022-12-02T06:55:07.553Z">
+<meta property="og:image" content="http://example.com/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5Cimage-20221004175454361.png">
+<meta property="og:image" content="http://example.com/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5Cimage-20221004210425968.png">
+<meta property="og:image" content="http://example.com/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5C%E8%87%AA%E4%B8%BB%E6%9D%83%E5%A8%81%E6%A8%A1%E6%8B%9F.png">
+<meta property="og:image" content="http://example.com/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5Cimage-20221005133737857.png">
+<meta property="og:image" content="http://example.com/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5C%E6%B8%B8%E6%88%8F%E6%A8%A1%E5%BC%8F%E6%B8%B8%E6%88%8F%E7%8A%B6%E6%80%81%E7%8E%A9%E5%AE%B6%E7%8A%B6%E6%80%81.png">
+<meta property="og:image" content="http://example.com/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5Cimage-20221004141737070.png">
+<meta property="og:image" content="http://example.com/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5CGameMode%E9%83%A8%E5%88%86%E6%BA%90%E7%A0%81.png">
+<meta property="og:image" content="http://example.com/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5C%E6%95%B0%E9%87%8F%E7%90%86%E8%A7%A3.png">
+<meta property="og:image" content="http://example.com/UE_%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5C%E7%B1%BB%E5%9C%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%92%8C%E5%AE%A2%E6%88%B7%E7%AB%AF.png">
+<meta property="article:published_time" content="2022-12-02T06:51:57.000Z">
+<meta property="article:modified_time" content="2022-12-02T08:15:53.942Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5Cimage-20221004175454361.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -154,13 +164,27 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-UE 网络同步和框架" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-UE网络同步和框架" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UE 网络同步和框架
+    </h1>
+  
+
+        
+        <a href="/2022/12/02/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6/" class="archive-article-date">
+  	<time datetime="2022-12-02T06:51:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-12-02</time>
+</a>
+        
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>title: UE 网络同步和框架<br>date: 2022-12-02 14:51:57<br>tags:</p>
-<h1 id="UE-网络同步和框架"><a href="#UE-网络同步和框架" class="headerlink" title="UE 网络同步和框架"></a>UE 网络同步和框架</h1><p>为一个UE引擎的初学者基于现有知识储备和见识的限制下，对UE网络和游戏框架的粗鄙之见，文中多有错误敬请指出以较后文。</p>
+        <h1 id="UE-网络同步和框架"><a href="#UE-网络同步和框架" class="headerlink" title="UE 网络同步和框架"></a>UE 网络同步和框架</h1><p>为一个UE引擎的初学者基于现有知识储备和见识的限制下，对UE网络和游戏框架的粗鄙之见，文中多有错误敬请指出以较后文。</p>
 <h3 id="1-网络复制"><a href="#1-网络复制" class="headerlink" title="1.网络复制"></a>1.网络复制</h3><p>​	<strong>不论是服务端还是客户端，代码都是一样的，客户端和服务端拥有相同的变量和函数，只是有的函数可能只在服务端执行，有的变量可能只在某个客户端发生变化。</strong></p>
 <p>​	在多人网络游戏中，可以看到来自不同的玩家在同一个场景中，操作各自的武器或者道具，在游戏场景中进行各种交互。那么这里产生了一个问题，举例即，玩家A对玩家B使用了一个增益道具，玩家B是怎么知道自己获得了增益，并且让所有的玩家都知道自己获得了增益效果。这个问题的答案即在UE中非常重要的概念，网络复制。</p>
 <h4 id="1-Replication（复制）"><a href="#1-Replication（复制）" class="headerlink" title="1.Replication（复制）"></a>1.Replication（复制）</h4><p>笼统的说，表示信息从服务端同步到客户端(单向),<strong>Actor及其派生类才有Replication的能力。</strong>一般分三种</p>
@@ -169,7 +193,7 @@
 <p>举上面的例子来说，如果在服务端生成了一个道具，但是这个道具并未开启或标记为Replication，那么这个道具只会出现在服务端的游戏场景里，而不会在客户端的游戏场景里生成，</p>
 <p>具体用法：</p>
 <p>蓝图：Actor细节面板中寻找复制相关的选项并勾选<strong>复制</strong>(Replicate)这一个选项即可，其他选项按需勾选</p>
-<p>![image-20221004175454361](UE 网络同步和框架\image-20221004175454361.png)</p>
+<p><img src="/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5Cimage-20221004175454361.png" alt="image-20221004175454361"></p>
 <p>C++：在类的<strong>构造函数</strong>中添加</p>
 <p><code>bReplicates = true;//开启网络复制</code></p>
 <p>注意编译后若<strong>没有达到预期效果可以回到蓝图检查</strong>一下，C++中的设置仅相当于设置了默认项，有时候蓝图不一定使用C++中的默认值，需要查看并手动设置</p>
@@ -181,7 +205,7 @@
 <p>具体用法：</p>
 <p>蓝图：</p>
 <p>在蓝图中选择一个属性变量并寻找replication并选择为Replicated</p>
-<p>![image-20221004210425968](UE 网络同步和框架\image-20221004210425968.png)</p>
+<p><img src="/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5Cimage-20221004210425968.png" alt="image-20221004210425968"></p>
 <p>C++：</p>
 <p>记得先在类的构造里面把bReplicate&#x3D;true这个总开关开了</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UPROPERTY</span>(Replicated)<span class="comment">//使用属性网络复制，需要使用GetLifetimeReplicatedProps进行注册</span></span><br><span class="line"><span class="type">bool</span> bAiming;<span class="comment">//武器是否要瞄准</span></span><br></pre></td></tr></table></figure>
@@ -213,7 +237,7 @@ DOREPLIFETIME(UCombatComponent, EquippedWeapon);//注册
 <h5 id=""><a href="#" class="headerlink" title=""></a></h5><h4 id="2-OnwerShip-所有权"><a href="#2-OnwerShip-所有权" class="headerlink" title="2.OnwerShip(所有权)"></a>2.OnwerShip(所有权)</h4><p>理论概念，就是说很多类或者Actor在游戏中会伴随拥有者的改变而改变自己的所有权，比如在地上的枪，纵使被设置为Replicate，无人拾取的话，那么其所有权属于世界，而不是玩家，因此这把武器的信息不会被同步到任何一个玩家身上，但是当一名玩家拾取这把武器的时候，所有权被更改到这个玩家身上，这时这把枪的信息被添加到了玩家身上，玩家多出了一把武器，这把属于这名玩家的武器在击杀敌人后，因为枪的所有权是属于玩家的，所以分数算在了玩家身上。我的枪杀了你，不是我杀了你。</p>
 <p>因此玩家死亡后，武器掉落，这把武器的所有权重新回归世界，而不是任一一名玩家，直到下一个玩家的到来。</p>
 <p>视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1T44y1k72n">https://www.bilibili.com/video/BV1T44y1k72n</a></p>
-<h4 id="3-Actor-Role"><a href="#3-Actor-Role" class="headerlink" title="3.Actor Role"></a>3.Actor Role</h4><p>![自主权威模拟](UE 网络同步和框架\自主权威模拟.png)</p>
+<h4 id="3-Actor-Role"><a href="#3-Actor-Role" class="headerlink" title="3.Actor Role"></a>3.Actor Role</h4><p><img src="/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5C%E8%87%AA%E4%B8%BB%E6%9D%83%E5%A8%81%E6%A8%A1%E6%8B%9F.png" alt="自主权威模拟"></p>
 <p>服务端拥有所有玩家的权威实例，所有的信息必须经过服务器的确认才能生效。称为Authority；</p>
 <p>客户端拥有自己的自主代理和所有其他玩家的模拟代理，自主代理就是本机控制的玩家，模拟代理就是画面上其他的玩家。区别如下：</p>
 <p>Autonomous Proxy自主代理拥有此玩家的控制权，键盘键盘输入的信息直接操作自主代理，之所以称作代理，是因为虽然能控制你的角色，但实际上你角色的所有信息和操作必须经过服务端的计算和确认，才能真正的生效。此处产生一个问题，经过服务端的计算和确认再生效的话，来回会使得延迟很高，为了解决这个问题，自主代理会直接根据你的输入在本地进行计算并输调用事件和产生对应的画面，而信息则发到服务端进行确认，若是结果不一致，则服务端发回信息进行纠正，若一致，自主代理这边已经执行好了，最大幅度提升了玩家的体验感。这涉及到复杂的确认关系，不在讨论范围内。<strong>客户端内除了自己剩下所有玩家的Character都是模拟代理的，所以网络不好的时候，会发现自己经常瞬移。你按下前进键的时候，服务端发送回来的位置信息没有被接收到，你向前位移了一点，这是本地自主代理做出的，但是很快本地意识到，没有接收到服务端发送回来的确认位置的信息，于是本地判断你还在原地，因此你的画面卡在了原地。注意此时服务端已经因为你之前按下的前进键而更新了你的位置信息，此时若网络恢复正常，服务端再次发送回的位置信息就和本地的不一致，因为服务端的信息具有权威性，本地的角色信息被强制更新改变，然后就发生了瞬移，不过更多的情况是闪现移坟(在你掉线的时候你已经被其他玩家杀了)，换了个躺尸体的地方而已。</strong></p>
@@ -221,7 +245,7 @@ DOREPLIFETIME(UCombatComponent, EquippedWeapon);//注册
 <p>Authority权威，在监听服务器模式下，服务端就是权威，服务端拥有所有玩家的权威信息，包括自己，其他客户端上所有的信息都是从权威服务端复制出去的，<strong>权威服务端上拥有所有真正的玩家实例，因此在服务端上的操作拥有最低的延迟</strong>，因为不需要找服务端确认计算是否正确是否被篡改了，所有信息以服务端为准。</p>
 <h4 id="4-RPC远程过程调用-Remote-Progress-Call"><a href="#4-RPC远程过程调用-Remote-Progress-Call" class="headerlink" title="4.RPC远程过程调用(Remote Progress Call)"></a>4.RPC远程过程调用(Remote Progress Call)</h4><p>可以实现客户端调用服务端执行，也可以实现服务端调用客户端执行。因为异步，所以不可以有返回值，默认是不可靠的，若要设置为可靠，UPROPERTY里设置为Reliable，RPC一共有四种状态，<strong>未复制、NetMultiCast、Server、Client</strong></p>
 <p>参考图：</p>
-<p>![image-20221005133737857](UE 网络同步和框架\image-20221005133737857.png)</p>
+<p><img src="/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5Cimage-20221005133737857.png" alt="image-20221005133737857"></p>
 <p><strong>图片解释：</strong></p>
 <p>如果是从服务端调用了RPC，<strong>一般情况下</strong>，对于UPRPERTY标记为NetMulticast的，即网络多播，这个函数会在<strong>服务端和所有的客户端上都执行一次</strong>。标记为Server的，那么这个函数<strong>仅在服务端上执行</strong>。标记为Client的，则<strong>在所有的客户端上执行，但是服务端不执行</strong>。<strong>特殊情况是Actor的所有权不属于客户端，而属于服务端或者谁也不属于</strong>，这种情况结果参照上图。</p>
 <p>如果是从客户端调用了RPC，<strong>所有情况下</strong>，对UPRPERTY标记为NetMulticast的，仅在本地执行。标记为Server的，会在服务器上运行，这也是唯一一种客户端调用服务端的函数的方式。标记为Client的，仅在本地执行。<strong>特殊情况是若函数要操作的Actor所有权不属于本地客户端，此时函数UPROPERTY若被标记为Server，即请求服务端执行函数调用，那么服务端会丢弃这样的请求不做处理</strong>，可参照上图。</p>
@@ -240,7 +264,7 @@ void ClientFire();//服务器发起的向客户端的多播开火
 </code></pre>
 <p>视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1R34y1Q7b6">https://www.bilibili.com/video/BV1R34y1Q7b6</a></p>
 <h3 id="2-监听服务器模式下的状态关系"><a href="#2-监听服务器模式下的状态关系" class="headerlink" title="2.监听服务器模式下的状态关系"></a>2.监听服务器模式下的状态关系</h3><h4 id="1-各个大类的功用介绍"><a href="#1-各个大类的功用介绍" class="headerlink" title="1.各个大类的功用介绍"></a>1.各个大类的功用介绍</h4><p>至于这些状态的功能有个举例图：</p>
-<p>![游戏模式游戏状态玩家状态](UE 网络同步和框架\游戏模式游戏状态玩家状态.png)</p>
+<p><img src="/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5C%E6%B8%B8%E6%88%8F%E6%A8%A1%E5%BC%8F%E6%B8%B8%E6%88%8F%E7%8A%B6%E6%80%81%E7%8E%A9%E5%AE%B6%E7%8A%B6%E6%80%81.png" alt="游戏模式游戏状态玩家状态"></p>
 <p>还有个玩家控制器就不单独放图了。玩家控制器可以设置用户控件，比如播放比赛的消息，更新玩家血量条，更新分数，更新击杀死亡数量信息，以及更新弹药。</p>
 <p>看出游戏模式类中包括了玩家控制器和用户界面类，以及游戏的具体规则和匹配状态。</p>
 <h5 id="1-GameMode"><a href="#1-GameMode" class="headerlink" title="1.GameMode"></a>1.GameMode</h5><p>两个主要类负责处理进行中游戏的相关信息：<strong>Game Mode</strong> 和 <strong>Game State</strong>。游戏模式是针对当前关卡的设定，里面<strong>存储了当前关卡的规则和玩法</strong>，即使最开放的游戏也拥有基础规则，而这些规则构成了 <strong>Game Mode</strong>。比如得分达到一定数目后某方获胜，然后播放什么样的动画，调用什么样的函数进行结算，再跳转到什么地图。诸如此类。在游戏模式中设置pawn类，HUD类，玩家控制器，游戏状态和玩家状态。</p>
@@ -268,7 +292,7 @@ void ClientFire();//服务器发起的向客户端的多播开火
 <h5 id="8-Pawn-x2F-Character"><a href="#8-Pawn-x2F-Character" class="headerlink" title="8.Pawn&#x2F;Character"></a>8.Pawn&#x2F;Character</h5><p>Character角色类一般用于<strong>人形目标</strong>的实现，比如玩家类，人形的敌人类，人形NPC或者BOSS此种，类中<strong>内设了Character Movement角色移动类组件</strong>，可以让用户快速的设置人形目标的各种移动效果，诸如下蹲移动速度，奔跑速度，奔跑最大速度，奔跑加速度甚至游泳状态，反正就是一切人形目标的移动属性都几乎内设在这个类中供用户设置。需要注意的是，Character是Pawn的一种类型，即<strong>是Pawn的一种继承</strong>，增加了可四处走动的功能。</p>
 <p>Pawn和Character类很像，区别在于<strong>Pawn类一般用于非人形目标</strong>，比如你操控的是一台机关，放置在墙壁上或者高台上，这个机关不具有人形，但是却有和Character类差不多的操作和功能，比如射击，使用道具和获取奖励等，那么这个时候一般选用Pawn类，比如你操控的是一台靠轮子走的坦克，汽车，甚至飞机，机甲，哥斯拉和恐龙，这些单位从功能上来说和Character角色类很像，但是可能有不一样的移动方式，比如飞行或者爬墙，这个时候其<strong>移动组件通常需要玩家自己编写</strong>，当然如果是放置类的单位就不需要，比如一个具有加工功能的桌子，放那能用能加工不就行了，谁写移动功能啊，觉得碍眼的时候销毁一下就行；那么这些情况下我们通常使用Pawn类作为基类进行编写。</p>
 <p>放一张小关系图</p>
-<p>![image-20221004141737070](UE 网络同步和框架\image-20221004141737070.png)</p>
+<p><img src="/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5Cimage-20221004141737070.png" alt="image-20221004141737070"></p>
 <h4 id="2-GameMode实现-重要"><a href="#2-GameMode实现-重要" class="headerlink" title="2.GameMode实现(重要)"></a>2.GameMode实现(<strong>重要</strong>)</h4><p>进行游戏所需要的玩家数量，或玩家加入游戏的方法，在多种类型的游戏中具有共通性。无论规则如何，Game Modes 的任务都是定义和实现规则。Game Modes 当前常用的基类有两个。</p>
 <p>4.14 版本中加入了 <code>AGameModeBase</code>，这是所有 Game Mode 的基类，是经典的 <code>AGameMode</code> 简化版本。<code>AGameMode</code> 是 4.14 版本之前的基类，仍然保留，功能 如旧，但现在是 <code>AGameModeBase</code> 的子类。由于其比赛状态概念的实现，**<code>AGameMode</code> 更适用于标准游戏类型（如多人射击游戏）**。<code>AGameModeBase</code> 简洁高效，是新代码项目中包含的全新默认游戏模式。</p>
 <h6 id="1-AGameModeBase"><a href="#1-AGameModeBase" class="headerlink" title="1.AGameModeBase"></a>1.AGameModeBase</h6><p>所有 Game Mode 均为 <code>AGameModeBase</code> 的子类。而 <code>AGameModeBase</code> 包含大量可覆盖的基础功能。部分常见函数包括：</p>
@@ -345,7 +369,7 @@ void ClientFire();//服务器发起的向客户端的多播开火
 </tr>
 </tbody></table>
 <p>下面是部分GameMode基类的函数，更多属性和函数请参考GameMode.h文件</p>
-<p>![GameMode部分源码](UE 网络同步和框架\GameMode部分源码.png)</p>
+<p><img src="/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5CGameMode%E9%83%A8%E5%88%86%E6%BA%90%E7%A0%81.png" alt="GameMode部分源码"></p>
 <h4 id="3-各个类的生成数量"><a href="#3-各个类的生成数量" class="headerlink" title="3.各个类的生成数量"></a>3.各个类的生成数量</h4><p>关于游戏模式、玩家控制器、Pawn、角色、游戏实例、游戏状态、玩家状态GameMode&#x2F;PlayerController&#x2F;Pawn&#x2F;Character&#x2F;GameInstance&#x2F;GameState&#x2F;PlayerState 6个类的生成情况和生成个数。</p>
 <p>首先，PlayerController、GameMode、PlayerState、都需要在关卡的WorldSetting中的GameMode栏设置，因为这几个类的生命周期仅存在于关卡中，GameInstance类需要在Edit-&gt;project setting-&gt;Map&amp;Modes中最下面的GameInstance中设定。</p>
 <table>
@@ -437,9 +461,9 @@ void ClientFire();//服务器发起的向客户端的多播开火
 </tr>
 </tbody></table>
 <p>这里有两张图便于数量和关系的理解</p>
-<p>![数量理解](UE 网络同步和框架\数量理解.png)</p>
+<p><img src="/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5C%E6%95%B0%E9%87%8F%E7%90%86%E8%A7%A3.png" alt="数量理解"></p>
 <p><strong>Game State</strong> 并非追踪玩家特有内容（如夺旗比赛中特定玩家为团队获得的分数）的最佳之处，因为它们由 <strong>Player State</strong> 更清晰地处理。整体而言，GameState 应该追踪游戏进程中变化的属性。这些属性与所有人皆相关，且所有人可见。<strong>Game mode 只存在于服务器上</strong>，而 Game State 存在于服务器上且<strong>会被复制到所有客户端</strong>，保持所有已连接机器的游戏进程更新。</p>
-<p>![类在服务端和客户端](UE 网络同步和框架\类在服务端和客户端.png)</p>
+<p><img src="/UE_%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6%5C%E7%B1%BB%E5%9C%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%92%8C%E5%AE%A2%E6%88%B7%E7%AB%AF.png" alt="类在服务端和客户端"></p>
 <h3 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3.参考资料"></a>3.参考资料</h3><p>1.<a target="_blank" rel="noopener" href="https://space.bilibili.com/12825137/channel/seriesdetail?sid=317657">https://space.bilibili.com/12825137/channel/seriesdetail?sid=317657</a></p>
 <p>2.<a target="_blank" rel="noopener" href="https://docs.unrealengine.com/5.0/zh-CN/game-mode-and-game-state-in-unreal-engine/">https://docs.unrealengine.com/5.0/zh-CN/game-mode-and-game-state-in-unreal-engine/</a></p>
 <p>3.<a target="_blank" rel="noopener" href="https://www.udemy.com/course/unreal-engine-5-cpp-multiplayer-shooter/">https://www.udemy.com/course/unreal-engine-5-cpp-multiplayer-shooter/</a></p>
@@ -522,7 +546,7 @@ void ClientFire();//服务器发起的向客户端的多播开火
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/12/02/UE%20%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/12/02/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -536,9 +560,18 @@ void ClientFire();//服务器发起的向客户端的多播开火
   
 <nav id="article-nav">
   
+    <a href="/2022/12/02/test/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          test
+        
+      </div>
+    </a>
   
-    <a href="/2022/12/02/test/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">test</div>
+  
+    <a href="/2022/12/02/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
       <i class="icon-circle-right"></i>
     </a>
   
