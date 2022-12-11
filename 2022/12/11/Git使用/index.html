@@ -6,15 +6,74 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2022/12 | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="Git使用1.基础知识pwd 显示目前的工作目录 print work directory    ls 显示当前路径下所有文件 mkdir 产生新的文件夹make directory touch 创建新文件     rm 移除文件 remove file mv 移动文件 git init 初始化空的git存储库  ls -a可以看到隐藏的文件 git status 查询当前存储库状态，如果有未被提">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2022/12/index.html">
+<meta property="og:url" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Git使用1.基础知识pwd 显示目前的工作目录 print work directory    ls 显示当前路径下所有文件 mkdir 产生新的文件夹make directory touch 创建新文件     rm 移除文件 remove file mv 移动文件 git init 初始化空的git存储库  ls -a可以看到隐藏的文件 git status 查询当前存储库状态，如果有未被提">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029171741131.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029171741131.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029172612650.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029172612650.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029174255210.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029174255210.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029174550148.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029174550148.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029194602574.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029194602574.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029195011330.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221029195011330.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029200407941.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221029200407941.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029202931377.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221029202931377.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029203003253.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029204254104.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221029204254104.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029204824932.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221029204824932.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030100639391.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221030100639391.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030102139619.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221030102139619.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030164516000.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221030164516000.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030165830379.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221030165830379.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030223820322.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221030223820322.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031185810764.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031185810764.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031185929888.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031185929888.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031195335660.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031195335660.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031204940615.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031204940615.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205002024.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031205002024.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031205046902.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205402083.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031205402083.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205453662.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031205453662.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205304687.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031205304687.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031211935882.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031211935882.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031212346544.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/image-20221031212346544.png">
+<meta property="og:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/CR3%606O$%5D49_35%7DW2%60TRY08.png">
+<meta property="og:image" content="http://example.com/Git%E4%BD%BF%E7%94%A8/CR3%606O$%5D49_35%7DW2%60TRY08.png">
+<meta property="article:published_time" content="2022-12-11T06:52:15.017Z">
+<meta property="article:modified_time" content="2022-12-11T07:00:55.532Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029171741131.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -150,97 +209,282 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Git使用" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Git使用"><a href="#Git使用" class="headerlink" title="Git使用"></a>Git使用</h1><h2 id="1-基础知识"><a href="#1-基础知识" class="headerlink" title="1.基础知识"></a>1.基础知识</h2><p>pwd 显示目前的工作目录 print work directory</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029171741131.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029171741131.png" alt="image-20221029171741131"></p>
+<p>ls 显示当前路径下所有文件</p>
+<p>mkdir 产生新的文件夹make directory</p>
+<p>touch 创建新文件</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029172612650.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029172612650.png" alt="image-20221029172612650"> </p>
+<p>rm 移除文件 remove file</p>
+<p>mv 移动文件</p>
+<p>git init 初始化空的git存储库 </p>
+<p>ls -a可以看到隐藏的文件</p>
+<p>git status 查询当前存储库状态，如果有未被提交或更新的新文件，会提示文件</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029174255210.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029174255210.png" alt="image-20221029174255210"></p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029174550148.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029174550148.png" alt="image-20221029174550148"></p>
+<p>之后使用 </p>
+<h3 id="1-git-add"><a href="#1-git-add" class="headerlink" title="1.git add"></a>1.git add</h3><p>git add + 文件名 添加文件至 staging area区域，此时文件会有两份，一份在工作目录，一份在暂存目录，看不见</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029194602574.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029194602574.png" alt="image-20221029194602574"></p>
+<p>之后通过commit提交到repository存储库</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029195011330.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029195011330.png" alt="image-20221029195011330"></p>
+<p>要注意工作目录中的文件不是staging area(暂存目录)区域的文件，如果你在add文件到暂存目录后修改了工作目录中的文件，之后没有重新add文件，那么此时直接commit的话，推送的文件是暂存目录中没修改过的文件而不是你在工作目录又修改了的文件。就像这样：</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029200407941.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029200407941.png" alt="image-20221029200407941"></p>
+<p>此时运行git add 命令的话，可以更新暂存目录中的文件，</p>
+<p>此时运行git restore命令的话，可以将工作目录中的文件恢复成暂存目录中的文件状态</p>
+<p>git restore –staged 将文件从暂存区撤销</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029202931377.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029202931377.png" alt="image-20221029202931377"></p>
+ <img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029203003253.png" class="">![image-20221029203003253](Git使用/image-20221029203003253.png)
+
+<h3 id="2-git-commit"><a href="#2-git-commit" class="headerlink" title="2. git commit"></a>2. git commit</h3><p>commit提交文件后，可以写提交注释，#开头的内容会被忽略，写完本次注释后按ESC结束输入，在底端输入wq(write &amp; quit)后回车保存退出.</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029204254104.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029204254104.png" alt="image-20221029204254104"></p>
+<p>main表示当前的分支，root-commit表示目前还没有任何commit</p>
+<p>git log查看当前git的log信息</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029204824932.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029204824932.png" alt="image-20221029204824932"></p>
+<p>git commit –ament file 合并纪录，会把从上次暂存仓库里更新到存储库的分支归并为一条</p>
+<h3 id="3-git-ignore"><a href="#3-git-ignore" class="headerlink" title="3.git ignore"></a>3.git ignore</h3><p>有些不需要提交的文件或文件夹，比如可以自己生成的二进制文件夹，缓存文件夹什么的，可以在同级目录下新建一个名为.gitigonre文件，无文件格式。在文件中写入要忽略的文件夹和文件名，多文件时回车写下一个，#开头行代表注释。</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030100639391.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030100639391.png" alt="image-20221030100639391"></p>
+<h3 id="4-一步完成add和commit"><a href="#4-一步完成add和commit" class="headerlink" title="4.一步完成add和commit"></a>4.一步完成add和commit</h3><p>git add .</p>
+<p>add所有修改或更新的文件到暂存目录</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030102139619.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030102139619.png" alt="image-20221030102139619"></p>
+<p>git commit -m “text”</p>
+<p>带注释的更新，可以跳过后面的注释阶段,同时commit全部文件或更新</p>
+<p>git add . </p>
+<p>stage所有的改变</p>
+<p>git add -u</p>
+<p>除了新添加的文件stage所有的改变</p>
+<p>git commit -a </p>
+<p>除了新文件stage并commit所有的改变</p>
+<h3 id="5-revert-amp-reset"><a href="#5-revert-amp-reset" class="headerlink" title="5.revert &amp; reset"></a>5.revert &amp; reset</h3><p>git revert  + 版本SHA-1 还原并存储为一个新的提交</p>
+<p>revert and  store as a new commit,相当于撤销了之前的操作</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030164516000.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030164516000.png" alt="image-20221030164516000"></p>
+<p><strong>HEAD</strong>表示当前版本的意思</p>
+<p>git reset HEAD~ 回退到上一个版本，用于取消已缓存的内容。</p>
+<p>Discard the last commit</p>
+<p>git reset HEAD~n回退到前n个版本</p>
+<p>discard the last n commits</p>
+<h3 id="6-git-restore"><a href="#6-git-restore" class="headerlink" title="6.git restore"></a>6.git restore</h3><p>git restore 文件名 : 撤消工作区的修改返回到最近一次add(缓存区)的版本或者最近一次<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=commit&spm=1001.2101.3001.7020">commit</a>(当前版本库)的版本</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030165830379.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030165830379.png" alt="image-20221030165830379"></p>
+<h3 id="7-远端提交"><a href="#7-远端提交" class="headerlink" title="7.远端提交"></a>7.远端提交</h3><img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030223820322.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030223820322.png" alt="image-20221030223820322"></p>
+<h2 id="2-UE5中使用"><a href="#2-UE5中使用" class="headerlink" title="2.UE5中使用"></a>2.UE5中使用</h2><h3 id="1-第一次推送-push"><a href="#1-第一次推送-push" class="headerlink" title="1.第一次推送 push"></a>1.第一次推送 push</h3><p>先在GitHub中创建存储库，之后进入UE项目中</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031185810764.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031185810764.png" alt="image-20221031185810764"></p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031185929888.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031185929888.png" alt="image-20221031185929888"></p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031195335660.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031195335660.png" alt="image-20221031195335660"></p>
+<p>Git路径写自己安装git的bin文件夹下git.exe的路径</p>
+<p>URL写自己Github仓库的地址，后面LFS的.gitattributes可以先不选，自己创建一个，内容如下</p>
+<p>*.uasset filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.umap filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text</p>
+<p>*.fbx filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.3ds filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.psd filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.png filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.mp3 filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.wav filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.xcf filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.jpg filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text</p>
+<p>&#x2F;RawContent&#x2F;**&#x2F;* filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>Footer</p>
+<p>touch .gitattributes然后写attribute lfs大文件文档</p>
+<p>commit</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031204940615.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031204940615.png" alt="image-20221031204940615"></p>
+<p>amend 合并</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205002024.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205002024.png" alt="image-20221031205002024"></p>
+<p>查询状态</p>
+
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205046902.png" alt="image-20221031205046902"></p>
+<p>第一次推送到远端存储库，遇到以下图片问题的，输入以下参数</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205402083.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205402083.png" alt="image-20221031205402083"></p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205453662.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205453662.png" alt="image-20221031205453662"></p>
+<p>git config –global http.sslVerify “false”</p>
+<p> git config –global credential.helper manager</p>
+<p>git config –global http.postBuffer 54288000</p>
+<p>git config lfs.<a target="_blank" rel="noopener" href="https://github.com/Backfire935/TPSGameProject.git/info/lfs.locksverify">https://github.com/Backfire935/TPSGameProject.git/info/lfs.locksverify</a> false</p>
+<p>然后可以推送到远端</p>
+<p>git push -u origin main</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205304687.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205304687.png" alt="image-20221031205304687"></p>
+<h3 id="2-第一次拉取-pull"><a href="#2-第一次拉取-pull" class="headerlink" title="2.第一次拉取 pull"></a>2.第一次拉取 pull</h3><h3 id="3-修改后推送"><a href="#3-修改后推送" class="headerlink" title="3.修改后推送"></a>3.修改后推送</h3><p>如果是创建了新文件，那么长这样</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031211935882.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031211935882.png" alt="image-20221031211935882"></p>
+<p>然后写提交信息后直接按全部提交按钮就行，不过这是提交的本地。远端存储的话，去管理界面把按push就行</p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031212346544.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031212346544.png" alt="image-20221031212346544"></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/delav/p/11118555.html">https://www.cnblogs.com/delav/p/11118555.html</a></p>
+<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/CR3%606O$%5D49_35%7DW2%60TRY08.png" class="">
+
+<p><img src="/Git%E4%BD%BF%E7%94%A8/CR3%606O$%5D49_35%7DW2%60TRY08.png" alt="img"></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/12/11/Git%E4%BD%BF%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2022-12-11T06:52:15.017Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-12-11</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/12/11/Git%E4%BD%BF%E7%94%A8/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/12/06/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" class="archive-article-date">
-  	<time datetime="2022-12-06T07:47:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-12-06</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2022/12/06/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">学习路线</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/12/06/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">学习路线</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/12/02/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6/" class="archive-article-date">
-  	<time datetime="2022-12-02T06:51:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-12-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/12/02/UE%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E5%92%8C%E6%A1%86%E6%9E%B6/">UE 网络同步和框架</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -263,8 +507,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
