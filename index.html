@@ -152,12 +152,188 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-人宅UE4游戏开发核心技术基础教程第一部" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/12/14/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/">人宅UE4游戏开发核心技术基础教程第一部</a>
+    </h1>
+  
+
+        
+        <a href="/2022/12/14/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/" class="archive-article-date">
+  	<time datetime="2022-12-14T10:32:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-12-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="第三章-流程控制"><a href="#第三章-流程控制" class="headerlink" title="第三章 流程控制"></a>第三章 流程控制</h2><h3 id="第一节-C-和蓝图循环"><a href="#第一节-C-和蓝图循环" class="headerlink" title="第一节 C++和蓝图循环"></a>第一节 C++和蓝图循环</h3><p>ForLoop蓝图节点相当于C++中的for循环，ForeLoopWithBreak节点相当于for循环体中加了break语句，当触发某个条件时直接结束。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for()</span><br><span class="line">&#123;</span><br><span class="line">	if(xxx)</span><br><span class="line">	break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>WhileLoop节点相当于C++中的while语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二节-C-和蓝图结构体"><a href="#第二节-C-和蓝图结构体" class="headerlink" title="第二节 C++和蓝图结构体"></a>第二节 C++和蓝图结构体</h3><p>UE4可以右键空白处选择蓝图，创建结构体，方便管理数据。C++中如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">MyStruct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">bool</span> one;</span><br><span class="line">	<span class="type">int</span> Two;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	MyStruct str;</span><br><span class="line">	str.one = <span class="literal">true</span>;</span><br><span class="line">	str.two = <span class="number">0</span>;</span><br><span class="line">	cout&lt;&lt;str.one&lt;&lt;endl;</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同结构体一样，在UE中同样可以右键空白处，然后选择枚举或者Enumeration来快速创建一个枚举蓝图。之后在具体要用的蓝图中新建一个变量，在变量类型中选择类型为自己刚刚创建的枚举名即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">ETr</span>&#123;</span><br><span class="line">	Monster,</span><br><span class="line">	Kill,</span><br><span class="line">	Hello</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ETr tr;</span><br><span class="line">	<span class="comment">//即在几种类型之中选择一种</span></span><br><span class="line">	tr = ETr::Kill;</span><br><span class="line">	<span class="keyword">case</span> Monster:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> Kill:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> Hello:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第三节-DoOnceDelay"><a href="#第三节-DoOnceDelay" class="headerlink" title="第三节 DoOnceDelay"></a>第三节 DoOnceDelay</h3><p>在流程控制节点中，branch节点相当于if语句。Delay节点相当于Sleep语句。DoOnce节点意思是只执行一次，DoOnce中startclosed选项要是勾上了，则刚开始就不执行，reset用于重置DoOnce。 Gate阀门，可以通过事件来调用。FlipFlow可以控制第一帧走上面的第二帧走下面的，来回往复。MultiGate用于emm，Gate加强版，一次性可以有很多输出，还可以设置从第几个开始，可以设置是否循环是否随机，以及Gate也有的重设。</p>
+<h3 id="第四节-SequenceDoOnce"><a href="#第四节-SequenceDoOnce" class="headerlink" title="第四节 SequenceDoOnce"></a>第四节 SequenceDoOnce</h3><img src="/2022/12/14/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221214202637641.png" class="">
+
+<p><img src="/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221214202637641.png" alt="image-20221214202637641"></p>
+<p>这玩意只要下个信号传过来就会刷新等待时间，所以如果在tick中使用的话，就会无限阻塞。</p>
+<p>sequence序列很有用，可以一次同时执行很多事件。</p>
+<h3 id="第五节-C-实现蓝图控制"><a href="#第五节-C-实现蓝图控制" class="headerlink" title="第五节 C++实现蓝图控制"></a>第五节 C++实现蓝图控制</h3><p>实现Branch</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">TureCondition</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//这种情况下要实现的功能</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">FalseCondition</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//这种情况下要实现的功能</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Branch</span><span class="params">(<span class="type">bool</span> Condition)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(Condition)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">TrueCondition</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">FalseCondition</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现Delay</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DelayCompleted</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//要完成的事件逻辑</span></span><br><span class="line">&#125;    </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Delay</span><span class="params">(<span class="type">float</span> Duration)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//sleep函数的单位是ms</span></span><br><span class="line">    <span class="built_in">Sleep</span>(Duration * <span class="number">1000</span>);</span><br><span class="line">    <span class="built_in">DelayCompleted</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现DoN</p>
+<img src="/2022/12/14/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221214205035035.png" class="">
+
+<p><img src="/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221214205035035.png" alt="image-20221214205035035"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">bool</span> bReset = <span class="literal">false</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Reset</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    bReset = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DoThing</span><span class="params">(<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//要执行的逻辑</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DoN</span><span class="params">(<span class="type">int</span> N)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!bReset)</span><br><span class="line">    &#123;</span><br><span class="line">         <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">    	&#123;</span><br><span class="line">        	<span class="built_in">DoThing</span>(i);</span><br><span class="line">    	&#125;</span><br><span class="line">        <span class="comment">//循环次数完成，关闭循环条件</span></span><br><span class="line">        bReset = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现DoOnce</p>
+<img src="/2022/12/14/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221214205110917.png" class="">
+
+<p><img src="/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221214205110917.png" alt="image-20221214205110917"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">bool</span> bDoOnce = <span class="literal">false</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Reset</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    bDoOnce = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DoOnce</span><span class="params">(<span class="type">bool</span> StartClosed)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!bDoOnce)</span><br><span class="line">    &#123;</span><br><span class="line">        bDoOnce = <span class="literal">false</span>;</span><br><span class="line">        <span class="built_in">Completed</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第四章-事件接口"><a href="#第四章-事件接口" class="headerlink" title="第四章 事件接口"></a>第四章 事件接口</h2><h3 id="第一节-封装逻辑蓝图代理"><a href="#第一节-封装逻辑蓝图代理" class="headerlink" title="第一节 封装逻辑蓝图代理"></a>第一节 封装逻辑蓝图代理</h3><p>函数中禁止使用delay，会造成线程阻塞，函数要求执行快，执行完就释放临时变量。宏里面可以包含事件，宏里面可以用delay。</p>
+<p>代理（发报机、委托）蓝图中绑定和解绑操作如下</p>
+<img src="/2022/12/14/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221215171619747.png" class="">
+
+<p><img src="/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221215171619747.png" alt="image-20221215171619747"></p>
+<p>C++中差不多这样就行</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello world&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>();</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二节-Actor事件接口"><a href="#第二节-Actor事件接口" class="headerlink" title="第二节 Actor事件接口"></a>第二节 Actor事件接口</h3><p>在蓝图中找到function选项，选择override下拉列表，可看到如下函数功能</p>
+<img src="/2022/12/14/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221215173003502.png" class="">
+
+<p><img src="/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/image-20221215173003502.png" alt="image-20221215173003502"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/12/14/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-人宅UE5Gameplay基础教学" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/12/11/%E4%BA%BA%E5%AE%85UE5Gameplay%E5%9F%BA%E7%A1%80%E6%95%99%E5%AD%A6/">人宅UE5Gameplay基础教学</a>
+    </h1>
+  
+
+        
+        <a href="/2022/12/11/%E4%BA%BA%E5%AE%85UE5Gameplay%E5%9F%BA%E7%A1%80%E6%95%99%E5%AD%A6/" class="archive-article-date">
+  	<time datetime="2022-12-11T07:07:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-12-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/12/11/%E4%BA%BA%E5%AE%85UE5Gameplay%E5%9F%BA%E7%A1%80%E6%95%99%E5%AD%A6/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Git使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Git使用"><a href="#Git使用" class="headerlink" title="Git使用"></a>Git使用</h1><h2 id="1-基础知识"><a href="#1-基础知识" class="headerlink" title="1.基础知识"></a>1.基础知识</h2><p>pwd 显示目前的工作目录 print work directory</p>
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: Git使用</span><br><span class="line">date: 2022-12-06 15:47:44</span><br><span class="line">tags:</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Git使用"><a href="#Git使用" class="headerlink" title="Git使用"></a>Git使用</h1><h2 id="1-基础知识"><a href="#1-基础知识" class="headerlink" title="1.基础知识"></a>1.基础知识</h2><p>pwd 显示目前的工作目录 print work directory</p>
 <img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029171741131.png" class="">
 
 <p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029171741131.png" alt="image-20221029171741131"></p>
