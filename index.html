@@ -175,7 +175,38 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="第三章-断言"><a href="#第三章-断言" class="headerlink" title="第三章 断言"></a>第三章 断言</h2><h3 id="第一节-简单的断言"><a href="#第一节-简单的断言" class="headerlink" title="第一节 简单的断言"></a>第一节 简单的断言</h3><p>断言让程序的进程中断，方便程序员发现在哪里发生了问题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">AGameBase * GameBase = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="built_in">check</span>(<span class="literal">false</span>);</span><br><span class="line"><span class="built_in">check</span>(GameBase);</span><br><span class="line"><span class="comment">//断言给false或者给空指针、0效果都一样，都会触发。</span></span><br></pre></td></tr></table></figure>
+
+<p>断言的目的是为了告诉方法或函数有问题。</p>
+<h3 id="第二节-额外信息断言"><a href="#第二节-额外信息断言" class="headerlink" title="第二节 额外信息断言"></a>第二节 额外信息断言</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">verifyf</span>(<span class="literal">false</span>, <span class="built_in">TEXT</span>(<span class="string">&quot;sssss %s&quot;</span>),*<span class="keyword">this</span>-&gt;<span class="built_in">GetName</span>());</span><br><span class="line"><span class="built_in">checkf</span>(<span class="literal">false</span>, <span class="built_in">TEXT</span>(<span class="string">&quot;sssss %s&quot;</span>),*<span class="keyword">this</span>-&gt;<span class="built_in">GetName</span>());</span><br></pre></td></tr></table></figure>
+
+<p> 这两个用起来都一样，触发断言后会在退出提示信息里提示信息内容。</p>
+<h3 id="第三节-阻塞流程断言"><a href="#第三节-阻塞流程断言" class="headerlink" title="第三节 阻塞流程断言"></a>第三节 阻塞流程断言</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">checkNoEntry</span>();</span><br></pre></td></tr></table></figure>
+
+<p>只要经过这个函数就断。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">checkNoReentry();</span><br></pre></td></tr></table></figure>
+
+<p>检测这个函数是否被执行了两次，第一次没问题不会断，第二次会断。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">checkNoRecursion();</span><br></pre></td></tr></table></figure>
+
+<p>检测有没有递归，要是出现递归就直接崩。</p>
+<h3 id="第四节-断点式断言"><a href="#第四节-断点式断言" class="headerlink" title="第四节 断点式断言"></a>第四节 断点式断言</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ensure</span>(<span class="number">0</span> &amp;&amp; <span class="string">&quot;check(GameBase &amp;&amp; GameBase can not be NULL)&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>程序运行到此相当于遇到断点了，点击继续可以继续运行程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ensureMsgf(0, TEXT(&quot;%s&quot;), *this-&gt;GetName());</span><br></pre></td></tr></table></figure>
+
+<p>同上，并可通过此获得更多额外信息。</p>
+<h2 id="第四章-智能指针基础"><a href="#第四章-智能指针基础" class="headerlink" title="第四章 智能指针基础"></a>第四章 智能指针基础</h2><h3 id="第一节-共享指针"><a href="#第一节-共享指针" class="headerlink" title="第一节 共享指针"></a>第一节 共享指针</h3><p>继承自UObject类的对象们会被GC标记，在程序关闭时释放资源。但是对于原生的类，需要使用智能指针来进行内存管理。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TaskA</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> :</span><br><span class="line">    int32 a;</span><br><span class="line">    <span class="type">float</span> b;</span><br><span class="line">&#125;</span><br><span class="line">TSharedPtr&lt;AActor&gt; A;<span class="comment">//这是不兼容的，共享指针会回收，AActor继承自UObject也会回收</span></span><br><span class="line">TSharedPtr&lt;TaskA&gt; Task_a;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ATaskActor::TaskA</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Task_a = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="comment">//不可复制性</span></span><br><span class="line">    TSharedPtr&lt;TaskA&gt; Task_b;</span><br><span class="line">    Task_b = Task_a;</span><br><span class="line">    <span class="comment">//在TArray中使用要注意，容器将类或指针作为了一个复制</span></span><br><span class="line">    TArray&lt;TSharedPtr&lt;TaskA&gt;&gt;;</span><br><span class="line">    <span class="comment">//尽量不要在函数的声明周期临时声明一个共享指针，因为很消耗性能，内存开销更大。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>共享指针是不可以复制的。再次出现对内容的引用则增加引用计数，当引用计数降到0的时候类会被清理。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">TSharedPtr&lt;TaskA&gt; Task_a;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ATaskActor::TaskAA</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//这样将普通的TaskA转换为智能指针</span></span><br><span class="line">    Task_a = <span class="built_in">MakeShareable</span>(<span class="keyword">new</span> <span class="built_in">TaskA</span>());</span><br><span class="line">    <span class="comment">//.是对智能指针里的内容作判断，直接用指针的话，那就是访问Task里面的内容。 </span></span><br><span class="line">    <span class="keyword">if</span>(Task_a.<span class="built_in">IsValid</span>() \\ Task_a.<span class="built_in">Get</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        Task_a.<span class="built_in">Get</span>()-&gt;a;</span><br><span class="line">        <span class="comment">//销毁</span></span><br><span class="line">        Task_a.<span class="built_in">Reset</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二节-共享引用"><a href="#第二节-共享引用" class="headerlink" title="第二节 共享引用"></a>第二节 共享引用</h3><p>共享指针不能置为 NULL，只要共享引用存在，共享指针就一定有效。</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ATaskActor::TaskSharedPtr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Task_a = <span class="built_in">MakeShareable</span>(<span class="keyword">new</span> <span class="built_in">TaskA</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ATaskActor::TaskSharedRef</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">TSharedRef&lt;TaskA&gt; <span class="title">Task_b</span><span class="params">(<span class="keyword">new</span> TaskA())</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取数据的两种方式</span></span><br><span class="line">    Task_b-&gt;a;</span><br><span class="line">    (*Task_b).a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ATaskActor::TaskSharedRefAndPtr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">TSharedRef&lt;TaskA&gt; <span class="title">Task_b</span><span class="params">(<span class="keyword">new</span> TaskA())</span></span>;</span><br><span class="line">    <span class="comment">//将共享指针转换为了共享引用，之间是隐式转换。</span></span><br><span class="line">    Task_a = Task_b;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//对于一个普通的指针，通过这种方式转换为共享指针</span></span><br><span class="line">    TaskA * NewTaskA = <span class="keyword">new</span> <span class="built_in">TaskA</span>();</span><br><span class="line">    Task_a = <span class="built_in">MakeShareable</span>(<span class="keyword">new</span> <span class="built_in">TaskA</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
       
 
       
@@ -583,195 +614,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2022/12/14/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Git使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Git使用"><a href="#Git使用" class="headerlink" title="Git使用"></a>Git使用</h1><h2 id="1-基础知识"><a href="#1-基础知识" class="headerlink" title="1.基础知识"></a>1.基础知识</h2><p>pwd 显示目前的工作目录 print work directory</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029171741131.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029171741131.png" alt="image-20221029171741131"></p>
-<p>ls 显示当前路径下所有文件</p>
-<p>mkdir 产生新的文件夹make directory</p>
-<p>touch 创建新文件</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029172612650.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029172612650.png" alt="image-20221029172612650"> </p>
-<p>rm 移除文件 remove file</p>
-<p>mv 移动文件</p>
-<p>git init 初始化空的git存储库 </p>
-<p>ls -a可以看到隐藏的文件</p>
-<p>git status 查询当前存储库状态，如果有未被提交或更新的新文件，会提示文件</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029174255210.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029174255210.png" alt="image-20221029174255210"></p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029174550148.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029174550148.png" alt="image-20221029174550148"></p>
-<p>之后使用 </p>
-<h3 id="1-git-add"><a href="#1-git-add" class="headerlink" title="1.git add"></a>1.git add</h3><p>git add + 文件名 添加文件至 staging area区域，此时文件会有两份，一份在工作目录，一份在暂存目录，看不见</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029194602574.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8%5Cimage-20221029194602574.png" alt="image-20221029194602574"></p>
-<p>之后通过commit提交到repository存储库</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029195011330.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029195011330.png" alt="image-20221029195011330"></p>
-<p>要注意工作目录中的文件不是staging area(暂存目录)区域的文件，如果你在add文件到暂存目录后修改了工作目录中的文件，之后没有重新add文件，那么此时直接commit的话，推送的文件是暂存目录中没修改过的文件而不是你在工作目录又修改了的文件。就像这样：</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029200407941.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029200407941.png" alt="image-20221029200407941"></p>
-<p>此时运行git add 命令的话，可以更新暂存目录中的文件，</p>
-<p>此时运行git restore命令的话，可以将工作目录中的文件恢复成暂存目录中的文件状态</p>
-<p>git restore –staged 将文件从暂存区撤销</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029202931377.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029202931377.png" alt="image-20221029202931377"></p>
- <img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029203003253.png" class="">![image-20221029203003253](Git使用/image-20221029203003253.png)
-
-<h3 id="2-git-commit"><a href="#2-git-commit" class="headerlink" title="2. git commit"></a>2. git commit</h3><p>commit提交文件后，可以写提交注释，#开头的内容会被忽略，写完本次注释后按ESC结束输入，在底端输入wq(write &amp; quit)后回车保存退出.</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029204254104.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029204254104.png" alt="image-20221029204254104"></p>
-<p>main表示当前的分支，root-commit表示目前还没有任何commit</p>
-<p>git log查看当前git的log信息</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221029204824932.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221029204824932.png" alt="image-20221029204824932"></p>
-<p>git commit –ament file 合并纪录，会把从上次暂存仓库里更新到存储库的分支归并为一条</p>
-<h3 id="3-git-ignore"><a href="#3-git-ignore" class="headerlink" title="3.git ignore"></a>3.git ignore</h3><p>有些不需要提交的文件或文件夹，比如可以自己生成的二进制文件夹，缓存文件夹什么的，可以在同级目录下新建一个名为.gitigonre文件，无文件格式。在文件中写入要忽略的文件夹和文件名，多文件时回车写下一个，#开头行代表注释。</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030100639391.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030100639391.png" alt="image-20221030100639391"></p>
-<h3 id="4-一步完成add和commit"><a href="#4-一步完成add和commit" class="headerlink" title="4.一步完成add和commit"></a>4.一步完成add和commit</h3><p>git add .</p>
-<p>add所有修改或更新的文件到暂存目录</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030102139619.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030102139619.png" alt="image-20221030102139619"></p>
-<p>git commit -m “text”</p>
-<p>带注释的更新，可以跳过后面的注释阶段,同时commit全部文件或更新</p>
-<p>git add . </p>
-<p>stage所有的改变</p>
-<p>git add -u</p>
-<p>除了新添加的文件stage所有的改变</p>
-<p>git commit -a </p>
-<p>除了新文件stage并commit所有的改变</p>
-<h3 id="5-revert-amp-reset"><a href="#5-revert-amp-reset" class="headerlink" title="5.revert &amp; reset"></a>5.revert &amp; reset</h3><p>git revert  + 版本SHA-1 还原并存储为一个新的提交</p>
-<p>revert and  store as a new commit,相当于撤销了之前的操作</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030164516000.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030164516000.png" alt="image-20221030164516000"></p>
-<p><strong>HEAD</strong>表示当前版本的意思</p>
-<p>git reset HEAD~ 回退到上一个版本，用于取消已缓存的内容。</p>
-<p>Discard the last commit</p>
-<p>git reset HEAD~n回退到前n个版本</p>
-<p>discard the last n commits</p>
-<h3 id="6-git-restore"><a href="#6-git-restore" class="headerlink" title="6.git restore"></a>6.git restore</h3><p>git restore 文件名 : 撤消工作区的修改返回到最近一次add(缓存区)的版本或者最近一次<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=commit&spm=1001.2101.3001.7020">commit</a>(当前版本库)的版本</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030165830379.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030165830379.png" alt="image-20221030165830379"></p>
-<h3 id="7-远端提交"><a href="#7-远端提交" class="headerlink" title="7.远端提交"></a>7.远端提交</h3><img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221030223820322.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221030223820322.png" alt="image-20221030223820322"></p>
-<h2 id="2-UE5中使用"><a href="#2-UE5中使用" class="headerlink" title="2.UE5中使用"></a>2.UE5中使用</h2><h3 id="1-第一次推送-push"><a href="#1-第一次推送-push" class="headerlink" title="1.第一次推送 push"></a>1.第一次推送 push</h3><p>先在GitHub中创建存储库，之后进入UE项目中</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031185810764.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031185810764.png" alt="image-20221031185810764"></p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031185929888.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031185929888.png" alt="image-20221031185929888"></p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031195335660.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031195335660.png" alt="image-20221031195335660"></p>
-<p>Git路径写自己安装git的bin文件夹下git.exe的路径</p>
-<p>URL写自己Github仓库的地址，后面LFS的.gitattributes可以先不选，自己创建一个，内容如下</p>
-<p>*.uasset filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.umap filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text</p>
-<p>*.fbx filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.3ds filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.psd filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.png filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.mp3 filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.wav filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.xcf filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>*.jpg filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text</p>
-<p>&#x2F;RawContent&#x2F;**&#x2F;* filter&#x3D;lfs diff&#x3D;lfs merge&#x3D;lfs -text<br>Footer</p>
-<p>touch .gitattributes然后写attribute lfs大文件文档</p>
-<p>commit</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031204940615.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031204940615.png" alt="image-20221031204940615"></p>
-<p>amend 合并</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205002024.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205002024.png" alt="image-20221031205002024"></p>
-<p>查询状态</p>
-
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205046902.png" alt="image-20221031205046902"></p>
-<p>第一次推送到远端存储库，遇到以下图片问题的，输入以下参数</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205402083.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205402083.png" alt="image-20221031205402083"></p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205453662.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205453662.png" alt="image-20221031205453662"></p>
-<p>git config –global http.sslVerify “false”</p>
-<p> git config –global credential.helper manager</p>
-<p>git config –global http.postBuffer 54288000</p>
-<p>git config lfs.<a target="_blank" rel="noopener" href="https://github.com/Backfire935/TPSGameProject.git/info/lfs.locksverify">https://github.com/Backfire935/TPSGameProject.git/info/lfs.locksverify</a> false</p>
-<p>然后可以推送到远端</p>
-<p>git push -u origin main</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031205304687.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031205304687.png" alt="image-20221031205304687"></p>
-<h3 id="2-第一次拉取-pull"><a href="#2-第一次拉取-pull" class="headerlink" title="2.第一次拉取 pull"></a>2.第一次拉取 pull</h3><h3 id="3-修改后推送"><a href="#3-修改后推送" class="headerlink" title="3.修改后推送"></a>3.修改后推送</h3><p>如果是创建了新文件，那么长这样</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031211935882.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031211935882.png" alt="image-20221031211935882"></p>
-<p>然后写提交信息后直接按全部提交按钮就行，不过这是提交的本地。远端存储的话，去管理界面把按push就行</p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/image-20221031212346544.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/image-20221031212346544.png" alt="image-20221031212346544"></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/delav/p/11118555.html">https://www.cnblogs.com/delav/p/11118555.html</a></p>
-<img src="/2022/12/11/Git%E4%BD%BF%E7%94%A8/CR3%606O$%5D49_35%7DW2%60TRY08.png" class="">
-
-<p><img src="/Git%E4%BD%BF%E7%94%A8/CR3%606O$%5D49_35%7DW2%60TRY08.png" alt="img"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/12/11/Git%E4%BD%BF%E7%94%A8/">展开全文 >></a>
         </p>
       
 
