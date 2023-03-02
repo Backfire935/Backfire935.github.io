@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="农场项目小节点-砍树, UE C++">
-    <meta name="description" content="砍树功能效果的实现​	在UE中想做一个砍树的功能，B站上没找到什么教程，最后在油管上找到个视频并跟着实现了，一共设计到三个蓝图和一个什么也没写的蓝图接口，下面介绍下步骤。
-1.角色蓝图的部分人物这里我做的是按F挥动手上的斧头攻击树，最后树的">
+    <meta name="keywords" content="Hadoop安装教程, UE C++">
+    <meta name="description" content="1.乌班图安装1.Ubuntu20系统镜像下载在MSDN官网找到Ubuntu的选项后，使用BT种子在迅雷下载系统镜像，种子如下
+magnet:?xt&amp;#x3D;urn:btih:9FC20B9E98EA98B4A35E6223041A5EF">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>农场项目小节点-砍树 | 李清水的笔记本</title>
+    <title>Hadoop安装教程 | 李清水的笔记本</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -335,12 +335,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">农场项目小节点-砍树</h1>
+                    <h1 class="description center-align post-title">Hadoop安装教程</h1>
                 </div>
             </div>
         </div>
@@ -362,25 +362,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/UE/">
-                                <span class="chip bg-color">UE</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/UE/" class="post-category">
-                                UE
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -389,7 +376,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-02-28
+                    2023-03-02
                 </div>
                 
 
@@ -410,93 +397,202 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="砍树功能效果的实现"><a href="#砍树功能效果的实现" class="headerlink" title="砍树功能效果的实现"></a>砍树功能效果的实现</h1><p>​	在UE中想做一个砍树的功能，B站上没找到什么教程，最后在油管上找到个视频并跟着实现了，一共设计到三个蓝图和一个什么也没写的蓝图接口，下面介绍下步骤。</p>
-<h2 id="1-角色蓝图的部分"><a href="#1-角色蓝图的部分" class="headerlink" title="1.角色蓝图的部分"></a>1.角色蓝图的部分</h2><p>人物这里我做的是按F挥动手上的斧头攻击树，最后树的倒下。蓝图如下：</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210427162.png" class="">
+                <h1 id="1-乌班图安装"><a href="#1-乌班图安装" class="headerlink" title="1.乌班图安装"></a>1.乌班图安装</h1><h2 id="1-Ubuntu20系统镜像下载"><a href="#1-Ubuntu20系统镜像下载" class="headerlink" title="1.Ubuntu20系统镜像下载"></a>1.Ubuntu20系统镜像下载</h2><p>在MSDN官网找到Ubuntu的选项后，使用BT种子在迅雷下载系统镜像，种子如下</p>
+<p>magnet:?xt&#x3D;urn:btih:9FC20B9E98EA98B4A35E6223041A5EF94EA27809&amp;dn&#x3D;ubuntu-20.04-desktop-amd64.iso&amp;xl&#x3D;2715254784</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144508263.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210427162.png" alt="image-20230228210427162"></p>
-<p>砍树射线追踪蓝图节点是个自定义节点：</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210454699.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144508263.png" alt="image-20230302144508263"></p>
+<h2 id="2-虚拟机网络的设置"><a href="#2-虚拟机网络的设置" class="headerlink" title="2.虚拟机网络的设置"></a>2.虚拟机网络的设置</h2><p>要想虚拟机能上网，需要如下设置。选择虚拟机工具栏中，编辑-虚拟网络编辑器-VMnet8，之后设置NAT模式，并开启本地DHCP即可。选项不能点就点下右下角的更改设置。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302145132532.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210454699.png" alt="image-20230228210454699"></p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210518971.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302145132532.png" alt="image-20230302145132532"></p>
+<p>然后关闭这个选项卡。</p>
+<h2 id="3-Ubuntu主机的安装"><a href="#3-Ubuntu主机的安装" class="headerlink" title="3.Ubuntu主机的安装"></a>3.Ubuntu主机的安装</h2><h3 id="1-系统安装"><a href="#1-系统安装" class="headerlink" title="1.系统安装"></a>1.系统安装</h3><p>我已经安装过VMWare了，这边直接安装乌班图系统，点击创建新的虚拟机后，选择典型。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144605651.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210518971.png" alt="image-20230228210518971"></p>
-<p>节点中要新建一个局部变量“被射线扫描到的树” ，是个Actor类型的数组变量。</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210219310.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144605651.png" alt="image-20230302144605651"></p>
+<p>下一步之后，选择系统镜像的位置</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144635021.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210219310.png" alt="image-20230228210219310"></p>
-<p>此处是否实现接口 的意义是，自己建的一个空蓝图接口，里面就改了函数名，其他啥也没，主要用这个接口来判断某个类是否属于某一类物体。</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228205322035.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144635021.png" alt="image-20230302144635021"></p>
+<p>再下一步填写主机信息，由于Hadoop是分布式的，预计装三台虚拟机，主机起名如下</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144744310.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228205322035.png" alt="image-20230228205322035"></p>
-<p>查找最近的树节点也是个自定义节点。其中有三个局部变量，如图</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210310137.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144744310.png" alt="image-20230302144744310"></p>
+<p>用户名和密码自行填写。虚拟机存放位置新建一个文件夹并改名放着。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302145732786.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210310137.png" alt="image-20230228210310137"></p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210337954.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302145732786.png" alt="image-20230302145732786"></p>
+<p>之后分配存储空间大小，主机我分配了30G，单文件多文件选项随意。点击确认之后，自动进行系统的安装和各种安装包的下载。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144910376.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210337954.png" alt="image-20230228210337954"></p>
-<p>查找最近的树节点完毕，下面这张还是角色部分剩余的蓝图节点。</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210613353.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302144910376.png" alt="image-20230302144910376"></p>
+<p>之后打开终端，测试一下网络连通性，发现网络连上去了。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302150206563.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210613353.png" alt="image-20230228210613353"></p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210625798.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302150206563.png" alt="image-20230302150206563"></p>
+<h3 id="2-切换成中文"><a href="#2-切换成中文" class="headerlink" title="2.切换成中文"></a>2.切换成中文</h3><p>如果安装后是英文的，可以这样换成中文。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151417392.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210625798.png" alt="image-20230228210625798"></p>
-<p>事件蓝图的部分没啥好讲的，也就一个bIsUseAxe布尔变量是新建的。</p>
-<h2 id="2-动画蓝图部分"><a href="#2-动画蓝图部分" class="headerlink" title="2.动画蓝图部分"></a>2.动画蓝图部分</h2><img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212830756.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151417392.png" alt="image-20230302151417392"></p>
+<p>进入设置，找到地区和语言，点击管理已安装的语言。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151450443.png" class="">
 
-<p>突然想起来人物砍树是有动画的。大家根据自己的来，这里仅供参考。</p>
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212830756.png" alt="image-20230228212830756"></p>
-<p>点进ChopTreeMachine状态机后：</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212850256.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151450443.png" alt="image-20230302151450443"></p>
+<p>会提示你安装不完整，这里点安装，然后等待。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151529646.png" class="">![image-20230302151529646](Hadoop安装教程/image-20230302151529646.png)
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212850256.png" alt="image-20230228212850256"></p>
-<p>继续进入节点：</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212901175.png" class="">
+<p>安装会要求你输密码。</p>
+<p>之后点击红圈部分，右边往下拉选简体中文，点右下角apply等着就行。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151738009.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212901175.png" alt="image-20230228212901175"></p>
-<p>用的一个从Maximo下载的动画，用RTG重定向到了自己角色的身上，你们可以自己找个舒服的劈砍动画用。在轨道中添加了两个事件，左边是开启判断造成伤害的通知，右边的是关闭。这两个通知在动画蓝图的事件部分实现，在角色蓝图的部分中使用。</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212941351.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151738009.png" alt="image-20230302151738009"></p>
+<p>等下载完，要把汉语选项拖到最上面，默认在最下面。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151930465.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212941351.png" alt="image-20230228212941351"></p>
-<p>事件部分：</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228213339369.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151930465.png" alt="image-20230302151930465"></p>
+<p>然后地区格式化也改成中国。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151956979.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228213339369.png" alt="image-20230228213339369"></p>
-<h2 id="3-斧子蓝图的部分"><a href="#3-斧子蓝图的部分" class="headerlink" title="3.斧子蓝图的部分"></a>3.斧子蓝图的部分</h2><p>砍树得有斧子，来看看斧子怎么做的</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210742031.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302151956979.png" alt="image-20230302151956979"></p>
+<p>这样就弄完了，重启当前虚拟机就行。（不用关VM也不用关其他虚拟机，重启当前这个即可）</p>
+<h3 id="3-关闭自动更新"><a href="#3-关闭自动更新" class="headerlink" title="3.关闭自动更新"></a>3.关闭自动更新</h3><p>终端中执行如下命令</p>
+<p><code>sudo vi /etc/apt/apt.conf.d/10periodic a</code></p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302155034591.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228210742031.png" alt="image-20230228210742031"></p>
-<p>这是斧子蓝图，找一个斧子的模型加进去，再附加一个盒体碰撞进去，调整盒体碰撞至盒子的大小，这个盒子就是用来判断是否和树发生碰撞的关键。然后给盒体添加一个组件开始重叠时的事件。</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211037883.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302155034591.png" alt="image-20230302155034591"></p>
+<p>将里面的属性值都变为0即可关闭自动更新</p>
+<p>vi编辑器的使用不在这赘述，我用不来</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302155318792.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211037883.png" alt="image-20230228211037883"></p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211116675.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302155318792.png" alt="image-20230302155318792"></p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302155328094.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211116675.png" alt="image-20230228211116675"></p>
-<p>后面那个deal damage事件是BPI_Tree蓝图接口的，是在树的蓝图中实现的，后面会有截图。这里 在位置处生成发射器 生成的是一个贴花效果，我想要斧子砍到树上的时候，产生木屑飞溅的效果，我用的资产包是商城中免费的，下面标红的就是商城中的资产名称，记得把横线去掉。</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211411929.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302155328094.png" alt="image-20230302155328094"></p>
+<h2 id="4-两台从机的安装"><a href="#4-两台从机的安装" class="headerlink" title="4.两台从机的安装"></a>4.两台从机的安装</h2><p>前面操作一样，这里为了区别主从机我改了下名字。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302145526703.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211411929.png" alt="image-20230228211411929"></p>
-<p>后面的在位置处生成音效就是生成一个砍木头的声音，这个我自己随意找的，你们随便找个或者不要这个节点都行。</p>
-<h2 id="4-树蓝图的部分"><a href="#4-树蓝图的部分" class="headerlink" title="4.树蓝图的部分"></a>4.树蓝图的部分</h2><p>它之前是一颗健壮的树，直到我把它拖到blender里砍成了三段。而为什么要变成三段可以看看最下面放的油管教程链接。我只能说是必要的。</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211649318.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302145526703.png" alt="image-20230302145526703"></p>
+<p>后面流程都一样，不过从机我分配的20G存储空间。</p>
+<p>第二台从机也一样安装。语言一样设置一下，把自动更新都关了。</p>
+<h2 id="5-屏幕快照"><a href="#5-屏幕快照" class="headerlink" title="5.屏幕快照"></a>5.屏幕快照</h2><p>所有的虚拟机在达到某个稳定状态后，都应该创建一个快照，快照就是还原点，一旦出现问题可以直接恢复到当前状态，制作快照简单也不占体积。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161109364.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211649318.png" alt="image-20230228211649318"></p>
-<p>下面是蓝图接口事件deal damage的部分，以及蓝图一开始先设定血量，这里我设定的是100，而下面的伤害是110，也就是说一斧子就能把树砍倒，怎么让树倒呢，这时开启树干部分的模拟物理就行了。同时给树干施加一个和角色同向向前的作用力保证树不会砸着角色。而树冠是附加在树干上的，就会一起跟着倒。</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211806326.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161109364.png" alt="image-20230302161109364"></p>
+<p>然后点拍摄快照就行。</p>
+<h1 id="2-Hadoop安装"><a href="#2-Hadoop安装" class="headerlink" title="2.Hadoop安装"></a>2.Hadoop安装</h1><h2 id="1-添加一个专有账号-可以不做这一步"><a href="#1-添加一个专有账号-可以不做这一步" class="headerlink" title="1.添加一个专有账号(可以不做这一步)"></a>1.添加一个专有账号(可以不做这一步)</h2><p>添加新用户Hadoop，并设置密码，Linux中输入密码不可见，然后赋予sudo权限</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302160204313.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228211806326.png" alt="image-20230228211806326"></p>
-<p>后面有个生成节点，我做的效果是树倒后过四秒，树的模型部分会消失，然后生成四个木材蓝图，就像爆装备一样的效果。之所以加这么多随机位置和随机朝向是为了防止都生成在一个位置，各物品受到挤压从而发生寒霜航空。</p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212044228.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302160204313.png" alt="image-20230302160204313"></p>
+<p>创建名为hadoop的用户</p>
+<p><code>sudo useradd -m hadoop -s /bin/bash</code></p>
+<p>设置密码</p>
+<p><code>sudo passwd hadoop</code></p>
+<p>设置权限</p>
+<p><code>sudo adduser hadoop sudo</code></p>
+<h2 id="2-更新必要的软件"><a href="#2-更新必要的软件" class="headerlink" title="2.更新必要的软件"></a>2.更新必要的软件</h2><p>更新apt</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161415603.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212044228.png" alt="image-20230228212044228"></p>
-<img src="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212054202.png" class="">
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161415603.png" alt="image-20230302161415603"></p>
+<p>安装ssh-server，得按大写的Y</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161641595.png" class="">
 
-<p><img src="/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/image-20230228212054202.png" alt="image-20230228212054202"></p>
-<p>所有事情处理完后再销毁自己。</p>
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161641595.png" alt="image-20230302161641595"></p>
+<p>第一个地方输命令，第二个地方打yes，第三个地方输密码</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161818273.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161818273.png" alt="image-20230302161818273"></p>
+<p>配置无密码ssh登陆</p>
+<p>此时输exit退出ssh连接，生成ssh秘钥，画红线的地方按回车就行。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302162113269.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302162113269.png" alt="image-20230302162113269"></p>
+<p>然后将秘钥加入到授权中</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302162305766.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302162305766.png" alt="image-20230302162305766"></p>
+<p>此时登陆就不需要密码了。</p>
+<p>之后输入</p>
+<p><code>sudo apt-get update</code></p>
+<p>进行更新</p>
+<h2 id="2-安装jdk"><a href="#2-安装jdk" class="headerlink" title="2.安装jdk"></a>2.安装jdk</h2><p>这里安装openjdk-8-jdk,输入</p>
+<p><code>sudo apt-get install openjdk-8-jdk</code></p>
+<p>来安装jdk，之后输入</p>
+<p><code>java -version</code></p>
+<p>查看版本，输入</p>
+<p><code>gedit ~/.bashrc</code></p>
+<p>修改环境变量，在打开的文本里第一行输入</p>
+<p><code>export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64</code></p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163132444.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163132444.png" alt="image-20230302163132444"></p>
+<p>之后点右上角的保存并关闭，注意&#x3D;前后不能有空格。</p>
+<p>执行下面命令使环境变量生效</p>
+<p><code>source ~./bashrc</code></p>
+<p>执行下面命令查看是否设置成功，如图</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163518145.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163518145.png" alt="image-20230302163518145"></p>
+<p>查看自己的版本和路径</p>
+<p><code>java -version</code></p>
+<p><code>whereis java</code></p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163626524.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163626524.png" alt="image-20230302163626524"></p>
+<h2 id="3-下载Hadoop"><a href="#3-下载Hadoop" class="headerlink" title="3.下载Hadoop"></a>3.下载Hadoop</h2><p>官网：<a target="_blank" rel="noopener" href="https://hadoop.apache.org/releases.html">https://hadoop.apache.org/releases.html</a></p>
+<p>我下载的3.2版本的exe</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164758803.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164758803.png" alt="image-20230302164758803"></p>
+<p>进去后点击第一个链接下载，我是在Windows上下的，使用sftp工具将文件发送到虚拟机上。</p>
+<h2 id="（其他软件）-关于ip-tools和XShell，XFtp"><a href="#（其他软件）-关于ip-tools和XShell，XFtp" class="headerlink" title="（其他软件）.关于ip-tools和XShell，XFtp"></a>（其他软件）.关于ip-tools和XShell，XFtp</h2><h3 id="1-ip"><a href="#1-ip" class="headerlink" title="1.ip"></a>1.ip</h3><p>输入ifconfig -a查看本机ip，发现网络工具没装，按照提示按照工具。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163920013.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163920013.png" alt="image-20230302163920013"></p>
+<p>查看虚拟机本地ip，并在XShell新建连接对话。输入ip</p>
+<h3 id="2-xshell"><a href="#2-xshell" class="headerlink" title="2.xshell"></a>2.xshell</h3><p>xshell已经安装过了，直接使用即可。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164141051.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164141051.png" alt="image-20230302164141051"></p>
+<p>点击用户身份验证，输入虚拟机的用户名和密码</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164249693.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164249693.png" alt="image-20230302164249693"></p>
+<p>点击确定后，双击连接虚拟机，弹出对话框，选择接收并保存</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164334772.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164334772.png" alt="image-20230302164334772"></p>
+<p>连接成功</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164347948.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164347948.png" alt="image-20230302164347948"></p>
+<h3 id="3-xftp"><a href="#3-xftp" class="headerlink" title="3.xftp"></a>3.xftp</h3><p>我使用的是xftp的平替产品FileZilla</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164620592.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164620592.png" alt="image-20230302164620592"></p>
+<p>输入信息后点击连接，成功获取了虚拟机上的所有文件信息。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164646366.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164646366.png" alt="image-20230302164646366"></p>
+<h3 id="4-使用sftp工具将文件传送到虚拟机上"><a href="#4-使用sftp工具将文件传送到虚拟机上" class="headerlink" title="4.使用sftp工具将文件传送到虚拟机上"></a>4.使用sftp工具将文件传送到虚拟机上</h3><img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302170524685.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302170524685.png" alt="image-20230302170524685"></p>
+<p>我把压缩包拖拽传到&#x2F;usr&#x2F;local路径上，如果失败无法传输，是因为用户权限不够造成的，执行下面命令。</p>
+<p><code>sudo chmod 777 /usr/local</code></p>
+<p>之后传输便是正常的</p>
+<p>输入<code>tar -zxf Hadoop-3.2.4.tar.gz -C /usr/local</code>,解压文件到文件夹</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302171013783.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302171013783.png" alt="image-20230302171013783"></p>
+<h3 id="5-安装Hadoop"><a href="#5-安装Hadoop" class="headerlink" title="5.安装Hadoop"></a>5.安装Hadoop</h3><p>修改文件夹名称,这个可以用命令，也可以直接在图形化界面修改。我改成了hadoop</p>
+<p>输入<code>sudo chown -R hadoop ./hadoop</code>修改权限</p>
+<p>输入如下命令查看Hadoop是否可用以及版本号。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302171454617.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302171454617.png" alt="image-20230302171454617"></p>
+<p><code>cd /usr/local/hadoop/</code></p>
+<p><code>.bin/hadoop version</code></p>
+<p>到这就算安装好了，分布式啥的后面再说吧，记得加个快照保存下状态。</p>
 
                 
             </div>
@@ -523,7 +619,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://backfire935.github.io/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/">https://backfire935.github.io/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/</a>
+                    <a href="https://backfire935.github.io/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">https://backfire935.github.io/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -560,11 +656,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/UE/">
-                                    <span class="chip bg-color">UE</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -641,9 +733,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
                     <div class="card-image">
@@ -661,9 +754,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -672,6 +765,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -682,13 +776,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/12/27/%E4%BA%BA%E5%AE%85UE4%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/">
+                <a href="/2023/02/28/%E5%86%9C%E5%9C%BA%E9%A1%B9%E7%9B%AE%E5%B0%8F%E8%8A%82%E7%82%B9-%E7%A0%8D%E6%A0%91/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="人宅UE4游戏开发核心技术进阶教程">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="农场项目小节点-砍树">
                         
-                        <span class="card-title">人宅UE4游戏开发核心技术进阶教程</span>
+                        <span class="card-title">农场项目小节点-砍树</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -699,15 +793,27 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-28
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/UE/" class="post-category">
+                                    UE
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/UE/">
+                        <span class="chip bg-color">UE</span>
+                    </a>
+                    
                 </div>
                 
             </div>
