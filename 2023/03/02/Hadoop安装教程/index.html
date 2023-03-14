@@ -469,18 +469,12 @@ magnet:?xt&amp;#x3D;urn:btih:9FC20B9E98EA98B4A35E6223041A5EF">
 <img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302155328094.png" class="">
 
 <p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302155328094.png" alt="image-20230302155328094"></p>
-<h2 id="4-两台从机的安装"><a href="#4-两台从机的安装" class="headerlink" title="4.两台从机的安装"></a>4.两台从机的安装</h2><p>前面操作一样，这里为了区别主从机我改了下名字。</p>
-<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302145526703.png" class="">
-
-<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302145526703.png" alt="image-20230302145526703"></p>
-<p>后面流程都一样，不过从机我分配的20G存储空间。</p>
-<p>第二台从机也一样安装。语言一样设置一下，把自动更新都关了。</p>
-<h2 id="5-屏幕快照"><a href="#5-屏幕快照" class="headerlink" title="5.屏幕快照"></a>5.屏幕快照</h2><p>所有的虚拟机在达到某个稳定状态后，都应该创建一个快照，快照就是还原点，一旦出现问题可以直接恢复到当前状态，制作快照简单也不占体积。</p>
+<h2 id="4-屏幕快照"><a href="#4-屏幕快照" class="headerlink" title="4.屏幕快照"></a>4.屏幕快照</h2><p>所有的虚拟机在达到某个稳定状态后，都应该创建一个快照，快照就是还原点，一旦出现问题可以直接恢复到当前状态，制作快照简单也不占体积。</p>
 <img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161109364.png" class="">
 
 <p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161109364.png" alt="image-20230302161109364"></p>
 <p>然后点拍摄快照就行。</p>
-<h1 id="2-Hadoop安装"><a href="#2-Hadoop安装" class="headerlink" title="2.Hadoop安装"></a>2.Hadoop安装</h1><h2 id="1-添加一个专有账号-可以不做这一步"><a href="#1-添加一个专有账号-可以不做这一步" class="headerlink" title="1.添加一个专有账号(可以不做这一步)"></a>1.添加一个专有账号(可以不做这一步)</h2><p>添加新用户Hadoop，并设置密码，Linux中输入密码不可见，然后赋予sudo权限</p>
+<h1 id="2-Hadoop安装"><a href="#2-Hadoop安装" class="headerlink" title="2.Hadoop安装"></a>2.Hadoop安装</h1><h2 id="1-添加一个专有账号"><a href="#1-添加一个专有账号" class="headerlink" title="1.添加一个专有账号"></a>1.添加一个专有账号</h2><p>添加新用户Hadoop，并设置密码，Linux中输入密码不可见，然后赋予sudo权限</p>
 <img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302160204313.png" class="">
 
 <p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302160204313.png" alt="image-20230302160204313"></p>
@@ -490,7 +484,7 @@ magnet:?xt&amp;#x3D;urn:btih:9FC20B9E98EA98B4A35E6223041A5EF">
 <p><code>sudo passwd hadoop</code></p>
 <p>设置权限</p>
 <p><code>sudo adduser hadoop sudo</code></p>
-<h2 id="2-更新必要的软件"><a href="#2-更新必要的软件" class="headerlink" title="2.更新必要的软件"></a>2.更新必要的软件</h2><p>更新apt</p>
+<h2 id="2-更新apt和安装vim"><a href="#2-更新apt和安装vim" class="headerlink" title="2.更新apt和安装vim"></a>2.更新apt和安装vim</h2><p>更新apt</p>
 <img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161415603.png" class="">
 
 <p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302161415603.png" alt="image-20230302161415603"></p>
@@ -515,37 +509,48 @@ magnet:?xt&amp;#x3D;urn:btih:9FC20B9E98EA98B4A35E6223041A5EF">
 <p>之后输入</p>
 <p><code>sudo apt-get update</code></p>
 <p>进行更新</p>
-<h2 id="2-安装jdk"><a href="#2-安装jdk" class="headerlink" title="2.安装jdk"></a>2.安装jdk</h2><p>这里安装openjdk-8-jdk,输入</p>
-<p><code>sudo apt-get install openjdk-8-jdk</code></p>
-<p>来安装jdk，之后输入</p>
+<p>然后安装vim</p>
+<p><code>sudo apt-get install vim</code></p>
+<h2 id="3-安装SSH、配置SSH无密码登陆"><a href="#3-安装SSH、配置SSH无密码登陆" class="headerlink" title="3.安装SSH、配置SSH无密码登陆"></a>3.安装SSH、配置SSH无密码登陆</h2><p>集群、单节点模式都需要用到 SSH 登陆（类似于远程登陆，你可以登录某台 Linux 主机，并且在上面运行命令），Ubuntu 默认已安装了 SSH client，此外还需要安装 SSH server：</p>
+<p><code>sudo apt-get install openssh-server</code></p>
+<p><code>ssh localhost</code></p>
+<p>此时会有如下提示(SSH首次登陆提示)，输入 yes 。然后按提示输入密码 hadoop，这样就登陆到本机了。</p>
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314114848724.png" alt="image-20230314114848724"></p>
+<p>但这样登陆是需要每次输入密码的，我们需要配置成SSH无密码登陆比较方便。</p>
+<p>首先退出刚才的 ssh，就回到了我们原先的终端窗口，然后利用 ssh-keygen 生成密钥，并将密钥加入到授权中：</p>
+<p><code>exit                           # 退出刚才的 ssh localhost</code><br><code>cd ~/.ssh/                     # 若没有该目录，请先执行一次ssh localhost</code><br><code>ssh-keygen -t rsa              # 会有提示，都按回车就可以</code><br><code>cat ./id_rsa.pub &gt;&gt; ./authorized_keys  # 加入授权</code></p>
+<p><strong>~的含义</strong>: 在 Linux 系统中，~ 代表的是用户的主文件夹，即 “&#x2F;home&#x2F;用户名” 这个目录，如你的用户名为 hadoop，则 ~ 就代表 “&#x2F;home&#x2F;hadoop&#x2F;“。 此外，命令中的 # 后面的文字是注释，只需要输入前面命令即可。</p>
+<p>此时再用 <code>ssh localhost</code> 命令，无需输入密码就可以直接登陆了，如下图所示。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314114927390.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314114927390.png" alt="image-20230314114927390"></p>
+<h2 id="4-安装Java环境"><a href="#4-安装Java环境" class="headerlink" title="4.安装Java环境"></a>4.安装Java环境</h2><p>手动安装，推荐采用本方式</p>
+<p>Hadoop3.1.3需要JDK版本在1.8及以上。需要按照下面步骤来自己手动安装JDK1.8。<br><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1lLjW9cmS1tkBHkrqtpkjWw">可以点击这里到百度云盘下载JDK1.8安装包</a>（提取码：ziyu）。请把压缩格式的文件jdk-8u162-linux-x64.tar.gz下载到本地电脑，假设保存在“&#x2F;home&#x2F;linziyu&#x2F;Downloads&#x2F;”目录下。</p>
+<p>在Linux命令行界面中，执行如下Shell命令（注意：当前登录用户名是hadoop）：</p>
+<p><code>cd /usr/lib</code><br><code>sudo mkdir jvm #创建/usr/lib/jvm目录用来存放JDK文件</code><br><code>cd ~ #进入hadoop用户的主目录</code><br><code>cd Downloads  #注意区分大小写字母，刚才已经通过FTP软件把JDK安装包jdk-8u162-linux-x64.tar.gz上传到该目录下</code><br><code>sudo tar -zxvf ./jdk-8u162-linux-x64.tar.gz -C /usr/lib/jvm  #把JDK文件解压到/usr/lib/jvm目录下</code></p>
+<p>JDK文件解压缩以后，可以执行如下命令到&#x2F;usr&#x2F;lib&#x2F;jvm目录查看一下：</p>
+<p><code>cd /usr/lib/jvm</code><br><code>ls</code></p>
+<p>可以看到，在&#x2F;usr&#x2F;lib&#x2F;jvm目录下有个jdk1.8.0_162目录。<br>下面继续执行如下命令，设置环境变量：</p>
+<p><code>cd ~</code><br><code>vim ~/.bashrc</code></p>
+<p>上面命令使用vim编辑器（<a target="_blank" rel="noopener" href="https://dblab.xmu.edu.cn/blog/1607-2/">查看vim编辑器使用方法</a>）打开了hadoop这个用户的环境变量配置文件，请在这个文件的开头位置，添加如下几行内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_162</span><br><span class="line">export JRE_HOME=$&#123;JAVA_HOME&#125;/jre</span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<p>保存.bashrc文件并退出vim编辑器。然后，继续执行如下命令让.bashrc文件的配置立即生效：</p>
+<p><code>source ~/.bashrc</code></p>
+<p>这时，可以使用如下命令查看是否安装成功：</p>
 <p><code>java -version</code></p>
-<p>查看版本，输入</p>
-<p><code>gedit ~/.bashrc</code></p>
-<p>修改环境变量，在打开的文本里第一行输入</p>
-<p><code>export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64</code></p>
-<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163132444.png" class="">
+<p>如果能够在屏幕上返回如下信息，则说明安装成功：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hadoop@ubuntu:~$ java -version</span><br><span class="line">java version &quot;1.8.0_162&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_162-b12)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.162-b12, mixed mode)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163132444.png" alt="image-20230302163132444"></p>
-<p>之后点右上角的保存并关闭，注意&#x3D;前后不能有空格。</p>
-<p>执行下面命令使环境变量生效</p>
-<p><code>source ~./bashrc</code></p>
-<p>执行下面命令查看是否设置成功，如图</p>
-<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163518145.png" class="">
-
-<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163518145.png" alt="image-20230302163518145"></p>
-<p>查看自己的版本和路径</p>
-<p><code>java -version</code></p>
-<p><code>whereis java</code></p>
-<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163626524.png" class="">
-
-<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163626524.png" alt="image-20230302163626524"></p>
-<h2 id="3-下载Hadoop"><a href="#3-下载Hadoop" class="headerlink" title="3.下载Hadoop"></a>3.下载Hadoop</h2><p>官网：<a target="_blank" rel="noopener" href="https://hadoop.apache.org/releases.html">https://hadoop.apache.org/releases.html</a></p>
-<p>我下载的3.2版本的exe</p>
-<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164758803.png" class="">
-
-<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164758803.png" alt="image-20230302164758803"></p>
-<p>进去后点击第一个链接下载，我是在Windows上下的，使用sftp工具将文件发送到虚拟机上。</p>
-<h2 id="（其他软件）-关于ip-tools和XShell，XFtp"><a href="#（其他软件）-关于ip-tools和XShell，XFtp" class="headerlink" title="（其他软件）.关于ip-tools和XShell，XFtp"></a>（其他软件）.关于ip-tools和XShell，XFtp</h2><h3 id="1-ip"><a href="#1-ip" class="headerlink" title="1.ip"></a>1.ip</h3><p>输入ifconfig -a查看本机ip，发现网络工具没装，按照提示按照工具。</p>
+<p>至此，就成功安装了Java环境。下面就可以进入Hadoop的安装。</p>
+<h2 id="5-下载Hadoop"><a href="#5-下载Hadoop" class="headerlink" title="5.下载Hadoop"></a>5.下载Hadoop</h2><p>官网：<a target="_blank" rel="noopener" href="https://hadoop.apache.org/releases.html">https://hadoop.apache.org/releases.html</a></p>
+<p>百度网盘：<a target="_blank" rel="noopener" href="https://pan.baidu.com/share/init?surl=gbmPBXrJDCxwqPGkfvX5Xg">https://pan.baidu.com/share/init?surl=gbmPBXrJDCxwqPGkfvX5Xg</a> （提取码ziyu）</p>
+<p>这里我选的百度网盘内hadoop3.1.3版本，找到hadoop-3.1.3.tar.gz文件，下载到本地。<br>我们选择将 Hadoop 安装至 &#x2F;usr&#x2F;local&#x2F; 中：</p>
+<p><code>sudo tar -zxf ~/下载/hadoop-3.1.3.tar.gz -C /usr/local    # 解压到/usr/local中</code><br><code>cd /usr/local/</code><br><code>sudo mv ./hadoop-3.1.3/ ./hadoop            # 将文件夹名改为hadoop</code><br><code>sudo chown -R hadoop ./hadoop       # 修改文件权限</code></p>
+<p>Hadoop 解压后即可使用。输入如下命令来检查 Hadoop 是否可用，成功则会显示 Hadoop 版本信息：</p>
+<p><code>cd /usr/local/hadoop</code><br><code>./bin/hadoop version</code></p>
+<p>hadoop单机版安装完成</p>
+<h2 id="6-（其他软件）-关于ip-tools和XShell，XFtp"><a href="#6-（其他软件）-关于ip-tools和XShell，XFtp" class="headerlink" title="6.（其他软件）.关于ip-tools和XShell，XFtp"></a>6.（其他软件）.关于ip-tools和XShell，XFtp</h2><h3 id="1-ip"><a href="#1-ip" class="headerlink" title="1.ip"></a>1.ip</h3><p>输入ifconfig -a查看本机ip，发现网络工具没装，按照提示按照工具。</p>
 <img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163920013.png" class="">
 
 <p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302163920013.png" alt="image-20230302163920013"></p>
@@ -574,7 +579,7 @@ magnet:?xt&amp;#x3D;urn:btih:9FC20B9E98EA98B4A35E6223041A5EF">
 <img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164646366.png" class="">
 
 <p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302164646366.png" alt="image-20230302164646366"></p>
-<h3 id="4-使用sftp工具将文件传送到虚拟机上"><a href="#4-使用sftp工具将文件传送到虚拟机上" class="headerlink" title="4.使用sftp工具将文件传送到虚拟机上"></a>4.使用sftp工具将文件传送到虚拟机上</h3><img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302170524685.png" class="">
+<h3 id="4-使用sftp工具将文件传送到虚拟机上（已安装hadoop则不用看这个）"><a href="#4-使用sftp工具将文件传送到虚拟机上（已安装hadoop则不用看这个）" class="headerlink" title="4.使用sftp工具将文件传送到虚拟机上（已安装hadoop则不用看这个）"></a>4.使用sftp工具将文件传送到虚拟机上（已安装hadoop则不用看这个）</h3><img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302170524685.png" class="">
 
 <p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302170524685.png" alt="image-20230302170524685"></p>
 <p>我把压缩包拖拽传到&#x2F;usr&#x2F;local路径上，如果失败无法传输，是因为用户权限不够造成的，执行下面命令。</p>
@@ -584,15 +589,153 @@ magnet:?xt&amp;#x3D;urn:btih:9FC20B9E98EA98B4A35E6223041A5EF">
 <img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302171013783.png" class="">
 
 <p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302171013783.png" alt="image-20230302171013783"></p>
-<h3 id="5-安装Hadoop"><a href="#5-安装Hadoop" class="headerlink" title="5.安装Hadoop"></a>5.安装Hadoop</h3><p>修改文件夹名称,这个可以用命令，也可以直接在图形化界面修改。我改成了hadoop</p>
-<p>输入<code>sudo chown -R hadoop ./hadoop</code>修改权限</p>
-<p>输入如下命令查看Hadoop是否可用以及版本号。</p>
-<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302171454617.png" class="">
+<h1 id="3-配置分布式集群Hadoop"><a href="#3-配置分布式集群Hadoop" class="headerlink" title="3.配置分布式集群Hadoop"></a>3.配置分布式集群Hadoop</h1><p><code>sudo vim etc/hadoop/hdoop-env.sh</code>里输入</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313173153983.png" class="">
 
-<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230302171454617.png" alt="image-20230302171454617"></p>
-<p><code>cd /usr/local/hadoop/</code></p>
-<p><code>.bin/hadoop version</code></p>
-<p>到这就算安装好了，分布式啥的后面再说吧，记得加个快照保存下状态。</p>
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313173153983.png" alt="image-20230313173153983"></p>
+<p><code>export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64</code></p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313173032531.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313173032531.png" alt="image-20230313173032531"></p>
+<p>这一节后面的操作全部三台虚拟机同时进行。可以这样进行快捷操作</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313212853770.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313212853770.png" alt="image-20230313212853770"></p>
+<h2 id="1-配置各主机静态IP"><a href="#1-配置各主机静态IP" class="headerlink" title="1.配置各主机静态IP"></a>1.配置各主机静态IP</h2><p>先配置VM的虚拟网络编辑器，选择一个合适的网段，这里子网IP不一定要和此处一致，建议先打开Windows看看自己的ip网段是多少，在同一网段最好。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313151440657.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313151440657.png" alt="image-20230313151440657"></p>
+<p>然后在Windows打开网络适配器，找到VM8</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313151542465.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313151542465.png" alt="image-20230313151542465"></p>
+<p>我这里是这样配的</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313152540024.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313152540024.png" alt="image-20230313152540024"></p>
+<p>这时发现系统没装vim，用<code>sudo apt install vim</code>安装一下，装不装都无所谓</p>
+<p>打开设置，选择网络，点击那个设置按钮</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313154222904.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313154222904.png" alt="image-20230313154222904"></p>
+<p>然后根据情况手动配置地址，三台机子都配一下</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313154332247.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230313154332247.png" alt="image-20230313154332247"></p>
+<p>配置好静态IP后就可以把xshell等的从机也一起配置链接了。</p>
+<p>网络配置完成以后，可以查看一下机器的IP地址，可以使用ifconfig命令查看。我这里同一个局域网内部的三台机器的IP地址分别是192.168.73.135和192.168.73.136，192.168.73.137。<br>由于集群中有三台机器需要设置，所以，在接下来的操作中，一定要注意区分Master节点和Slave节点。为了便于区分Master节点和Slave节点，可以修改各个节点的主机名，这样，在Linux系统中打开一个终端以后，在终端窗口的标题和命令行中都可以看到主机名，就比较容易区分当前是对哪台机器进行操作。在Ubuntu中，我们在 Master 节点上执行如下命令修改主机名：</p>
+<p><code>sudo vim /etc/hostname</code></p>
+<p>执行上面命令后，就打开了“&#x2F;etc&#x2F;hostname”这个文件，这个文件里面记录了主机名，修改为“Master”（注意是区分大小写的），然后，保存退出vim编辑器，这样就完成了主机名的修改，需要重启Linux系统才能看到主机名的变化。</p>
+<p>三台机子分别修改为<strong>Master</strong>，<strong>slave1</strong>，<strong>slave2</strong>。</p>
+<h2 id="2-设置域名映射解析"><a href="#2-设置域名映射解析" class="headerlink" title="2.设置域名映射解析"></a>2.设置域名映射解析</h2><p>然后，在Master节点中执行如下命令打开并修改Master节点中的“&#x2F;etc&#x2F;hosts”文件：</p>
+<p><code>sudo gedit /etc/hosts</code></p>
+<p>在hosts文件中增加如下三条IP和主机名映射关系：</p>
+<p><code>192.168.73.135  Master</code><br><code>192.168.73.136	slave1</code><br><code>192.168.73.137  slave2</code></p>
+<p>修改后效果如下</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314120023472.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314120023472.png" alt="image-20230314120023472"></p>
+<p>需要注意的是，一般hosts文件中只能有一个127.0.0.1，其对应主机名为localhost，如果有多余127.0.0.1映射，应删除，特别是不能存在“127.0.0.1 Master”这样的映射记录。修改后<strong>需要重启Linux系统</strong>。</p>
+<p>上面完成了Master节点的配置，接下来要继续完成对其他Slave节点的配置修改。请参照上面的方法，把**slave1、 2 **节点上的“&#x2F;etc&#x2F;hostname”文件中的主机名修改为“slave1”“slave2”，同时，修改“&#x2F;etc&#x2F;hosts”的内容，在hosts文件中增加如下IP和主机名映射关系：</p>
+<p><code>192.168.73.135  Master</code><br><code>192.168.73.136	slave1</code><br><code>192.168.73.137  slave2</code></p>
+<p>修改完成以后，请重新启动Slave节点的Linux系统。<br>这样就完成了Master节点和Slave节点的配置，然后，需要在各个节点上都执行如下命令，测试是否相互ping得通，如果ping不通，后面就无法顺利配置成功：</p>
+<p><code>ping Master -c 3   # 只ping 3次就会停止，否则要按Ctrl+c中断ping命令</code><br><code>ping Slave1 -c 3</code></p>
+<h2 id="3-配置SSH免密登陆"><a href="#3-配置SSH免密登陆" class="headerlink" title="3.配置SSH免密登陆"></a>3.配置SSH免密登陆</h2><p>必须要让Master节点可以SSH无密码登录到各个Slave节点上。首先，生成Master节点的公匙，如果之前已经生成过公钥，必须要删除原来生成的公钥，重新生成一次，因为前面我们对主机名进行了修改。具体命令如下：</p>
+<p><code>cd ~/.ssh              # 如果没有该目录，先执行一次ssh localhost</code><br><code>rm ./id_rsa*           # 删除之前生成的公匙（如果已经存在）</code><br><code>ssh-keygen -t rsa       # 执行该命令后，遇到提示信息，一直按回车就可以</code></p>
+<p>为了让Master节点能够无密码SSH登录本机，需要在Master节点上执行如下命令：</p>
+<p><code>cat ./id_rsa.pub &gt;&gt; ./authorized_keys</code></p>
+<p>完成后可以执行命令“ssh Master”来验证一下，可能会遇到提示信息，只要输入yes即可，测试成功后，请执行“exit”命令返回原来的终端。<br>接下来，在Master节点将上公匙传输到slave1和slave2节点：</p>
+<p><code>scp ~/.ssh/id_rsa.pub hadoop@slave1:/home/hadoop/</code></p>
+<p><code>scp ~/.ssh/id_rsa.pub hadoop@slave2:/home/hadoop/</code></p>
+<p>上面的命令中，scp是secure copy的简写，用于在 Linux下进行远程拷贝文件，类似于cp命令，不过，cp只能在本机中拷贝。执行scp时会要求输入Slave1上hadoop用户的密码，输入完成后会提示传输完毕。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314120324830.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314120324830.png" alt="image-20230314120324830"></p>
+<p>接着在slave1和slave2节点上，将SSH公匙加入授权：</p>
+<p><code>mkdir ~/.ssh       # 如果不存在该文件夹需先创建，若已存在，则忽略本命令</code><br><code>cat ~/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</code><br><code>rm ~/id_rsa.pub    # 用完以后就可以删掉</code></p>
+<p>在Master节点上就可以无密码SSH登录到各个Slave节点了，可在Master节点上执行如下命令进行检验：</p>
+<p><code>ssh Slave1</code></p>
+<h2 id="4-配置PATH变量"><a href="#4-配置PATH变量" class="headerlink" title="4. 配置PATH变量"></a>4. 配置PATH变量</h2><p>需要在Master节点上进行配置。 首先执行命令“ gedit ~&#x2F;.bashrc ”，然后，在该文件最上面的位置加入下面一行内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin</span><br></pre></td></tr></table></figure>
+
+<p>保存后执行命令“ source ~&#x2F;.bashrc ”，使配置生效。</p>
+<h1 id="4-分布式运行"><a href="#4-分布式运行" class="headerlink" title="4.分布式运行"></a>4.分布式运行</h1><p>在配置集群&#x2F;分布式模式时，需要修改“&#x2F;usr&#x2F;local&#x2F;hadoop&#x2F;etc&#x2F;hadoop”目录下的配置文件，这里仅设置正常启动所必须的设置项，包括workers 、core-site.xml、hdfs-site.xml、mapred-site.xml、yarn-site.xml共5个文件，更多设置项可查看官方说明。</p>
+<h2 id="1-修改文件workers"><a href="#1-修改文件workers" class="headerlink" title="1.修改文件workers"></a>1.修改文件workers</h2><p><code>gedit /usr/local/hadoop/etc/hadoop/workers</code> </p>
+<p>需要把所有数据节点的主机名写入该文件，每行一个，默认为 localhost（即把本机作为数据节点），所以，在伪分布式配置时，就采用了这种默认的配置，使得节点既作为名称节点也作为数据节点。在进行分布式配置时，可以保留localhost，让Master节点同时充当名称节点和数据节点，或者也可以删掉localhost这行，让Master节点仅作为名称节点使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Master</span><br><span class="line">slave1</span><br><span class="line">slave2</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314120756229.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314120756229.png" alt="image-20230314120756229"></p>
+<h2 id="2-修改文件core-site-xml"><a href="#2-修改文件core-site-xml" class="headerlink" title="2.修改文件core-site.xml"></a>2.修改文件core-site.xml</h2><p><code>gedit /usr/local/hadoop/etc/hadoop/core-site.xml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;hdfs://Master:9000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;file:/usr/local/hadoop/tmp&lt;/value&gt;</span><br><span class="line">                &lt;description&gt;Abase for other temporary directories.&lt;/description&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-修改文件hdfs-site-xml"><a href="#3-修改文件hdfs-site-xml" class="headerlink" title="3.修改文件hdfs-site.xml"></a>3.修改文件hdfs-site.xml</h2><p><code>gedit /usr/local/hadoop/etc/hadoop/hdfs-site.xml</code></p>
+<p>对于Hadoop的分布式文件系统HDFS而言，一般都是采用冗余存储，冗余因子通常为3，也就是说，一份数据保存三份副本。即集群中有3个数据节点，数据能保存3份，所以 ，dfs.replication的值设置为 3。<strong>此处具体为几视情况而定</strong>hdfs-site.xml具体内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;Master:50090&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;file:/usr/local/hadoop/tmp/dfs/name&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;file:/usr/local/hadoop/tmp/dfs/data&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-修改文件mapred-site-xml"><a href="#4-修改文件mapred-site-xml" class="headerlink" title="4.修改文件mapred-site.xml"></a>4.修改文件mapred-site.xml</h2><p>“&#x2F;usr&#x2F;local&#x2F;hadoop&#x2F;etc&#x2F;hadoop”目录下有一个mapred-site.xml.template，需要修改文件名称，把它重命名为mapred-site.xml，如果已经存在就不用管。然后，把mapred-site.xml文件配置成如下内容：</p>
+<p><code>gedit /usr/local/hadoop/etc/hadoop/mapred-site.xml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;Master:10020&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;Master:19888&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;yarn.app.mapreduce.am.env&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;HADOOP_MAPRED_HOME=/usr/local/hadoop&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;mapreduce.map.env&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;HADOOP_MAPRED_HOME=/usr/local/hadoop&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;mapreduce.reduce.env&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;HADOOP_MAPRED_HOME=/usr/local/hadoop&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt; </span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-修改文件-yarn-site-xml"><a href="#5-修改文件-yarn-site-xml" class="headerlink" title="5.修改文件 yarn-site.xml"></a>5.修改文件 yarn-site.xml</h2><p><code>gedit /usr/local/hadoop/etc/hadoop/yarn-site.xml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;Master&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上述5个文件全部配置完成以后，需要把Master节点上的“&#x2F;usr&#x2F;local&#x2F;hadoop”文件夹复制到各个节点上。如果之前已经运行过伪分布式模式，建议在切换到集群模式之前首先删除之前在伪分布式模式下生成的临时文件。具体来说，</p>
+<p>需要首先在Master节点上执行如下命令：</p>
+<p><code>cd /usr/local</code><br><code>sudo rm -r ./hadoop/tmp     # 删除 Hadoop 临时文件</code><br><code>sudo rm -r ./hadoop/logs/*   # 删除日志文件</code><br><code>tar -zcf ~/hadoop.master.tar.gz ./hadoop   # 先压缩再复制</code><br><code>cd ~</code><br><code>scp ./hadoop.master.tar.gz slave1:/home/hadoop</code></p>
+<p><code>scp ./hadoop.master.tar.gz slave2:/home/hadoop</code></p>
+<p>然后在Slave1节点上执行如下命令：</p>
+<p><code>sudo rm -r /usr/local/hadoop    # 删掉旧的（如果存在）</code><br><code>sudo tar -zxf ~/hadoop.master.tar.gz -C /usr/local</code><br><code>sudo chown -R hadoop /usr/local/hadoop</code></p>
+<p>然后在Slave2节点上执行同样命令：</p>
+<p><code>sudo rm -r /usr/local/hadoop    # 删掉旧的（如果存在）</code><br><code>sudo tar -zxf ~/hadoop.master.tar.gz -C /usr/local</code></p>
+<p><code>sudo chown -R hadoop /usr/local/hadoop</code></p>
+<p>同样，如果有其他Slave节点，也要执行将hadoop.master.tar.gz传输到Slave节点以及在Slave节点解压文件的操作。<br>首次启动Hadoop集群时，需要先在Master节点执行名称节点的格式化（<strong>只需要执行这一次，后面再启动Hadoop时，不要再次格式化名称节点</strong>），命令如下：</p>
+<p><code>hdfs namenode -format</code>（最多执行一次）</p>
+<h2 id="6-启动集群"><a href="#6-启动集群" class="headerlink" title="6.启动集群"></a>6.启动集群</h2><p>现在就可以启动Hadoop了，启动需要在Master节点上进行，执行如下命令：</p>
+<p><code>start-dfs.sh</code><br><code>start-yarn.sh</code><br><code>mr-jobhistory-daemon.sh start historyserver</code></p>
+<p>通过命令jps可以查看各个节点所启动的进程。如果已经正确启动，则在Master节点上可以看到NameNode、ResourceManager、SecondrryNameNode和JobHistoryServer进程，如下图所示。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314121442132.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314121442132.png" alt="image-20230314121442132"></p>
+<p>在Slave节点可以看到DataNode和NodeManager进程，如下图所示。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314111841114.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314111841114.png" alt="image-20230314111841114"></p>
+<p>缺少任一进程都表示出错。另外还需要在Master节点上通过命令“hdfs dfsadmin -report”查看数据节点是否正常启动，如果屏幕信息中的“Live datanodes”不为 0 ，则说明集群启动成功。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314112009528.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314112009528.png" alt="image-20230314112009528"></p>
+<p>也可以在Linux系统的浏览器中输入地址“<a target="_blank" rel="noopener" href="http://master:9870/%E2%80%9D%EF%BC%8C%E9%80%9A%E8%BF%87">http://master:9870/”，通过</a> Web 页面看到查看名称节点和数据节点的状态。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314112235922.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314112235922.png" alt="image-20230314112235922"></p>
+<p>分布式集群安装结束。<strong>在未关闭集群的情况下不可关闭虚拟机</strong>，关闭方法在后面</p>
+<h2 id="7-执行分布式实例"><a href="#7-执行分布式实例" class="headerlink" title="7.执行分布式实例"></a>7.执行分布式实例</h2><p>执行分布式实例过程与伪分布式模式一样，首先创建HDFS上的用户目录，命令如下：</p>
+<p><code>hdfs dfs -mkdir -p /user/hadoop</code></p>
+<p>然后，在HDFS中创建一个input目录，并把“&#x2F;usr&#x2F;local&#x2F;hadoop&#x2F;etc&#x2F;hadoop”目录中的配置文件作为输入文件复制到input目录中，命令如下</p>
+<p><code>hdfs dfs -mkdir input</code><br><code>hdfs dfs -put /usr/local/hadoop/etc/hadoop/*.xml input</code></p>
+<p>接着就可以运行 MapReduce 作业了，命令如下：</p>
+<p><code>hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar grep input output &#39;dfs[a-z.]+&#39;</code></p>
+<p>运行时的输出信息与伪分布式类似，会显示MapReduce作业的进度，如下图所示。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314122215505.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314122215505.png" alt="image-20230314122215505"></p>
+<p>执行过程可能会有点慢，但是，如果迟迟没有进度，比如5分钟都没看到进度变化，那么不妨重启Hadoop再次测试。若重启还不行，则很有可能是内存不足引起，建议增大虚拟机的内存，或者通过更改YARN的内存配置来解决。<br>在执行过程中，可以在Linux系统中打开浏览器，在地址栏输入“<a target="_blank" rel="noopener" href="http://master:8088/cluster%E2%80%9D%EF%BC%8C%E9%80%9A%E8%BF%87Web%E7%95%8C%E9%9D%A2%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%BA%A6%EF%BC%8C%E5%9C%A8Web%E7%95%8C%E9%9D%A2%E7%82%B9%E5%87%BB">http://master:8088/cluster”，通过Web界面查看任务进度，在Web界面点击</a> “Tracking UI” 这一列的History连接，可以看到任务的运行信息，如下图所示。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314122237109.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314122237109.png" alt="image-20230314122237109"></p>
+<p>执行完毕后的输出结果如下图所示。</p>
+<img src="/2023/03/02/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314122246131.png" class="">
+
+<p><img src="/Hadoop%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20230314122246131.png" alt="image-20230314122246131"></p>
+<h2 id="8-关闭集群"><a href="#8-关闭集群" class="headerlink" title="8.关闭集群"></a>8.关闭集群</h2><p>关闭Hadoop集群，需要在Master节点执行如下命令：</p>
+<p><code>stop-yarn.sh</code><br><code>stop-dfs.sh</code><br><code>mr-jobhistory-daemon.sh stop historyserver</code></p>
+<p>之后若想重启，按启动集群的步骤即可。</p>
+<p><strong>多打快照</strong></p>
+<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5.参考资料"></a>5.参考资料</h1><p>伪分布式模式和分布式模式切换时需要注意以下事项：<br>（a）从分布式切换到伪分布式时，不要忘记修改slaves配置文件；<br>（b）在两者之间切换时，若遇到无法正常启动的情况，可以删除所涉及节点的临时文件夹，这样虽然之前的数据会被删掉，但能保证集群正确启动。所以，如果集群以前能启动，但后来启动不了，特别是数据节点无法启动，不妨试着删除所有节点（包括Slave节点）上的“&#x2F;usr&#x2F;local&#x2F;hadoop&#x2F;tmp”文件夹，再重新执行一次“hdfs namenode -format”，再次启动即可。</p>
+<p><a target="_blank" rel="noopener" href="https://dblab.xmu.edu.cn/blog/2441/">https://dblab.xmu.edu.cn/blog/2441/</a></p>
+<p><a target="_blank" rel="noopener" href="https://dblab.xmu.edu.cn/blog/2775/">https://dblab.xmu.edu.cn/blog/2775/</a></p>
 
                 
             </div>
