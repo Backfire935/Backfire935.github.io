@@ -4,8 +4,17 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="UE农场-新手引导模块的开发, UE C++">
-    <meta name="description" content="">
+    <meta name="keywords" content="UEC++增强输入系统, UE C++">
+    <meta name="description" content="在UE5后新增了增强输入系统，下面是在C++中的使用方法。演示的版本是5.11.
+1.UE编辑器中开启插件和设置在插件中确保增强输入是开启的，5.1后默认开启。
+
+
+
+在项目设置中输入里，确保默认为这两项，5.1后默认为这两项。
+
+
+
+2.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +26,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>UE农场-新手引导模块的开发 | 李清水的笔记本</title>
+    <title>UEC++增强输入系统 | 李清水的笔记本</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -334,12 +343,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">UE农场-新手引导模块的开发</h1>
+                    <h1 class="description center-align post-title">UEC++增强输入系统</h1>
                 </div>
             </div>
         </div>
@@ -361,9 +370,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C/">
+                                <span class="chip bg-color">C++</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -375,7 +388,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-06
+                    2023-03-20
                 </div>
                 
 
@@ -396,7 +409,58 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>在UE5后新增了增强输入系统，下面是在C++中的使用方法。演示的版本是5.11.</p>
+<h1 id="1-UE编辑器中开启插件和设置"><a href="#1-UE编辑器中开启插件和设置" class="headerlink" title="1.UE编辑器中开启插件和设置"></a>1.UE编辑器中开启插件和设置</h1><p>在插件中确保增强输入是开启的，5.1后默认开启。</p>
+
+
+<p><img src="/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/image-20230320173825853.png" alt="image-20230320173825853"></p>
+<p>在项目设置中输入里，确保默认为这两项，5.1后默认为这两项。</p>
+
+
+<p><img src="/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/image-20230320173927604.png" alt="image-20230320173927604"></p>
+<h1 id="2-创建增强操作文件"><a href="#2-创建增强操作文件" class="headerlink" title="2.创建增强操作文件"></a>2.创建增强操作文件</h1><p>我们创建一个input文件夹单独存放文件。这里设置了开火，跳跃，视角左右旋转，视角上下旋转，位置左右移动，位置前后移动这几个基础输入操作。</p>
+
+
+<p><img src="/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/image-20230320173625976.png" alt="image-20230320173625976"></p>
+<p>开火，跳跃等action操作值类型可设为布尔。</p>
+
+
+<p><img src="/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/image-20230320174145714.png" alt="image-20230320174145714"></p>
+<p>旋转视角，移动位置等设置值类型为Axios1D。</p>
+
+
+<p><img src="/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/image-20230320174225095.png" alt="image-20230320174225095"></p>
+<p>之后是输入映射文件。按图中说明对应操作。此处为轴映射操作。</p>
+
+
+<p><img src="/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/image-20230320174628577.png" alt="image-20230320174628577"></p>
+<p>接下来是动作映射。可以看到里面的触发器有很多种触发方式，选择你需要的。</p>
+
+
+<p><img src="/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/image-20230320174740776.png" alt="image-20230320174740776"></p>
+<p>此时蓝图中的设置就完成了。</p>
+<h1 id="3-C-的绑定"><a href="#3-C-的绑定" class="headerlink" title="3.C++的绑定"></a>3.C++的绑定</h1><h2 id="1-h"><a href="#1-h" class="headerlink" title="1. .h"></a>1. .h</h2><p>肯定是写在character里，我用到的头文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;CoreMinimal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GameFramework/Character.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;EnhancedInputComponent.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;InputMappingContext.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;InputActionValue.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Camera/CameraComponent.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;FPSBaseCharacter.generated.h&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>各种映射写在了private里，然后用meta宏反射给引擎去读取。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//增强输入</span></span><br><span class="line">	<span class="comment">//两个映射表</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere,BlueprintReadWrite, Category = <span class="string">&quot;EnhancedInput | Context&quot;</span>,meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line">	TObjectPtr&lt;UInputMappingContext&gt; IMC_Action;</span><br><span class="line">		</span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere,BlueprintReadWrite, Category = <span class="string">&quot;EnhancedInput | Context&quot;</span>, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line">	TObjectPtr&lt;UInputMappingContext&gt; IMC_MoveBase;</span><br><span class="line"></span><br><span class="line"><span class="comment">//上下移动</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite ,Category = <span class="string">&quot;EnhancedInput | Action&quot;</span>, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line">	TObjectPtr&lt;UInputAction&gt; IA_MoveForward;</span><br><span class="line"></span><br><span class="line"><span class="comment">//左右移动</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite, Category = <span class="string">&quot;EnhancedInput | Action&quot;</span>, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line">	TObjectPtr&lt;UInputAction&gt; IA_MoveRight;</span><br><span class="line"></span><br><span class="line"><span class="comment">//上下视角</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite, Category = <span class="string">&quot;EnhancedInput | Action&quot;</span>, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line">	TObjectPtr&lt;UInputAction&gt; IA_LookUpRate;</span><br><span class="line"></span><br><span class="line"><span class="comment">//左右视角</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite, Category = <span class="string">&quot;EnhancedInput | Action&quot;</span>, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line">	TObjectPtr&lt;UInputAction&gt;  IA_LookRightRate;</span><br><span class="line"></span><br><span class="line"><span class="comment">//跳跃</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite, Category = <span class="string">&quot;EnhancedInput | Action&quot;</span>, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line">	TObjectPtr&lt;UInputAction&gt; IA_Jump;</span><br><span class="line"></span><br><span class="line"><span class="comment">//开火</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite, Category = <span class="string">&quot;EnhancedInput | Action&quot;</span>, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line">	TObjectPtr&lt;UInputAction&gt; IA_Fire;</span><br><span class="line"></span><br><span class="line"><span class="comment">//游戏内鼠标灵敏度</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, Category = <span class="string">&quot;Input&quot;</span>)</span><br><span class="line"><span class="type">float</span> TurnRateGamepad = <span class="number">5.f</span>;</span><br></pre></td></tr></table></figure>
+
+<p>要绑定的函数写在了protected里</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///输入绑定</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MoveForward</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MoveRight</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">LookRightRate</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">LookUpRate</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">OnJump</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">OnJumpStoping</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Fire</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-cpp"><a href="#2-cpp" class="headerlink" title="2. .cpp"></a>2. .cpp</h2><p>重点在SetupPlayerInputComponent函数中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::SetupPlayerInputComponent</span><span class="params">(UInputComponent* PlayerInputComponent)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">Super::<span class="built_in">SetupPlayerInputComponent</span>(PlayerInputComponent);</span><br><span class="line"><span class="comment">//使用控制器控制旋转pitch和yaw</span></span><br><span class="line">bUseControllerRotationPitch = <span class="literal">true</span>;</span><br><span class="line">bUseControllerRotationYaw = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(APlayerController * PC = <span class="built_in">Cast</span>&lt;APlayerController&gt;(<span class="built_in">GetController</span>()))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//增强输入子系统</span></span><br><span class="line">	<span class="keyword">if</span>(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::<span class="built_in">GetSubsystem</span>&lt;UEnhancedInputLocalPlayerSubsystem&gt;(PC-&gt;<span class="built_in">GetLocalPlayer</span>()) )</span><br><span class="line">	&#123;</span><br><span class="line">        <span class="comment">//绑定两个映射表</span></span><br><span class="line">		Subsystem-&gt;<span class="built_in">AddMappingContext</span>(IMC_Action, <span class="number">0</span>);</span><br><span class="line">		Subsystem-&gt;<span class="built_in">AddMappingContext</span>(IMC_MoveBase, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//增强输入组件</span></span><br><span class="line">UEnhancedInputComponent* EnhancedInputComponent = <span class="built_in">Cast</span>&lt;UEnhancedInputComponent&gt;(PlayerInputComponent);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(EnhancedInputComponent)</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//开始绑定到回调函数上,注意函数列表中参数的第一个没有引号，第一项的值为.h中的成员变量UInputAction</span></span><br><span class="line">	<span class="comment">//移动</span></span><br><span class="line">	EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_MoveForward, ETriggerEvent::Triggered, <span class="keyword">this</span>, &amp;AFPSBaseCharacter::MoveForward);</span><br><span class="line">	EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_MoveRight, ETriggerEvent::Triggered, <span class="keyword">this</span>, &amp;AFPSBaseCharacter::MoveRight);</span><br><span class="line">	<span class="comment">//旋转</span></span><br><span class="line">	EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_LookRightRate, ETriggerEvent::Triggered, <span class="keyword">this</span>, &amp;AFPSBaseCharacter::LookRightRate);</span><br><span class="line">	EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_LookUpRate, ETriggerEvent::Triggered, <span class="keyword">this</span>, &amp;AFPSBaseCharacter::LookUpRate);</span><br><span class="line">	<span class="comment">//跳跃</span></span><br><span class="line">	EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_Jump, ETriggerEvent::Started, <span class="keyword">this</span>, &amp;AFPSBaseCharacter::OnJump);</span><br><span class="line">	EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_Jump, ETriggerEvent::Completed, <span class="keyword">this</span>, &amp;AFPSBaseCharacter::OnJumpStoping);</span><br><span class="line">	<span class="comment">//射击</span></span><br><span class="line">	EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_Fire, ETriggerEvent::Triggered, <span class="keyword">this</span>, &amp;AFPSBaseCharacter::Fire);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 你可以通过更改&quot;ETriggerEvent&quot;枚举值，绑定到此处的任意触发器事件</span></span><br><span class="line"><span class="comment">//Input-&gt;BindAction(AimingInputAction, ETriggerEvent::Triggered, this, &amp;AFPSBaseCharacter::SomeCallbackFunc);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来是几个回调函数的实现，玩家在键盘上的操作从键盘到这，这再传给下面的回调函数，回调函数再操作角色本身。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::MoveForward</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这是和UE4映射不同的方式,以前参数列表是float deltas那些啥的，现在value要从InputValue.GetMagnitude()拿然后自己设了。</span></span><br><span class="line">	<span class="type">float</span> value = InputValue.<span class="built_in">GetMagnitude</span>();</span><br><span class="line"><span class="keyword">if</span>((Controller != <span class="literal">nullptr</span>) &amp;&amp; (value!= <span class="number">0.f</span>))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 判断哪个旋转方向是向前的</span></span><br><span class="line">	<span class="type">const</span> FRotator Rotation = Controller-&gt;<span class="built_in">GetControlRotation</span>();</span><br><span class="line">	<span class="function"><span class="type">const</span> FRotator <span class="title">YawRotation</span><span class="params">(<span class="number">0</span>, Rotation.Yaw, <span class="number">0</span>)</span></span>;</span><br><span class="line">	<span class="comment">// 获取向前的向量</span></span><br><span class="line">	<span class="type">const</span> FVector Direction = <span class="built_in">FRotationMatrix</span>(YawRotation).<span class="built_in">GetUnitAxis</span>(EAxis::X);</span><br><span class="line">	<span class="built_in">AddMovementInput</span>(Direction, value);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::MoveRight</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">float</span> value = InputValue.<span class="built_in">GetMagnitude</span>();</span><br><span class="line">	<span class="keyword">if</span>(Controller != <span class="literal">nullptr</span> &amp;&amp; value != <span class="number">0.f</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 判断哪个旋转方向是向右的</span></span><br><span class="line">	<span class="type">const</span> FRotator Rotation = Controller-&gt;<span class="built_in">GetControlRotation</span>();</span><br><span class="line">	<span class="function"><span class="type">const</span> FRotator <span class="title">YawRotation</span><span class="params">(<span class="number">0</span>, Rotation.Yaw, <span class="number">0</span>)</span></span>;</span><br><span class="line">	<span class="comment">// 获取向右的向量</span></span><br><span class="line">	<span class="type">const</span> FVector Direction = <span class="built_in">FRotationMatrix</span>(YawRotation).<span class="built_in">GetUnitAxis</span>(EAxis::Y);</span><br><span class="line">	<span class="built_in">AddMovementInput</span>(Direction, value);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::LookRightRate</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这里这个乘积是鼠标灵敏度，后面可以开放给玩家自己设置。</span></span><br><span class="line">	<span class="built_in">AddControllerYawInput</span>(InputValue.<span class="built_in">GetMagnitude</span>() * TurnRateGamepad * <span class="built_in">GetWorld</span>()-&gt;<span class="built_in">GetDeltaSeconds</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::LookUpRate</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">AddControllerPitchInput</span>(InputValue.<span class="built_in">GetMagnitude</span>() * TurnRateGamepad * <span class="built_in">GetWorld</span>()-&gt;<span class="built_in">GetDeltaSeconds</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::OnJump</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这里就是屏幕上打印一下看看触发没，fire函数也是这么写的，我没实现，看看就成。</span></span><br><span class="line">	FString Message = FString::<span class="built_in">SanitizeFloat</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span> (GEngine)</span><br><span class="line">	&#123;</span><br><span class="line">		GEngine-&gt;<span class="built_in">AddOnScreenDebugMessage</span>(</span><br><span class="line">			<span class="number">-1</span>,</span><br><span class="line">			<span class="number">60</span>,</span><br><span class="line">			FColor::Red,</span><br><span class="line">			Message</span><br><span class="line">		);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="4-角色中设置"><a href="#4-角色中设置" class="headerlink" title="4.角色中设置"></a>4.角色中设置</h1>
+
+<p><img src="/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/image-20230320180659006.png" alt="image-20230320180659006"></p>
+<p><img src="/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/image-20230320180652949.png" alt="image-20230320180652949"></p>
+<p>该设置的设置完，自动接收输入设为0，然后就可以在场景中用了。搜pad可以调鼠标灵敏度的属性。</p>
+
                 
             </div>
             <hr/>
@@ -422,7 +486,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://backfire935.github.io/2023/03/06/UE%E5%86%9C%E5%9C%BA-%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E6%A8%A1%E5%9D%97%E7%9A%84%E5%BC%80%E5%8F%91/">https://backfire935.github.io/2023/03/06/UE%E5%86%9C%E5%9C%BA-%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E6%A8%A1%E5%9D%97%E7%9A%84%E5%BC%80%E5%8F%91/</a>
+                    <a href="https://backfire935.github.io/2023/03/20/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/">https://backfire935.github.io/2023/03/20/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -459,7 +523,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/C/">
+                                    <span class="chip bg-color">C++</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -536,9 +604,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2023/03/20/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/">
                     <div class="card-image">
@@ -556,9 +625,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-20
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -567,6 +636,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -585,13 +655,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/03/UE%E5%86%9C%E5%9C%BA%E5%8F%82%E8%80%83%E7%9A%84%E6%95%99%E7%A8%8B/">
+                <a href="/2023/03/06/UE%E5%86%9C%E5%9C%BA-%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E6%A8%A1%E5%9D%97%E7%9A%84%E5%BC%80%E5%8F%91/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="UE农场参考的教程">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="UE农场-新手引导模块的开发">
                         
-                        <span class="card-title">UE农场参考的教程</span>
+                        <span class="card-title">UE农场-新手引导模块的开发</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -602,7 +672,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-06
                             </span>
                         <span class="publish-author">
                             
