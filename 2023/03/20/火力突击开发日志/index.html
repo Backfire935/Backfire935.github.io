@@ -408,26 +408,26 @@
             <div id="articleContent">
                 <h2 id="2023年3月20日22-47-36"><a href="#2023年3月20日22-47-36" class="headerlink" title="2023年3月20日22:47:36"></a>2023年3月20日22:47:36</h2><h3 id="1-增强输入绑定，实现移动旋转"><a href="#1-增强输入绑定，实现移动旋转" class="headerlink" title="1.增强输入绑定，实现移动旋转"></a>1.增强输入绑定，实现移动旋转</h3><p>过程见<a href="https://backfire935.github.io/2023/03/20/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/">我的博客</a></p>
 <h3 id="2-实现鼠标旋转摄像机"><a href="#2-实现鼠标旋转摄像机" class="headerlink" title="2.实现鼠标旋转摄像机"></a>2.实现鼠标旋转摄像机</h3><p>要么蓝图里把这两项开了</p>
-
+<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225153076.png" class="">
 
 <p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225153076.png" alt="image-20230320225153076"></p>
 <p>要么C++里Character的SetupPlayerInputComponent函数里加上：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用控制器控制旋转pitch和yaw</span></span><br><span class="line">	bUseControllerRotationPitch = <span class="literal">true</span>;</span><br><span class="line">	bUseControllerRotationYaw = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-实现玩家跳跃功能"><a href="#3-实现玩家跳跃功能" class="headerlink" title="3.实现玩家跳跃功能"></a>3.实现玩家跳跃功能</h3><p>动画蓝图中创建IsAir布尔变量，然后如图设置</p>
-
+<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225813630.png" class="">
 
 <p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225813630.png" alt="image-20230320225813630"></p>
 <p>此为跳跃的条件</p>
-
+<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225855391.png" class="">
 
 <p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225855391.png" alt="image-20230320225855391"></p>
 <h3 id="4-第三人称动画导入，动画重定向"><a href="#4-第三人称动画导入，动画重定向" class="headerlink" title="4.第三人称动画导入，动画重定向"></a>4.第三人称动画导入，动画重定向</h3><p>从blaster项目里拷的ik和rtg文件，稍微改下就能用，还好都是标准模型，动画也可以直接重定向往上套。但是</p>
 <p>动画有问题，需要去商城<strong>重下初学者内容包</strong>，回头替换，这动画绝逼被我搞坏了。</p>
-
+<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225945821.png" class="">
 
 <p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225945821.png" alt="image-20230320225945821"></p>
-<h3 id="5-创建动画蓝图和BlendSpace"><a href="#5-创建动画蓝图和BlendSpace" class="headerlink" title="5.创建动画蓝图和BlendSpace"></a>5.创建动画蓝图和BlendSpace</h3>
+<h3 id="5-创建动画蓝图和BlendSpace"><a href="#5-创建动画蓝图和BlendSpace" class="headerlink" title="5.创建动画蓝图和BlendSpace"></a>5.创建动画蓝图和BlendSpace</h3><img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230816301.png" class="">
 
 <p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230816301.png" alt="image-20230320230816301"></p>
 <p><strong>动画有问题，需要替换</strong></p>
@@ -438,11 +438,11 @@
 
 
 <h3 id="7-导入玩家第一人称手臂动画蓝图及混合空间"><a href="#7-导入玩家第一人称手臂动画蓝图及混合空间" class="headerlink" title="7.导入玩家第一人称手臂动画蓝图及混合空间"></a>7.导入玩家第一人称手臂动画蓝图及混合空间</h3><p>这是第一人称武器的动画蓝图设置</p>
-
+<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230300448.png" class="">
 
 <p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230300448.png" alt="image-20230320230300448"></p>
 <p>注意参数复用和这里有问题的动画</p>
-
+<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230356652.png" class="">
 
 <p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230356652.png" alt="image-20230320230356652"></p>
 
