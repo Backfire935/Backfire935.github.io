@@ -545,8 +545,9 @@ rm 移除文件 remo">
 <p><img src="/Git%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D/CR3%606O$%5D49_35%7DW2%60TRY08-1672111188291-28.png" alt="img"></p>
 <h3 id="5-日常使用Git-bash推送"><a href="#5-日常使用Git-bash推送" class="headerlink" title="5.日常使用Git-bash推送"></a>5.日常使用Git-bash推送</h3><p>不论是蓝图还是C++工程 都可以用下面方法推送。</p>
 <p>工程文件夹里右键 选择git-bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git add . //修改添加到暂存区</span><br><span class="line">git commit -m &quot;first commit&quot; //从暂存区添加到本地仓库。引号里是每次更新的介绍，可以写中文</span><br><span class="line">git branch -M main //设置推送的分支为main</span><br><span class="line">git remote add origin https://github.com/Backfire935/UserWidgetExchange.git //设置推送地址，设置一次就行</span><br><span class="line">git push -u origin main //本地仓库推送到远端仓库</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. git add . //修改添加到暂存区</span><br><span class="line">2. git commit -m &quot;first commit&quot; //从暂存区添加到本地仓库。引号里是每次更新的介绍，可以写中文</span><br><span class="line">3. git branch -M main //设置推送的分支为main</span><br><span class="line">4. git remote add origin https://github.com/Backfire935/UserWidgetExchange.git //设置推送地址，设置一次就行 或者使用ssh传输 可能更稳</span><br><span class="line">5. git remote add origin git@github.com:Backfire935/UserWidgetExchange.git //和上面那条二选一就行</span><br><span class="line">6. git push -u origin main //本地仓库推送到远端仓库</span><br></pre></td></tr></table></figure>
 
+<p>只有1 2 6是每次推送都要执行的，3 4 5 第一次推送的时候执行一次就可以了。</p>
 
                 
             </div>
