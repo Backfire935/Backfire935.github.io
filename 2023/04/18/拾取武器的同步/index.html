@@ -5,9 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="拾取武器的同步, UE C++">
-    <meta name="description" content="今天来纪录一下我是如何实现拾取武器并在服务端和客户端上同步消息的。
+    <meta name="description" content="项目仓库地址: https://github.com/Backfire935/BlasterAgain
+今天来纪录一下我是如何实现拾取武器并在服务端和客户端上同步消息的。
 首先是角色类中输入组件函数中的输入绑定事件：
-12//按F拾取武器		EnhancedInputComponent-&amp;gt;BindAction(IA_Equip, ETr">
+12//按F拾取武器	">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -398,7 +399,8 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>今天来纪录一下我是如何实现拾取武器并在服务端和客户端上同步消息的。</p>
+                <p>项目仓库地址: <a target="_blank" rel="noopener" href="https://github.com/Backfire935/BlasterAgain">https://github.com/Backfire935/BlasterAgain</a></p>
+<p>今天来纪录一下我是如何实现拾取武器并在服务端和客户端上同步消息的。</p>
 <p>首先是角色类中输入组件函数中的输入绑定事件：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//按F拾取武器</span><br><span class="line">		EnhancedInputComponent-&gt;BindAction(IA_Equip, ETriggerEvent::Triggered, this, &amp;ABlasterCharacter::EquipButtonPressed);</span><br></pre></td></tr></table></figure>
 

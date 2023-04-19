@@ -5,10 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="丢弃武器的同步, UE C++">
-    <meta name="description" content="之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。
+    <meta name="description" content="项目仓库地址：https://github.com/Backfire935/BlasterAgain
+之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。
 首先还是输入绑定，没啥好说的
     //按G丢弃武器
-    EnhancedInputComponent-&amp;gt;BindAction(IA_DropWeapon, ETri">
+    Enhanc">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -399,7 +400,8 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。</p>
+                <p>项目仓库地址：<a target="_blank" rel="noopener" href="https://github.com/Backfire935/BlasterAgain">https://github.com/Backfire935/BlasterAgain</a></p>
+<p>之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。</p>
 <p>首先还是输入绑定，没啥好说的</p>
 <pre><code>    //按G丢弃武器
     EnhancedInputComponent-&gt;BindAction(IA_DropWeapon, ETriggerEvent::Triggered, this, &amp;ABlasterCharacter::InputDropWeapon);
@@ -458,6 +460,15 @@ void OnRep_WeaponState();
 <img src="/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" class="">
 
 <p><img src="/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" alt="image-20230419093726007"></p>
+<p>（补充）2023年4月19日12:15:10</p>
+<p>写前面的内容的时候我想到一个问题，就是Combat的EquippedWeapon，关于它的属性设置都是由角色类调Combat中的函数来设置的，而角色类中调用Combat的函数都是只在服务端执行的，而Combat组件并未开启复制，换句话说，按理说EquippedWeapon的属性在修改后只是在服务端修改，在客户端是不生效的，但实际上生效了。比如这段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void UCombatComponent::DropWeapon()</span><br><span class="line">&#123;</span><br><span class="line">	if (EquippedWeapon)//如果武器存在</span><br><span class="line">	&#123;</span><br><span class="line">		EquippedWeapon-&gt;Dropped();//如果已经装备了一件武器，就丢掉手上的</span><br><span class="line">		EquippedWeapon-&gt;SetOwner(nullptr);//将拥有者设置为空</span><br><span class="line">		EquippedWeapon = nullptr;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段我认为EquippedWeapon &#x3D; nullptr;是只在服务端发生的，也就是说客户端丢掉武器后指针没有置空，实际可能武器脱离附加在角色身上后仍然能够开火，但这个bug并没有发生，这让我开始寻找。</p>
+<p>直到我看到了EquippedWeapon的定义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private:</span><br><span class="line">	UPROPERTY(Replicated)</span><br><span class="line">	 AWeapon* EquippedWeapon;</span><br></pre></td></tr></table></figure>
+
+<p>UE网络细节真的多…..</p>
 
                 
             </div>
