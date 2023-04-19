@@ -4,14 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="火力突击开发日志, UE C++">
-    <meta name="description" content="2023年3月20日22:47:361.增强输入绑定，实现移动旋转过程见我的博客
-2.实现鼠标旋转摄像机要么蓝图里把这两项开了
-
-
-
-要么C++里Character的SetupPlayerInputComponent函数里加上：
-123//">
+    <meta name="keywords" content="丢弃武器的同步, UE C++">
+    <meta name="description" content="之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。
+首先还是输入绑定，没啥好说的
+    //按G丢弃武器
+    EnhancedInputComponent-&amp;gt;BindAction(IA_DropWeapon, ETri">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -23,7 +20,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>火力突击开发日志 | 李清水的笔记本</title>
+    <title>丢弃武器的同步 | 李清水的笔记本</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -340,12 +337,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">火力突击开发日志</h1>
+                    <h1 class="description center-align post-title">丢弃武器的同步</h1>
                 </div>
             </div>
         </div>
@@ -381,7 +378,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-20
+                    2023-04-19
                 </div>
                 
 
@@ -402,45 +399,65 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="2023年3月20日22-47-36"><a href="#2023年3月20日22-47-36" class="headerlink" title="2023年3月20日22:47:36"></a>2023年3月20日22:47:36</h2><h3 id="1-增强输入绑定，实现移动旋转"><a href="#1-增强输入绑定，实现移动旋转" class="headerlink" title="1.增强输入绑定，实现移动旋转"></a>1.增强输入绑定，实现移动旋转</h3><p>过程见<a href="https://backfire935.github.io/2023/03/20/UEC-%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%E7%B3%BB%E7%BB%9F/">我的博客</a></p>
-<h3 id="2-实现鼠标旋转摄像机"><a href="#2-实现鼠标旋转摄像机" class="headerlink" title="2.实现鼠标旋转摄像机"></a>2.实现鼠标旋转摄像机</h3><p>要么蓝图里把这两项开了</p>
-<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225153076.png" class="">
+                <p>之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。</p>
+<p>首先还是输入绑定，没啥好说的</p>
+<pre><code>    //按G丢弃武器
+    EnhancedInputComponent-&gt;BindAction(IA_DropWeapon, ETriggerEvent::Triggered, this, &amp;ABlasterCharacter::InputDropWeapon);
+</code></pre>
+<p>来看InputDropWeapon函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">void ABlasterCharacter::InputDropWeapon()</span><br><span class="line">&#123;</span><br><span class="line">	if (Combat)</span><br><span class="line">	&#123;</span><br><span class="line">		if (HasAuthority())</span><br><span class="line">		&#123;</span><br><span class="line">			Combat-&gt;DropWeapon();//如果就在Server上就直接执行</span><br><span class="line">		&#125;</span><br><span class="line">		else</span><br><span class="line">		&#123;</span><br><span class="line">			ServerDropButtonPressed();//不然就执行RPC  </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225153076.png" alt="image-20230320225153076"></p>
-<p>要么C++里Character的SetupPlayerInputComponent函数里加上：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用控制器控制旋转pitch和yaw</span></span><br><span class="line">	bUseControllerRotationPitch = <span class="literal">true</span>;</span><br><span class="line">	bUseControllerRotationYaw = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<p>老样子，首先判断下Combat组件是否存在，之后如果是Server端按下了丢弃按钮，直接去调Combat-&gt;DropWeapon()函数处理丢弃武器的业务逻辑。如果是Client按下了丢弃按钮，则执行ServerRPC，ServerDropButtonPressed()在服务端执行，然后由服务端通过WeaponState的属性复制后的RepNotify回调来在客户端执行丢弃的逻辑。这样所有的玩家才都能看到武器被之前拥有武器的玩家正常的丢弃，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void ABlasterCharacter::ServerDropButtonPressed_Implementation()</span><br><span class="line">&#123;</span><br><span class="line">	//反正只在服务端调用，不用写HasAuthority </span><br><span class="line">	if (Combat)</span><br><span class="line">	&#123;</span><br><span class="line">		Combat-&gt;DropWeapon();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="3-实现玩家跳跃功能"><a href="#3-实现玩家跳跃功能" class="headerlink" title="3.实现玩家跳跃功能"></a>3.实现玩家跳跃功能</h3><p>动画蓝图中创建IsAir布尔变量，然后如图设置</p>
-<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225813630.png" class="">
+<p>又回到了熟悉的Combat-&gt;DropWeapon();Combat是啥我在<a href="https://backfire935.github.io/2023/04/18/%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">拾取武器的同步</a>中一节有讲：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void UCombatComponent::DropWeapon()</span><br><span class="line">&#123;</span><br><span class="line">	if (EquippedWeapon)//如果武器存在</span><br><span class="line">	&#123;</span><br><span class="line">		EquippedWeapon-&gt;Dropped();//如果已经装备了一件武器，就丢掉手上的</span><br><span class="line">		EquippedWeapon-&gt;SetOwner(nullptr);//将拥有者设置为空</span><br><span class="line">		EquippedWeapon = nullptr;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225813630.png" alt="image-20230320225813630"></p>
-<p>此为跳跃的条件</p>
-<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225855391.png" class="">
+<p>这里将EquippedWeapon的拥有者设为空，注意SetOnwer函数自动复制的，详见其实现：</p>
+<img src="/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" class="">
 
-<p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225855391.png" alt="image-20230320225855391"></p>
-<h3 id="4-第三人称动画导入，动画重定向"><a href="#4-第三人称动画导入，动画重定向" class="headerlink" title="4.第三人称动画导入，动画重定向"></a>4.第三人称动画导入，动画重定向</h3><p>从blaster项目里拷的ik和rtg文件，稍微改下就能用，还好都是标准模型，动画也可以直接重定向往上套。但是</p>
-<p>动画有问题，需要去商城<strong>重下初学者内容包</strong>，回头替换，这动画绝逼被我搞坏了。</p>
-<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225945821.png" class="">
+<p><img src="/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093006345.png" alt="image-20230419093006345"></p>
+<p>然后EquippedWeapon指针置空，之后进入Weapon类的Dropped函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void AWeapon::Dropped()</span><br><span class="line">&#123;</span><br><span class="line">	SetWeaponState(EWeaponState::EWS_Dropped);//先将此件武器的状态的设为丢弃状态</span><br><span class="line">	ServerDropWeapon();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320225945821.png" alt="image-20230320225945821"></p>
-<h3 id="5-创建动画蓝图和BlendSpace"><a href="#5-创建动画蓝图和BlendSpace" class="headerlink" title="5.创建动画蓝图和BlendSpace"></a>5.创建动画蓝图和BlendSpace</h3><img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230816301.png" class="">
+<p>这里一个第一个是设置武器当前的状态，这样一会通过WeaponState的属性赋值就可以调用在客户端上的回调，第二个就是直接在服务端执行丢弃操作了；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void AWeapon::ServerDropWeapon_Implementation()//这个用来处理Server端武器的掉落效果，客户端的效果由WeaponState触发的OnRep_WeaponState完成</span><br><span class="line">&#123;</span><br><span class="line">	FDetachmentTransformRules DetachRules(EDetachmentRule::KeepWorld, true);//这个变量是解绑组件的规则，参数意思是自动计算相对转换，以便分离组件维护相同的世界转换。</span><br><span class="line">	WeaponMesh-&gt;DetachFromComponent(DetachRules);//不论组件被附加到什么上面都会拆下来，自动解绑被绑在一起的组件</span><br><span class="line">	//开启模拟物理</span><br><span class="line">	WeaponMesh-&gt;SetSimulatePhysics(true);</span><br><span class="line">	WeaponMesh-&gt;SetLinearDamping(LinearDamping);</span><br><span class="line">	WeaponMesh-&gt;SetAngularDamping(AngularDamping);</span><br><span class="line">	WeaponMesh-&gt;SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); // 启用碰撞检测和物理模拟</span><br><span class="line">	//开启重力</span><br><span class="line">	WeaponMesh-&gt;SetEnableGravity(true);</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230816301.png" alt="image-20230320230816301"></p>
-<p><strong>动画有问题，需要替换</strong></p>
-<h3 id="6-RPC问题的解决，实现shift服务器客户端同步速度"><a href="#6-RPC问题的解决，实现shift服务器客户端同步速度" class="headerlink" title="6.RPC问题的解决，实现shift服务器客户端同步速度"></a>6.RPC问题的解决，实现shift服务器客户端同步速度</h3><p>按shift设置角色速度降低，松开shift恢复速度，但是速度是写在Character Movement Component组件里的，该组件的网络同步需要自己设置。此处在客户端调用服务端函数，实现客户端和服务端最大移动速度属性的统一，避免因属性不统一，客户端不断被服务端纠正而造成的卡顿。</p>
-<p>实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::LowSpeedWalk</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeed = <span class="number">300.f</span>;</span><br><span class="line">	<span class="built_in">ServerLowSpeedWalk</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::NormalSpeedWalk</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeed = <span class="number">450.f</span>;</span><br><span class="line">	<span class="built_in">ServerNormalSpeedWalk</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::ServerLowSpeedWalk_Implementation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeed = <span class="number">300.f</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">AFPSBaseCharacter::ServerLowSpeedWalk_Validate</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AFPSBaseCharacter::ServerNormalSpeedWalk_Implementation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeed = <span class="number">450.f</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">AFPSBaseCharacter::ServerNormalSpeedWalk_Validate</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而在SetWeaponState中，我们设置武器新的状态。</p>
+<pre><code>void AWeapon::SetWeaponState(EWeaponState State)
+&#123;
+    WeaponState = State;
+switch (WeaponState)
+&#123;
+case EWeaponState::EWS_Initial:
+    ShowPickupWidget(false);
+    AreaSphere-&gt;SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    break;
+case  EWeaponState::EWS_Equipped:
+    ShowPickupWidget(false);
+    AreaSphere-&gt;SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    break;
+case EWeaponState::EWS_Dropped:
+    ShowPickupWidget(false);
+    AreaSphere-&gt;SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    break;
+&#125;
+&#125;
+</code></pre>
+<p>那么最后一步，RepNotify回调：</p>
+<pre><code>private:
+UPROPERTY(ReplicatedUsing= OnRep_WeaponState, VisibleAnywhere, Category = &quot;Weapon Properties&quot;)
+EWeaponState WeaponState;
 
+UFUNCTION()
+void OnRep_WeaponState();
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">void AWeapon::OnRep_WeaponState()//处理武器不同状态时客户端武器的物理效果</span><br><span class="line">&#123;</span><br><span class="line">	ABlasterCharacter* BlasterCharacter = Cast&lt;ABlasterCharacter&gt;(GetOwner());</span><br><span class="line">	const USkeletalMeshSocket* HandSocket = BlasterCharacter ? BlasterCharacter-&gt;GetMesh()-&gt;GetSocketByName(FName(&quot;RightHandSocket&quot;)) : nullptr;</span><br><span class="line">	switch (WeaponState)</span><br><span class="line">	&#123;</span><br><span class="line">	case EWeaponState::EWS_Initial:</span><br><span class="line">		ShowPickupWidget(false);</span><br><span class="line">		break;</span><br><span class="line">	case  EWeaponState::EWS_Equipped :</span><br><span class="line">		//相关逻辑</span><br><span class="line">		break;</span><br><span class="line">	case EWeaponState::EWS_Dropped :</span><br><span class="line">		ShowPickupWidget(false);</span><br><span class="line">		FDetachmentTransformRules DetachRules(EDetachmentRule::KeepWorld, true);//这个变量是解绑组件的规则，参数意思是自动计算相对转换，以便分离组件维护相同的世界转换。</span><br><span class="line">		WeaponMesh-&gt;DetachFromComponent(DetachRules);//不论组件被附加到什么上面都会拆下来，自动解绑被绑在一起的组件</span><br><span class="line">		//开启模拟物理</span><br><span class="line">		WeaponMesh-&gt;SetSimulatePhysics(true);</span><br><span class="line">		WeaponMesh-&gt;SetLinearDamping(LinearDamping);</span><br><span class="line">		WeaponMesh-&gt;SetAngularDamping(AngularDamping);</span><br><span class="line">		WeaponMesh-&gt;SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); // 启用碰撞检测和物理模拟</span><br><span class="line">		//开启重力</span><br><span class="line">		WeaponMesh-&gt;SetEnableGravity(true);</span><br><span class="line">		break;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>这样子玩家就可以在所有的客户端和服务单上正常执行丢弃武器的操作了，配合<a href="https://backfire935.github.io/2023/04/18/%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">拾取武器的同步</a>就可以正常的拾取丢弃再拾取了。</p>
+<img src="/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" class="">
 
-<h3 id="7-导入玩家第一人称手臂动画蓝图及混合空间"><a href="#7-导入玩家第一人称手臂动画蓝图及混合空间" class="headerlink" title="7.导入玩家第一人称手臂动画蓝图及混合空间"></a>7.导入玩家第一人称手臂动画蓝图及混合空间</h3><p>这是第一人称武器的动画蓝图设置</p>
-<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230300448.png" class="">
-
-<p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230300448.png" alt="image-20230320230300448"></p>
-<p>注意参数复用和这里有问题的动画</p>
-<img src="/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230356652.png" class="">
-
-<p><img src="/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/image-20230320230356652.png" alt="image-20230320230356652"></p>
+<p><img src="/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" alt="image-20230419093726007"></p>
 
                 
             </div>
@@ -467,7 +484,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://backfire935.github.io/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/">https://backfire935.github.io/2023/03/20/%E7%81%AB%E5%8A%9B%E7%AA%81%E5%87%BB%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/</a>
+                    <a href="https://backfire935.github.io/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">https://backfire935.github.io/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -581,9 +598,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="丢弃武器的同步">
+                        
+                        <span class="card-title">丢弃武器的同步</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            John Doe
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2023/04/18/%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">
                     <div class="card-image">
@@ -601,45 +657,8 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-18
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            John Doe
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2023/03/20/%E5%8F%8C%E6%A8%A1%E5%9E%8BFPS%E5%AD%A6%E4%B9%A0/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="双模型FPS学习">
-                        
-                        <span class="card-title">双模型FPS学习</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-20
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-18
                             </span>
                         <span class="publish-author">
                             
@@ -648,14 +667,6 @@
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/UE/">
-                        <span class="chip bg-color">UE</span>
-                    </a>
-                    
                 </div>
                 
             </div>
