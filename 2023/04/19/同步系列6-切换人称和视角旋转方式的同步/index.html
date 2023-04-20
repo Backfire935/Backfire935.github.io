@@ -4,12 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="丢弃武器的同步, UE C++">
-    <meta name="description" content="项目仓库地址：https://github.com/Backfire935/BlasterAgain
-之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。
-首先还是输入绑定，没啥好说的
-    //按G丢弃武器
-    Enhanc">
+    <meta name="keywords" content="切换人称和视角旋转方式的同步, UE C++">
+    <meta name="description" content="在射击游戏中，我想同时实现第一人称和第三人称的效果，这样在PVP模式中我希望是仅能第一人称，而在PVE模式中，使用第一人称增加代入感，或者使用第三人称纵览全局并获得更稳定的视角。
+在第一人称中，我希望做到的效果是玩家角色随鼠标的移动进行旋转">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>丢弃武器的同步 | 李清水的笔记本</title>
+    <title>切换人称和视角旋转方式的同步 | 李清水的笔记本</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -338,12 +335,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">丢弃武器的同步</h1>
+                    <h1 class="description center-align post-title">切换人称和视角旋转方式的同步</h1>
                 </div>
             </div>
         </div>
@@ -400,75 +397,73 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>项目仓库地址：<a target="_blank" rel="noopener" href="https://github.com/Backfire935/BlasterAgain">https://github.com/Backfire935/BlasterAgain</a></p>
-<p>之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。</p>
-<p>首先还是输入绑定，没啥好说的</p>
-<pre><code>    //按G丢弃武器
-    EnhancedInputComponent-&gt;BindAction(IA_DropWeapon, ETriggerEvent::Triggered, this, &amp;ABlasterCharacter::InputDropWeapon);
+                <p>在射击游戏中，我想同时实现第一人称和第三人称的效果，这样在PVP模式中我希望是仅能第一人称，而在PVE模式中，使用第一人称增加代入感，或者使用第三人称纵览全局并获得更稳定的视角。</p>
+<p>在第一人称中，我希望做到的效果是玩家角色随鼠标的移动进行旋转，同时将旋转的角度同步到其他客户端，使得其它角色也能看到你在旋转。</p>
+<p>在第三人称中，因为我需要使用鼠标观察四周移动视角，所以实际上我并不希望角色随着鼠标的朝向移动，那样对于玩家来说是一个困扰。我希望的效果是，玩家随着键盘的控制方向移动，而不是鼠标，此时本地玩家A移动鼠标后，其他客户端的玩家并不会发现在他们的显示器上，玩家A控制的角色发生了旋转。但若此时玩家A在键盘上输入相反的方向进行位移，那么其他客户端的玩家应该发现在他们的显示器上，玩家A控制的角色发生了相反的旋转。</p>
+<p>这两个效果是我今天想要完成的。</p>
+<p>来，先绑定输入</p>
+<pre><code>//按V切换视角
+    EnhancedInputComponent-&gt;BindAction(IA_ChangeView, ETriggerEvent::Triggered, this, &amp;ABlasterCharacter::InputShiftView);
 </code></pre>
-<p>来看InputDropWeapon函数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">void ABlasterCharacter::InputDropWeapon()</span><br><span class="line">&#123;</span><br><span class="line">	if (Combat)</span><br><span class="line">	&#123;</span><br><span class="line">		if (HasAuthority())</span><br><span class="line">		&#123;</span><br><span class="line">			Combat-&gt;DropWeapon();//如果就在Server上就直接执行</span><br><span class="line">		&#125;</span><br><span class="line">		else</span><br><span class="line">		&#123;</span><br><span class="line">			ServerDropButtonPressed();//不然就执行RPC  </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接看InputShiftView不墨迹</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">void ABlasterCharacter::InputShiftView(const FInputActionValue&amp; InputValue)</span><br><span class="line">&#123;</span><br><span class="line">	//如果是服务端执行，就相当于调用一次本地客户端，然后直接return</span><br><span class="line">	if(HasAuthority())</span><br><span class="line">	&#123;</span><br><span class="line">		//服务端的本地就是服务端自己的客户端</span><br><span class="line">		ClientChangeView();</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	//如果是客户端执行，让服务端去改变，再传递给各个客户端来完成同步的效果</span><br><span class="line">		ServerChangeView();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>老样子，首先判断下Combat组件是否存在，之后如果是Server端按下了丢弃按钮，直接去调Combat-&gt;DropWeapon()函数处理丢弃武器的业务逻辑。如果是Client按下了丢弃按钮，则执行ServerRPC，ServerDropButtonPressed()在服务端执行，然后由服务端通过WeaponState的属性复制后的RepNotify回调来在客户端执行丢弃的逻辑。这样所有的玩家才都能看到武器被之前拥有武器的玩家正常的丢弃，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void ABlasterCharacter::ServerDropButtonPressed_Implementation()</span><br><span class="line">&#123;</span><br><span class="line">	//反正只在服务端调用，不用写HasAuthority </span><br><span class="line">	if (Combat)</span><br><span class="line">	&#123;</span><br><span class="line">		Combat-&gt;DropWeapon();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后再看ServerChangeView_Implementation<br>    void ABlasterCharacter::ServerChangeView_Implementation()<br>    {<br>        &#x2F;&#x2F;需要修改服务器上的版本，因为服务器上的版本是用来同步给别的客户端的，别的客户端不与正在执行动作的客户端通信，别的客户端拿的是服务端的数据<br>            ChangeCameraView();<br>        &#x2F;&#x2F;再去让正在执行动作的客户端去真正实现功能<br>    ClientChangeView();&#x2F;&#x2F;注释此函数后，客户端角色能同步旋转但是不能改变视角，原因是没有收到Server发来的ClientChangeView()所以改变不了视角，但是和角色移动旋转相关的属性是默认实现网络同步的，是否旋转属性在上面Server端被修改的时候就被同步到客户端了，因此不需要Server发来的ClientChangeView()也改变了旋转。<br>    }</p>
+<p>ClientRPC直接执行ChangeCameraView使得在客户端执行业务逻辑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void ABlasterCharacter::ClientChangeView_Implementation()</span><br><span class="line">&#123;</span><br><span class="line">	ChangeCameraView();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>又回到了熟悉的Combat-&gt;DropWeapon();Combat是啥我在<a href="https://backfire935.github.io/2023/04/18/%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">拾取武器的同步</a>中一节有讲：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void UCombatComponent::DropWeapon()</span><br><span class="line">&#123;</span><br><span class="line">	if (EquippedWeapon)//如果武器存在</span><br><span class="line">	&#123;</span><br><span class="line">		EquippedWeapon-&gt;Dropped();//如果已经装备了一件武器，就丢掉手上的</span><br><span class="line">		EquippedWeapon-&gt;SetOwner(nullptr);//将拥有者设置为空</span><br><span class="line">		EquippedWeapon = nullptr;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里将EquippedWeapon的拥有者设为空，注意SetOnwer函数自动复制的，详见其实现：</p>
-<img src="/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" class="">
-
-<p><img src="/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093006345.png" alt="image-20230419093006345"></p>
-<p>然后EquippedWeapon指针置空，之后进入Weapon类的Dropped函数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void AWeapon::Dropped()</span><br><span class="line">&#123;</span><br><span class="line">	SetWeaponState(EWeaponState::EWS_Dropped);//先将此件武器的状态的设为丢弃状态</span><br><span class="line">	ServerDropWeapon();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里一个第一个是设置武器当前的状态，这样一会通过WeaponState的属性赋值就可以调用在客户端上的回调，第二个就是直接在服务端执行丢弃操作了；</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void AWeapon::ServerDropWeapon_Implementation()//这个用来处理Server端武器的掉落效果，客户端的效果由WeaponState触发的OnRep_WeaponState完成</span><br><span class="line">&#123;</span><br><span class="line">	FDetachmentTransformRules DetachRules(EDetachmentRule::KeepWorld, true);//这个变量是解绑组件的规则，参数意思是自动计算相对转换，以便分离组件维护相同的世界转换。</span><br><span class="line">	WeaponMesh-&gt;DetachFromComponent(DetachRules);//不论组件被附加到什么上面都会拆下来，自动解绑被绑在一起的组件</span><br><span class="line">	//开启模拟物理</span><br><span class="line">	WeaponMesh-&gt;SetSimulatePhysics(true);</span><br><span class="line">	WeaponMesh-&gt;SetLinearDamping(LinearDamping);</span><br><span class="line">	WeaponMesh-&gt;SetAngularDamping(AngularDamping);</span><br><span class="line">	WeaponMesh-&gt;SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); // 启用碰撞检测和物理模拟</span><br><span class="line">	//开启重力</span><br><span class="line">	WeaponMesh-&gt;SetEnableGravity(true);</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>而在SetWeaponState中，我们设置武器新的状态。</p>
-<pre><code>void AWeapon::SetWeaponState(EWeaponState State)
+<p>最后由ChangeCameraView真正的直接去修改视角和控制旋转</p>
+<pre><code>void ABlasterCharacter::ChangeCameraView()
 &#123;
-    WeaponState = State;
-switch (WeaponState)
+    // 判断当前激活的摄像机，并切换到另一个摄像机
+    if (FollowCamera-&gt;IsActive())//切换到第三人称
+    &#123;
+        FollowCamera-&gt;SetActive(false);
+        FollowCamera-&gt;Deactivate();
+        TPSCamera-&gt;SetActive(true);
+        TPSCamera-&gt;Activate();
+        GetCharacterMovement()-&gt;bOrientRotationToMovement = true;
+        bUseControllerRotationYaw = false;
+&#125;
+else//切换到第一人称
 &#123;
-case EWeaponState::EWS_Initial:
-    ShowPickupWidget(false);
-    AreaSphere-&gt;SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    break;
-case  EWeaponState::EWS_Equipped:
-    ShowPickupWidget(false);
-    AreaSphere-&gt;SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    break;
-case EWeaponState::EWS_Dropped:
-    ShowPickupWidget(false);
-    AreaSphere-&gt;SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    break;
+    TPSCamera-&gt;SetActive(false);
+    TPSCamera-&gt;Deactivate();
+    FollowCamera-&gt;SetActive(true);
+    FollowCamera-&gt;Activate();
+    GetCharacterMovement()-&gt;bOrientRotationToMovement = false;
+    bUseControllerRotationYaw = true;
+
 &#125;
 &#125;
 </code></pre>
-<p>那么最后一步，RepNotify回调：</p>
-<pre><code>private:
-UPROPERTY(ReplicatedUsing= OnRep_WeaponState, VisibleAnywhere, Category = &quot;Weapon Properties&quot;)
-EWeaponState WeaponState;
+<p>到这逻辑就写完了，不过记得可以在角色构造里面自定义初始化一下关于视角的设置，设置成自己喜欢的方式就行，不一定要和我一样</p>
+<pre><code>ABlasterCharacter::ABlasterCharacter()
+&#123;
+PrimaryActorTick.bCanEverTick = true;
 
-UFUNCTION()
-void OnRep_WeaponState();
+//创建第一人称摄像机
+FollowCamera = CreateDefaultSubobject&lt;UCameraComponent&gt;(TEXT(&quot;FollowCamera&quot;));
+//摄像机绑到角色头部的骨骼插槽里
+FollowCamera-&gt;SetupAttachment(GetMesh(), FName(TEXT(&quot;FollowCameraSocket&quot;)));
+
+//创建第三人称摄像机
+TPSCamera = CreateDefaultSubobject&lt;UCameraComponent&gt;(TEXT(&quot;TPSCamera&quot;));
+TPSCamera-&gt;SetupAttachment(CameraBoom);
+
+FollowCamera-&gt;bUsePawnControlRotation = true;
+
+FollowCamera-&gt;SetActive(true);//激活第一人称摄像机，其实这个函数里面的实现就是下面Activate()
+FollowCamera-&gt;Activate();//还是激活，我不知道不写这行只写上面的行不行，不过我看了SetActive没有网络同步的内容，但是Activate()里面有Broadcast广播，所以我觉得还是留着吧，你可以测试下
+TPSCamera-&gt;SetActive(false);
+TPSCamera-&gt;Deactivate();
+
+&#125;
 </code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">void AWeapon::OnRep_WeaponState()//处理武器不同状态时客户端武器的物理效果</span><br><span class="line">&#123;</span><br><span class="line">	ABlasterCharacter* BlasterCharacter = Cast&lt;ABlasterCharacter&gt;(GetOwner());</span><br><span class="line">	const USkeletalMeshSocket* HandSocket = BlasterCharacter ? BlasterCharacter-&gt;GetMesh()-&gt;GetSocketByName(FName(&quot;RightHandSocket&quot;)) : nullptr;</span><br><span class="line">	switch (WeaponState)</span><br><span class="line">	&#123;</span><br><span class="line">	case EWeaponState::EWS_Initial:</span><br><span class="line">		ShowPickupWidget(false);</span><br><span class="line">		break;</span><br><span class="line">	case  EWeaponState::EWS_Equipped :</span><br><span class="line">		//相关逻辑</span><br><span class="line">		break;</span><br><span class="line">	case EWeaponState::EWS_Dropped :</span><br><span class="line">		ShowPickupWidget(false);</span><br><span class="line">		FDetachmentTransformRules DetachRules(EDetachmentRule::KeepWorld, true);//这个变量是解绑组件的规则，参数意思是自动计算相对转换，以便分离组件维护相同的世界转换。</span><br><span class="line">		WeaponMesh-&gt;DetachFromComponent(DetachRules);//不论组件被附加到什么上面都会拆下来，自动解绑被绑在一起的组件</span><br><span class="line">		//开启模拟物理</span><br><span class="line">		WeaponMesh-&gt;SetSimulatePhysics(true);</span><br><span class="line">		WeaponMesh-&gt;SetLinearDamping(LinearDamping);</span><br><span class="line">		WeaponMesh-&gt;SetAngularDamping(AngularDamping);</span><br><span class="line">		WeaponMesh-&gt;SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); // 启用碰撞检测和物理模拟</span><br><span class="line">		//开启重力</span><br><span class="line">		WeaponMesh-&gt;SetEnableGravity(true);</span><br><span class="line">		break;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>与本篇无关的函数内容这里精简了，至于摄像机的位置大家自己摆一下，摄像机视角的变换和旋转同步问题到这里应该就解决了，至于第一人称视角容易和角色穿模的问题我们下篇再讨论有什么处理方式。最后放一张效果图</p>
+<img src="/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%976-%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419234602363.png" class="">
 
-<p>这样子玩家就可以在所有的客户端和服务单上正常执行丢弃武器的操作了，配合<a href="https://backfire935.github.io/2023/04/18/%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">拾取武器的同步</a>就可以正常的拾取丢弃再拾取了。</p>
-<img src="/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" class="">
-
-<p><img src="/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" alt="image-20230419093726007"></p>
-<p>（补充）2023年4月19日12:15:10</p>
-<p>写前面的内容的时候我想到一个问题，就是Combat的EquippedWeapon，关于它的属性设置都是由角色类调Combat中的函数来设置的，而角色类中调用Combat的函数都是只在服务端执行的，而Combat组件并未开启复制，换句话说，按理说EquippedWeapon的属性在修改后只是在服务端修改，在客户端是不生效的，但实际上生效了。比如这段</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void UCombatComponent::DropWeapon()</span><br><span class="line">&#123;</span><br><span class="line">	if (EquippedWeapon)//如果武器存在</span><br><span class="line">	&#123;</span><br><span class="line">		EquippedWeapon-&gt;Dropped();//如果已经装备了一件武器，就丢掉手上的</span><br><span class="line">		EquippedWeapon-&gt;SetOwner(nullptr);//将拥有者设置为空</span><br><span class="line">		EquippedWeapon = nullptr;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段我认为EquippedWeapon &#x3D; nullptr;是只在服务端发生的，也就是说客户端丢掉武器后指针没有置空，实际可能武器脱离附加在角色身上后仍然能够开火，但这个bug并没有发生，这让我开始寻找。</p>
-<p>直到我看到了EquippedWeapon的定义</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private:</span><br><span class="line">	UPROPERTY(Replicated)</span><br><span class="line">	 AWeapon* EquippedWeapon;</span><br></pre></td></tr></table></figure>
-
-<p>UE网络细节真的多…..</p>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%976-%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419234602363.png" alt="image-20230419234602363"></p>
 
                 
             </div>
@@ -495,7 +490,7 @@ void OnRep_WeaponState();
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://backfire935.github.io/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">https://backfire935.github.io/2023/04/19/%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/</a>
+                    <a href="https://backfire935.github.io/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%976-%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/">https://backfire935.github.io/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%976-%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -613,13 +608,13 @@ void OnRep_WeaponState();
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/04/19/%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/">
+                <a href="/2023/04/19/%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="玩家姓名的同步">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="切换人称和视角旋转方式的同步">
                         
-                        <span class="card-title">玩家姓名的同步</span>
+                        <span class="card-title">切换人称和视角旋转方式的同步</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -650,13 +645,13 @@ void OnRep_WeaponState();
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/04/18/%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">
+                <a href="/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="拾取武器的同步">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="玩家姓名的同步">
                         
-                        <span class="card-title">拾取武器的同步</span>
+                        <span class="card-title">玩家姓名的同步</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -667,7 +662,7 @@ void OnRep_WeaponState();
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
                             </span>
                         <span class="publish-author">
                             
