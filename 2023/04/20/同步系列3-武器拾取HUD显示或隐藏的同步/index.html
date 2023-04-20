@@ -5,7 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="同步系列3-武器拾取HUD显示或隐藏的同步, UE C++">
-    <meta name="description" content="">
+    <meta name="description" content="玩家在靠近地上无主的武器一定范围内，武器上方会弹出一个提示，告知玩家按某个按钮后拾取武器。离开一定范围后提示消失。同时我们希望这个弹出的按钮只会在本地显示，也就是说一个玩家能否看到提示和其它玩家是无关的。
+
+
+
+我们需要一个UserWidg">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -396,7 +400,43 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>玩家在靠近地上无主的武器一定范围内，武器上方会弹出一个提示，告知玩家按某个按钮后拾取武器。离开一定范围后提示消失。同时我们希望这个弹出的按钮只会在本地显示，也就是说一个玩家能否看到提示和其它玩家是无关的。</p>
+<img src="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%973-%E6%AD%A6%E5%99%A8%E6%8B%BE%E5%8F%96HUD%E6%98%BE%E7%A4%BA%E6%88%96%E9%9A%90%E8%97%8F%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230420210225319.png" class="">
+
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%973-%E6%AD%A6%E5%99%A8%E6%8B%BE%E5%8F%96HUD%E6%98%BE%E7%A4%BA%E6%88%96%E9%9A%90%E8%97%8F%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230420210225319.png" alt="image-20230420210225319"></p>
+<p>我们需要一个UserWidget控件和一个Weapon武器类，在UserWidget类中自己加一下文本提示即可，然后在Weapon.h中添加控件组件的声明。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UPROPERTY</span>(VisibleAnywhere, Category = <span class="string">&quot;Weapon Properties&quot;</span>)</span><br><span class="line">	<span class="keyword">class</span> <span class="title class_">UWidgetComponent</span>* PickupWidget;</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%973-%E6%AD%A6%E5%99%A8%E6%8B%BE%E5%8F%96HUD%E6%98%BE%E7%A4%BA%E6%88%96%E9%9A%90%E8%97%8F%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230420210700424.png" class="">
+
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%973-%E6%AD%A6%E5%99%A8%E6%8B%BE%E5%8F%96HUD%E6%98%BE%E7%A4%BA%E6%88%96%E9%9A%90%E8%97%8F%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230420210700424.png" alt="image-20230420210700424"></p>
+<p>之后我们在Weapon武器蓝图中设置空间为屏幕，添加上我们之前创建好的控件类，指定其大小，并勾上以所需大小绘制。这样就设置好了显示的格式。</p>
+<p>武器类中添加了一个球形碰撞体，就是通过这个球形碰撞体积和玩家的碰撞来判断玩家进入和离开可拾取武器的范围的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="built_in">UPROPERTY</span>(VisibleAnywhere, Category = <span class="string">&quot;Weapon Properties&quot;</span>)</span><br><span class="line">	<span class="keyword">class</span> <span class="title class_">USphereComponent</span>* AreaSphere;</span><br></pre></td></tr></table></figure>
+
+<p>之后通过两个函数来处理玩家进入和离开的逻辑。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"><span class="built_in">UFUNCTION</span>()</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">OnSphereOverlap</span><span class="params">(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, <span class="type">bool</span> bFromSweep, <span class="type">const</span> FHitResult&amp; SweepResult)</span></span>;</span><br><span class="line"><span class="built_in">UFUNCTION</span>()</span><br><span class="line">	 <span class="function"><span class="type">void</span> <span class="title">OnSphereEndOverlap</span><span class="params">(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>参数挺多，一个管玩家进，一个管玩家出，下面是实现。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AWeapon::OnSphereOverlap</span><span class="params">(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,</span></span></span><br><span class="line"><span class="params"><span class="function">	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, <span class="type">bool</span> bFromSweep, <span class="type">const</span> FHitResult&amp; SweepResult)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ABlasterCharacter* BlasterCharacter = <span class="built_in">Cast</span>&lt;ABlasterCharacter&gt;(OtherActor);</span><br><span class="line">	<span class="keyword">if</span> (BlasterCharacter)</span><br><span class="line">	&#123;</span><br><span class="line">		BlasterCharacter-&gt;<span class="built_in">SetOverlappingWeapon</span>(<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AWeapon::OnSphereEndOverlap</span><span class="params">(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,</span></span></span><br><span class="line"><span class="params"><span class="function">	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ABlasterCharacter* BlasterCharacter = <span class="built_in">Cast</span>&lt;ABlasterCharacter&gt;(OtherActor);</span><br><span class="line">	<span class="keyword">if</span> (BlasterCharacter)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">ShowPickupWidget</span>(<span class="literal">false</span>);<span class="comment">//无主的仅在服务端执行，客户端靠OnRep_OverlappingWeapon</span></span><br><span class="line">		BlasterCharacter-&gt;<span class="built_in">SetOverlappingWeapon</span>(<span class="literal">nullptr</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的SetOverlappingWeapon函数用来传入武器给角色，就是告诉角色你已经进入了可拾取武器的范围并把武器自身的指针传给了角色。接下来回到角色类的.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::SetOverlappingWeapon</span><span class="params">(AWeapon* Weapon)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	OverlappingWeapon = Weapon;<span class="comment">//如果是客户端，不会执行这个函数，因为是无主的weapon调用的这个函数，客户端触发碰撞后会在服务端执行，然后OnRep会把OverlappingWeapon传到其他客户端去，又因为被定义为COND_OwnerOnly，所以只有Owner对应的客户端拿到了值，OnRep由服务端调用，不在服务端执行只在客户端执行，所以Server不会触发OnRep函数</span></span><br><span class="line">	<span class="comment">//因为Server不会触发OnRep函数，所以若是Server的玩家触发的碰撞，通过下面的方法进行显示。</span></span><br><span class="line">	<span class="comment">//只有Server上的本地玩家执行，加上函数本身是由在服务端AWeapon::OnSphereOverlap调用的</span></span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">IsLocallyControlled</span>())<span class="comment">//Returns true if controlled by a local (not network) Controller.实测注释这个函数没有影响，因为调用这个函数的对象的特殊性确保了代码运行到这的时候只可能是服务端在运行，客户端压根不会调用这个函数，这里参照教程保留这个函数。特殊性为，武器是无主的，无主的都归server</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (OverlappingWeapon)</span><br><span class="line">		&#123;</span><br><span class="line">			OverlappingWeapon-&gt;<span class="built_in">ShowPickupWidget</span>(<span class="literal">true</span>);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>OverlappingWeapon是在角色类中一个开启了属性复制的变量，因此当这个变量发生变化的时候，可以通过一个RepNotify回调去其他客户端上执行相应的逻辑</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::GetLifetimeReplicatedProps</span><span class="params">(TArray&lt;FLifetimeProperty&gt;&amp; OutLifetimeProps)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Super::<span class="built_in">GetLifetimeReplicatedProps</span>(OutLifetimeProps);</span><br><span class="line">	<span class="built_in">DOREPLIFETIME_CONDITION</span>(ABlasterCharacter, OverlappingWeapon, COND_OwnerOnly); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此处开启条件复制，仅进入武器范围内的角色在服务端的Authority或(如果是服务端玩家进入范围) 和自主代理的那个客户端(某个客户端玩家进入范围)会被更新值。为什么客户端玩家进入范围，服务端也会被更新值？因为服务端永远是Authority的，换句话说服务端也是Owner。</p>
+<p>知道了这些之后，我们就可以理解下面关于OverlappingWeapon的RepNotify回调了，它只会在服务端和 或某一个客户端上更新：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UFUNCTION</span>()</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">OnRep_OverlappingWeapon</span><span class="params">(AWeapon* LastWeapon)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::OnRep_OverlappingWeapon</span><span class="params">(AWeapon* LastWeapon)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (OverlappingWeapon)</span><br><span class="line">	&#123;</span><br><span class="line">		OverlappingWeapon-&gt;<span class="built_in">ShowPickupWidget</span>(<span class="literal">true</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(LastWeapon)</span><br><span class="line">	&#123;</span><br><span class="line">		LastWeapon-&gt;<span class="built_in">ShowPickupWidget</span>(<span class="literal">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你问搞这么麻烦干什么，一个提示而已，只在本地执行不就好了，为什么非得搞这么麻烦的同步。其实可以测试一下，如果只写玩家进入离开时的代码而不写同步的内容的话，对于客户端玩家而言确实没什么问题，但是如果是服务端玩家进入范围触发提示后，那么所有玩家的屏幕上都会被打开那个提示….</p>
+<p>最后补充一下Weapon类中关于球形碰撞体积的设置，此处已省略其他无关代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">AWeapon::<span class="built_in">AWeapon</span>()</span><br><span class="line">&#123;</span><br><span class="line">PrimaryActorTick.bCanEverTick = <span class="literal">false</span>;</span><br><span class="line">bReplicates = <span class="literal">true</span>;</span><br><span class="line"><span class="built_in">SetReplicateMovement</span>(<span class="literal">true</span>);</span><br><span class="line">    </span><br><span class="line">AreaSphere = <span class="built_in">CreateDefaultSubobject</span>&lt;USphereComponent&gt;(<span class="built_in">TEXT</span>(<span class="string">&quot;AreaSphere&quot;</span>));</span><br><span class="line">AreaSphere-&gt;<span class="built_in">SetupAttachment</span>(RootComponent);</span><br><span class="line">AreaSphere-&gt;<span class="built_in">SetCollisionResponseToAllChannels</span>(ECollisionResponse::ECR_Ignore);</span><br><span class="line">AreaSphere-&gt;<span class="built_in">SetCollisionEnabled</span>(ECollisionEnabled::NoCollision);</span><br><span class="line">AreaSphere-&gt;<span class="built_in">SetSphereRadius</span>(<span class="number">72.f</span>);</span><br><span class="line">    </span><br><span class="line">PickupWidget = <span class="built_in">CreateDefaultSubobject</span>&lt;UWidgetComponent&gt;(<span class="built_in">TEXT</span>(<span class="string">&quot;PickupWidget&quot;</span>));</span><br><span class="line">PickupWidget-&gt;<span class="built_in">SetupAttachment</span>(RootComponent);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AWeapon::BeginPlay</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Super::<span class="built_in">BeginPlay</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">HasAuthority</span>()) <span class="comment">//与HasAuthority()等效</span></span><br><span class="line">	&#123;</span><br><span class="line">		AreaSphere-&gt;<span class="built_in">SetCollisionEnabled</span>(ECollisionEnabled::QueryAndPhysics);</span><br><span class="line">		AreaSphere-&gt;<span class="built_in">SetCollisionResponseToChannel</span>(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);</span><br><span class="line">		AreaSphere-&gt;OnComponentBeginOverlap.<span class="built_in">AddDynamic</span>(<span class="keyword">this</span>, &amp;AWeapon::OnSphereOverlap);</span><br><span class="line">		AreaSphere-&gt;OnComponentEndOverlap.<span class="built_in">AddDynamic</span>(<span class="keyword">this</span>, &amp;AWeapon::OnSphereEndOverlap);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (PickupWidget)</span><br><span class="line">	&#123;</span><br><span class="line">		PickupWidget-&gt;<span class="built_in">SetVisibility</span>(<span class="literal">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里绑定了球形碰撞体积在被覆盖时候的处理函数。</p>
+<p>那么到这里就大功告成了。</p>
+
                 
             </div>
             <hr/>
@@ -536,18 +576,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%973-%E6%AD%A6%E5%99%A8%E6%8B%BE%E5%8F%96HUD%E6%98%BE%E7%A4%BA%E6%88%96%E9%9A%90%E8%97%8F%E7%9A%84%E5%90%8C%E6%AD%A5/">
+                <a href="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%977-%E6%B7%B7%E5%90%88%E4%BA%BA%E7%A7%B0%E7%9A%84%E6%9D%90%E8%B4%A8%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%90%8C%E6%AD%A5-%E8%BA%AF%E5%B9%B2%E9%80%8F%E6%98%8E%E6%9C%89%E5%BD%B1%E5%AD%90/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="同步系列3-武器拾取HUD显示或隐藏的同步">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="同步系列7-混合人称的材质设置和同步(躯干透明有影子)">
                         
-                        <span class="card-title">同步系列3-武器拾取HUD显示或隐藏的同步</span>
+                        <span class="card-title">同步系列7-混合人称的材质设置和同步(躯干透明有影子)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -557,9 +596,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -568,7 +607,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>

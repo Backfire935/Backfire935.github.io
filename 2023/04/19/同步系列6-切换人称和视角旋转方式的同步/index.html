@@ -402,64 +402,22 @@
 <p>在第三人称中，因为我需要使用鼠标观察四周移动视角，所以实际上我并不希望角色随着鼠标的朝向移动，那样对于玩家来说是一个困扰。我希望的效果是，玩家随着键盘的控制方向移动，而不是鼠标，此时本地玩家A移动鼠标后，其他客户端的玩家并不会发现在他们的显示器上，玩家A控制的角色发生了旋转。但若此时玩家A在键盘上输入相反的方向进行位移，那么其他客户端的玩家应该发现在他们的显示器上，玩家A控制的角色发生了相反的旋转。</p>
 <p>这两个效果是我今天想要完成的。</p>
 <p>来，先绑定输入</p>
-<pre><code>//按V切换视角
-    EnhancedInputComponent-&gt;BindAction(IA_ChangeView, ETriggerEvent::Triggered, this, &amp;ABlasterCharacter::InputShiftView);
-</code></pre>
-<p>直接看InputShiftView不墨迹</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">void ABlasterCharacter::InputShiftView(const FInputActionValue&amp; InputValue)</span><br><span class="line">&#123;</span><br><span class="line">	//如果是服务端执行，就相当于调用一次本地客户端，然后直接return</span><br><span class="line">	if(HasAuthority())</span><br><span class="line">	&#123;</span><br><span class="line">		//服务端的本地就是服务端自己的客户端</span><br><span class="line">		ClientChangeView();</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	//如果是客户端执行，让服务端去改变，再传递给各个客户端来完成同步的效果</span><br><span class="line">		ServerChangeView();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//按V切换视角</span></span><br><span class="line">	EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_ChangeView, ETriggerEvent::Triggered, <span class="keyword">this</span>, &amp;ABlasterCharacter::InputShiftView);</span><br></pre></td></tr></table></figure>
 
-<p>然后再看ServerChangeView_Implementation<br>    void ABlasterCharacter::ServerChangeView_Implementation()<br>    {<br>        &#x2F;&#x2F;需要修改服务器上的版本，因为服务器上的版本是用来同步给别的客户端的，别的客户端不与正在执行动作的客户端通信，别的客户端拿的是服务端的数据<br>            ChangeCameraView();<br>        &#x2F;&#x2F;再去让正在执行动作的客户端去真正实现功能<br>    ClientChangeView();&#x2F;&#x2F;注释此函数后，客户端角色能同步旋转但是不能改变视角，原因是没有收到Server发来的ClientChangeView()所以改变不了视角，但是和角色移动旋转相关的属性是默认实现网络同步的，是否旋转属性在上面Server端被修改的时候就被同步到客户端了，因此不需要Server发来的ClientChangeView()也改变了旋转。<br>    }</p>
+<p>直接看InputShiftView不墨迹</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::InputShiftView</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//如果是服务端执行，就相当于调用一次本地客户端，然后直接return</span></span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">HasAuthority</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//服务端的本地就是服务端自己的客户端</span></span><br><span class="line">		<span class="built_in">ClientChangeView</span>();</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//如果是客户端执行，让服务端去改变，再传递给各个客户端来完成同步的效果</span></span><br><span class="line">		<span class="built_in">ServerChangeView</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后再看ServerChangeView_Implementation</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ServerChangeView_Implementation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//需要修改服务器上的版本，因为服务器上的版本是用来同步给别的客户端的，别的客户端不与正在执行动作的客户端通信，别的客户端拿的是服务端的数据</span></span><br><span class="line">		<span class="built_in">ChangeCameraView</span>();</span><br><span class="line">	<span class="comment">//再去让正在执行动作的客户端去真正实现功能</span></span><br><span class="line"><span class="built_in">ClientChangeView</span>();<span class="comment">//注释此函数后，客户端角色能同步旋转但是不能改变视角，原因是没有收到Server发来的ClientChangeView()所以改变不了视角，但是和角色移动旋转相关的属性是默认实现网络同步的，是否旋转属性在上面Server端被修改的时候就被同步到客户端了，因此不需要Server发来的ClientChangeView()也改变了旋转。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>ClientRPC直接执行ChangeCameraView使得在客户端执行业务逻辑</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void ABlasterCharacter::ClientChangeView_Implementation()</span><br><span class="line">&#123;</span><br><span class="line">	ChangeCameraView();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ClientChangeView_Implementation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">ChangeCameraView</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>最后由ChangeCameraView真正的直接去修改视角和控制旋转</p>
-<pre><code>void ABlasterCharacter::ChangeCameraView()
-&#123;
-    // 判断当前激活的摄像机，并切换到另一个摄像机
-    if (FollowCamera-&gt;IsActive())//切换到第三人称
-    &#123;
-        FollowCamera-&gt;SetActive(false);
-        FollowCamera-&gt;Deactivate();
-        TPSCamera-&gt;SetActive(true);
-        TPSCamera-&gt;Activate();
-        GetCharacterMovement()-&gt;bOrientRotationToMovement = true;
-        bUseControllerRotationYaw = false;
-&#125;
-else//切换到第一人称
-&#123;
-    TPSCamera-&gt;SetActive(false);
-    TPSCamera-&gt;Deactivate();
-    FollowCamera-&gt;SetActive(true);
-    FollowCamera-&gt;Activate();
-    GetCharacterMovement()-&gt;bOrientRotationToMovement = false;
-    bUseControllerRotationYaw = true;
-
-&#125;
-&#125;
-</code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ChangeCameraView</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 判断当前激活的摄像机，并切换到另一个摄像机</span></span><br><span class="line">	<span class="keyword">if</span> (FollowCamera-&gt;<span class="built_in">IsActive</span>())<span class="comment">//切换到第三人称</span></span><br><span class="line">	&#123;</span><br><span class="line">		FollowCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">false</span>);</span><br><span class="line">		FollowCamera-&gt;<span class="built_in">Deactivate</span>();</span><br><span class="line">		TPSCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">true</span>);</span><br><span class="line">		TPSCamera-&gt;<span class="built_in">Activate</span>();</span><br><span class="line">		<span class="built_in">GetCharacterMovement</span>()-&gt;bOrientRotationToMovement = <span class="literal">true</span>;</span><br><span class="line">		bUseControllerRotationYaw = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span><span class="comment">//切换到第一人称</span></span><br><span class="line">&#123;</span><br><span class="line">	TPSCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">false</span>);</span><br><span class="line">	TPSCamera-&gt;<span class="built_in">Deactivate</span>();</span><br><span class="line">	FollowCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">true</span>);</span><br><span class="line">	FollowCamera-&gt;<span class="built_in">Activate</span>();</span><br><span class="line">	<span class="built_in">GetCharacterMovement</span>()-&gt;bOrientRotationToMovement = <span class="literal">false</span>;</span><br><span class="line">	bUseControllerRotationYaw = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>到这逻辑就写完了，不过记得可以在角色构造里面自定义初始化一下关于视角的设置，设置成自己喜欢的方式就行，不一定要和我一样</p>
-<pre><code>ABlasterCharacter::ABlasterCharacter()
-&#123;
-PrimaryActorTick.bCanEverTick = true;
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">ABlasterCharacter::<span class="built_in">ABlasterCharacter</span>()</span><br><span class="line">&#123;</span><br><span class="line">PrimaryActorTick.bCanEverTick = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建第一人称摄像机</span></span><br><span class="line">FollowCamera = <span class="built_in">CreateDefaultSubobject</span>&lt;UCameraComponent&gt;(<span class="built_in">TEXT</span>(<span class="string">&quot;FollowCamera&quot;</span>));</span><br><span class="line"><span class="comment">//摄像机绑到角色头部的骨骼插槽里</span></span><br><span class="line">FollowCamera-&gt;<span class="built_in">SetupAttachment</span>(<span class="built_in">GetMesh</span>(), <span class="built_in">FName</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;FollowCameraSocket&quot;</span>)));</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建第三人称摄像机</span></span><br><span class="line">TPSCamera = <span class="built_in">CreateDefaultSubobject</span>&lt;UCameraComponent&gt;(<span class="built_in">TEXT</span>(<span class="string">&quot;TPSCamera&quot;</span>));</span><br><span class="line">TPSCamera-&gt;<span class="built_in">SetupAttachment</span>(CameraBoom);</span><br><span class="line"></span><br><span class="line">FollowCamera-&gt;bUsePawnControlRotation = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">FollowCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">true</span>);<span class="comment">//激活第一人称摄像机，其实这个函数里面的实现就是下面Activate()</span></span><br><span class="line">FollowCamera-&gt;<span class="built_in">Activate</span>();<span class="comment">//还是激活，我不知道不写这行只写上面的行不行，不过我看了SetActive没有网络同步的内容，但是Activate()里面有Broadcast广播，所以我觉得还是留着吧，你可以测试下</span></span><br><span class="line">TPSCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">false</span>);</span><br><span class="line">TPSCamera-&gt;<span class="built_in">Deactivate</span>();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-//创建第一人称摄像机
-FollowCamera = CreateDefaultSubobject&lt;UCameraComponent&gt;(TEXT(&quot;FollowCamera&quot;));
-//摄像机绑到角色头部的骨骼插槽里
-FollowCamera-&gt;SetupAttachment(GetMesh(), FName(TEXT(&quot;FollowCameraSocket&quot;)));
-
-//创建第三人称摄像机
-TPSCamera = CreateDefaultSubobject&lt;UCameraComponent&gt;(TEXT(&quot;TPSCamera&quot;));
-TPSCamera-&gt;SetupAttachment(CameraBoom);
-
-FollowCamera-&gt;bUsePawnControlRotation = true;
-
-FollowCamera-&gt;SetActive(true);//激活第一人称摄像机，其实这个函数里面的实现就是下面Activate()
-FollowCamera-&gt;Activate();//还是激活，我不知道不写这行只写上面的行不行，不过我看了SetActive没有网络同步的内容，但是Activate()里面有Broadcast广播，所以我觉得还是留着吧，你可以测试下
-TPSCamera-&gt;SetActive(false);
-TPSCamera-&gt;Deactivate();
-
-&#125;
-</code></pre>
 <p>与本篇无关的函数内容这里精简了，至于摄像机的位置大家自己摆一下，摄像机视角的变换和旋转同步问题到这里应该就解决了，至于第一人称视角容易和角色穿模的问题我们下篇再讨论有什么处理方式。最后放一张效果图</p>
 <img src="/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%976-%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419234602363.png" class="">
 
