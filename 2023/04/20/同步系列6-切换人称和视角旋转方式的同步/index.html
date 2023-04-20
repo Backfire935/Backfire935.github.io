@@ -4,11 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="拾取武器的同步, UE C++">
-    <meta name="description" content="项目仓库地址: https://github.com/Backfire935/BlasterAgain
-今天来纪录一下我是如何实现拾取武器并在服务端和客户端上同步消息的。
-首先是角色类中输入组件函数中的输入绑定事件：
-12//按F拾取武器	">
+    <meta name="keywords" content="同步系列6-切换人称和视角旋转方式的同步, UE C++">
+    <meta name="description" content="在射击游戏中，我想同时实现第一人称和第三人称的效果，这样在PVP模式中我希望是仅能第一人称，而在PVE模式中，使用第一人称增加代入感，或者使用第三人称纵览全局并获得更稳定的视角。
+在第一人称中，我希望做到的效果是玩家角色随鼠标的移动进行旋转">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>拾取武器的同步 | 李清水的笔记本</title>
+    <title>同步系列6-切换人称和视角旋转方式的同步 | 李清水的笔记本</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -337,12 +335,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">拾取武器的同步</h1>
+                    <h1 class="description center-align post-title">同步系列6-切换人称和视角旋转方式的同步</h1>
                 </div>
             </div>
         </div>
@@ -378,7 +376,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-04-18
+                    2023-04-20
                 </div>
                 
 
@@ -399,49 +397,31 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>项目仓库地址: <a target="_blank" rel="noopener" href="https://github.com/Backfire935/BlasterAgain">https://github.com/Backfire935/BlasterAgain</a></p>
-<p>今天来纪录一下我是如何实现拾取武器并在服务端和客户端上同步消息的。</p>
-<p>首先是角色类中输入组件函数中的输入绑定事件：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//按F拾取武器</span></span><br><span class="line">		EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_Equip, ETriggerEvent::Triggered, <span class="keyword">this</span>, &amp;ABlasterCharacter::EquipButtonPressed);</span><br></pre></td></tr></table></figure>
+                <p>在射击游戏中，我想同时实现第一人称和第三人称的效果，这样在PVP模式中我希望是仅能第一人称，而在PVE模式中，使用第一人称增加代入感，或者使用第三人称纵览全局并获得更稳定的视角。</p>
+<p>在第一人称中，我希望做到的效果是玩家角色随鼠标的移动进行旋转，同时将旋转的角度同步到其他客户端，使得其它角色也能看到你在旋转。</p>
+<p>在第三人称中，因为我需要使用鼠标观察四周移动视角，所以实际上我并不希望角色随着鼠标的朝向移动，那样对于玩家来说是一个困扰。我希望的效果是，玩家随着键盘的控制方向移动，而不是鼠标，此时本地玩家A移动鼠标后，其他客户端的玩家并不会发现在他们的显示器上，玩家A控制的角色发生了旋转。但若此时玩家A在键盘上输入相反的方向进行位移，那么其他客户端的玩家应该发现在他们的显示器上，玩家A控制的角色发生了相反的旋转。</p>
+<p>这两个效果是我今天想要完成的。</p>
+<p>来，先绑定输入</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//按V切换视角</span></span><br><span class="line">	EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_ChangeView, ETriggerEvent::Triggered, <span class="keyword">this</span>, &amp;ABlasterCharacter::InputShiftView);</span><br></pre></td></tr></table></figure>
 
-<p>这里绑定到的是EquipButtonPressed()函数，我们看一下实现：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::EquipButtonPressed</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(Combat)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">HasAuthority</span>())</span><br><span class="line">		&#123;</span><br><span class="line">			Combat-&gt;<span class="built_in">EquipWeapon</span>(OverlappingWeapon);<span class="comment">//如果就在Server上就直接执行</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">ServerEquipButtonPressed</span>();<span class="comment">//不然就执行RPC  </span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接看InputShiftView不墨迹</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::InputShiftView</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//如果是服务端执行，就相当于调用一次本地客户端，然后直接return</span></span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">HasAuthority</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//服务端的本地就是服务端自己的客户端</span></span><br><span class="line">		<span class="built_in">ClientChangeView</span>();</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//如果是客户端执行，让服务端去改变，再传递给各个客户端来完成同步的效果</span></span><br><span class="line">		<span class="built_in">ServerChangeView</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>很明显这里的意思是，如果是在Server的玩家按F就直接执行Combat-&gt;EquipWeapon()这个函数，如果是客户端的玩家按F，则执行ServerEquipButtonPressed()函数，再由ServerEquipButtonPressed()函数调用Combat-&gt;EquipWeapon()装备武器，相当于装备武器这个过程必须先在服务端执行过，这样来确保安全。</p>
-<p>我们先看ServerEquipButtonPressed()函数，Combat-&gt;EquipWeapon()一会讨论。在角色类的.h文件中，有：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UFUNCTION</span>(Server, Reliable)</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">ServerEquipButtonPressed</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>然后再看ServerChangeView_Implementation</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ServerChangeView_Implementation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//需要修改服务器上的版本，因为服务器上的版本是用来同步给别的客户端的，别的客户端不与正在执行动作的客户端通信，别的客户端拿的是服务端的数据</span></span><br><span class="line">		<span class="built_in">ChangeCameraView</span>();</span><br><span class="line">	<span class="comment">//再去让正在执行动作的客户端去真正实现功能</span></span><br><span class="line"><span class="built_in">ClientChangeView</span>();<span class="comment">//注释此函数后，客户端角色能同步旋转但是不能改变视角，原因是没有收到Server发来的ClientChangeView()所以改变不了视角，但是和角色移动旋转相关的属性是默认实现网络同步的，是否旋转属性在上面Server端被修改的时候就被同步到客户端了，因此不需要Server发来的ClientChangeView()也改变了旋转。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>其实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ServerEquipButtonPressed_Implementation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//反正只在服务端调用，不用写HasAuthority </span></span><br><span class="line">	<span class="keyword">if</span> (Combat)</span><br><span class="line">	&#123;</span><br><span class="line">		Combat-&gt;<span class="built_in">EquipWeapon</span>(OverlappingWeapon);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ClientRPC直接执行ChangeCameraView使得在客户端执行业务逻辑</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ClientChangeView_Implementation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">ChangeCameraView</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>可以看出这个时候都跳到了Combat-&gt;EquipWeapon函数上。那么这个Combat是什么呢。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UPROPERTY</span>(VisibleAnywhere)</span><br><span class="line">	<span class="keyword">class</span> <span class="title class_">UCombatComponent</span>* Combat;</span><br></pre></td></tr></table></figure>
+<p>最后由ChangeCameraView真正的直接去修改视角和控制旋转</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ChangeCameraView</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 判断当前激活的摄像机，并切换到另一个摄像机</span></span><br><span class="line">	<span class="keyword">if</span> (FollowCamera-&gt;<span class="built_in">IsActive</span>())<span class="comment">//切换到第三人称</span></span><br><span class="line">	&#123;</span><br><span class="line">		FollowCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">false</span>);</span><br><span class="line">		FollowCamera-&gt;<span class="built_in">Deactivate</span>();</span><br><span class="line">		TPSCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">true</span>);</span><br><span class="line">		TPSCamera-&gt;<span class="built_in">Activate</span>();</span><br><span class="line">		<span class="built_in">GetCharacterMovement</span>()-&gt;bOrientRotationToMovement = <span class="literal">true</span>;</span><br><span class="line">		bUseControllerRotationYaw = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span><span class="comment">//切换到第一人称</span></span><br><span class="line">&#123;</span><br><span class="line">	TPSCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">false</span>);</span><br><span class="line">	TPSCamera-&gt;<span class="built_in">Deactivate</span>();</span><br><span class="line">	FollowCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">true</span>);</span><br><span class="line">	FollowCamera-&gt;<span class="built_in">Activate</span>();</span><br><span class="line">	<span class="built_in">GetCharacterMovement</span>()-&gt;bOrientRotationToMovement = <span class="literal">false</span>;</span><br><span class="line">	bUseControllerRotationYaw = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到这逻辑就写完了，不过记得可以在角色构造里面自定义初始化一下关于视角的设置，设置成自己喜欢的方式就行，不一定要和我一样</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">ABlasterCharacter::<span class="built_in">ABlasterCharacter</span>()</span><br><span class="line">&#123;</span><br><span class="line">PrimaryActorTick.bCanEverTick = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建第一人称摄像机</span></span><br><span class="line">FollowCamera = <span class="built_in">CreateDefaultSubobject</span>&lt;UCameraComponent&gt;(<span class="built_in">TEXT</span>(<span class="string">&quot;FollowCamera&quot;</span>));</span><br><span class="line"><span class="comment">//摄像机绑到角色头部的骨骼插槽里</span></span><br><span class="line">FollowCamera-&gt;<span class="built_in">SetupAttachment</span>(<span class="built_in">GetMesh</span>(), <span class="built_in">FName</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;FollowCameraSocket&quot;</span>)));</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建第三人称摄像机</span></span><br><span class="line">TPSCamera = <span class="built_in">CreateDefaultSubobject</span>&lt;UCameraComponent&gt;(<span class="built_in">TEXT</span>(<span class="string">&quot;TPSCamera&quot;</span>));</span><br><span class="line">TPSCamera-&gt;<span class="built_in">SetupAttachment</span>(CameraBoom);</span><br><span class="line"></span><br><span class="line">FollowCamera-&gt;bUsePawnControlRotation = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">FollowCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">true</span>);<span class="comment">//激活第一人称摄像机，其实这个函数里面的实现就是下面Activate()</span></span><br><span class="line">FollowCamera-&gt;<span class="built_in">Activate</span>();<span class="comment">//还是激活，我不知道不写这行只写上面的行不行，不过我看了SetActive没有网络同步的内容，但是Activate()里面有Broadcast广播，所以我觉得还是留着吧，你可以测试下</span></span><br><span class="line">TPSCamera-&gt;<span class="built_in">SetActive</span>(<span class="literal">false</span>);</span><br><span class="line">TPSCamera-&gt;<span class="built_in">Deactivate</span>();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>Combat是一个Actor组件，在角色类的构造函数中创建，同时开启了复制：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Combat = <span class="built_in">CreateDefaultSubobject</span>&lt;UCombatComponent&gt;(<span class="built_in">TEXT</span>(<span class="string">&quot;CombatComponent&quot;</span>));</span><br><span class="line">Combat-&gt;<span class="built_in">SetIsReplicated</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>与本篇无关的函数内容这里精简了，至于摄像机的位置大家自己摆一下，摄像机视角的变换和旋转同步问题到这里应该就解决了，至于第一人称视角容易和角色穿模的问题我们下篇再讨论有什么处理方式。最后放一张效果图</p>
+<img src="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%976-%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419234602363.png" class="">
 
-<p>说实话我不知道为什么装备武器不用ClientRPC就能同步武器的附加信息到其它客户端上，啊我在写这句话的时候知道了，我们后面再说，我们先说Combat干嘛的，Combat是个组件，用来附加在角色身上，这个组件的作用是将跟战斗有关的业务函数都写到这，这样Character想用直接调用就行，甚至如果Character在某个模式中不用战斗，比如种田，那么甚至可以不加载Combat组件，从而直接废弃相关的功能。这样组件化，模块化的设计是值得我这样的初学者学习的。不然所有的业务逻辑代码都写在Character里肯定是一件很令人崩溃的事情。（Combat的.h中设置了friend class ABlasterCharacter为友元，这样就可以访问角色类中的属性和函数，同时BlasterCharacter中初始化了Combat的Character属性）</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::PostInitializeComponents</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Super::<span class="built_in">PostInitializeComponents</span>();</span><br><span class="line">	<span class="keyword">if</span>(Combat)</span><br><span class="line">	&#123;</span><br><span class="line">		Combat-&gt;Character = <span class="keyword">this</span>;<span class="comment">//在请求初始化组件函数中设定了 CombatComponent组件中Character变量的值是谁.</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>说了这么多，我们来看下Combat-&gt;EquipWeapon()函数的实现</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCombatComponent::EquipWeapon</span><span class="params">(AWeapon* WeaponToEquip)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (Character == <span class="literal">nullptr</span> || WeaponToEquip == <span class="literal">nullptr</span>) <span class="keyword">return</span>;</span><br><span class="line">	EquippedWeapon = WeaponToEquip;</span><br><span class="line">	EquippedWeapon-&gt;<span class="built_in">SetWeaponState</span>(EWeaponState::EWS_Equipped);</span><br><span class="line">	<span class="comment">//关闭模拟物理</span></span><br><span class="line">	EquippedWeapon-&gt;<span class="built_in">GetWeaponMesh</span>()-&gt;<span class="built_in">SetSimulatePhysics</span>(<span class="literal">false</span>);</span><br><span class="line">	<span class="comment">//关闭重力</span></span><br><span class="line">	EquippedWeapon-&gt;<span class="built_in">GetWeaponMesh</span>()-&gt;<span class="built_in">SetEnableGravity</span>(<span class="literal">false</span>);</span><br><span class="line">	EquippedWeapon-&gt;<span class="built_in">GetWeaponMesh</span>()-&gt;<span class="built_in">SetCollisionEnabled</span>(ECollisionEnabled::NoCollision); <span class="comment">// 关闭碰撞检测</span></span><br><span class="line"><span class="type">const</span> USkeletalMeshSocket * HandSocket =  Character-&gt;<span class="built_in">GetMesh</span>()-&gt;<span class="built_in">GetSocketByName</span>(<span class="built_in">FName</span>(<span class="string">&quot;RightHandSocket&quot;</span>));</span><br><span class="line"><span class="keyword">if</span>(HandSocket)</span><br><span class="line">&#123;</span><br><span class="line">	HandSocket-&gt;<span class="built_in">AttachActor</span>(EquippedWeapon, Character-&gt;<span class="built_in">GetMesh</span>()); <span class="comment">//在插槽上将武器附加到身体上</span></span><br><span class="line">&#125;</span><br><span class="line">EquippedWeapon-&gt;<span class="built_in">SetOwner</span>(Character);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样就成功在服务端上附加武器了！但是此时如果使用客户端拾取武器，从服务端观察的话，武器应该是成功的附加到了客户端角色的身上。但是从客户端自身或者其他的客户端来观察的话，可能武器的位置没动，即使武器被设为replicate，这是因为武器附加到角色身上的代码并没有在客户端执行。</p>
-<p>那么怎么在客户端也执行拾取代码呢？我们先给武器添加一个属性，叫武器状态</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UENUM</span>(BlueprintType)</span><br><span class="line"><span class="keyword">enum class</span> <span class="title class_">EWeaponState</span> : uint8</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function">EWS_Initial <span class="title">UMETA</span><span class="params">(DisplayName = <span class="string">&quot;Initial State&quot;</span>)</span>,</span></span><br><span class="line"><span class="function">	EWS_Equipped <span class="title">UMETA</span><span class="params">(DisplayName = <span class="string">&quot;Equipped State&quot;</span>)</span>,</span></span><br><span class="line"><span class="function">	EWS_Dropped <span class="title">UMETA</span><span class="params">(DisplayName = <span class="string">&quot;Dropped State&quot;</span>)</span>,</span></span><br><span class="line"><span class="function">EWS_Max <span class="title">UMETA</span><span class="params">(DisplayName = <span class="string">&quot;Max&quot;</span>)</span>,</span></span><br><span class="line"><span class="function">&#125;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>那么剩下的事情其实就简单了，给武器状态属性添加属性复制，每次武器状态发生改变的时候调用RepNotify回调函数，在回调函数上执行武器相关的操作，而且RepNotify是只能在Server发出，在Client上执行的，且在Server上不执行，所以之前要在Combat-&gt;EquipWeapon函数中执行一次拾取武器的操作。接下来看一下如何设置OnRep，先给WeaponState属性注册一下复制</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AWeapon::GetLifetimeReplicatedProps</span><span class="params">(TArray&lt;FLifetimeProperty&gt;&amp; OutLifetimeProps)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Super::<span class="built_in">GetLifetimeReplicatedProps</span>(OutLifetimeProps);</span><br><span class="line">	<span class="built_in">DOREPLIFETIME</span>(AWeapon, WeaponState);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>：</span><br><span class="line"><span class="built_in">UPROPERTY</span>(ReplicatedUsing= OnRep_WeaponState, VisibleAnywhere, Category = <span class="string">&quot;Weapon Properties&quot;</span>)</span><br><span class="line">EWeaponState WeaponState;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UFUNCTION</span>()</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">OnRep_WeaponState</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
-
-<p>下面是OnRep_WeaponState()的实现：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AWeapon::OnRep_WeaponState</span><span class="params">()</span><span class="comment">//处理武器不同状态时客户端武器的物理效果</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ABlasterCharacter* BlasterCharacter = <span class="built_in">Cast</span>&lt;ABlasterCharacter&gt;(<span class="built_in">GetOwner</span>());</span><br><span class="line">	<span class="type">const</span> USkeletalMeshSocket* HandSocket = BlasterCharacter ? BlasterCharacter-&gt;<span class="built_in">GetMesh</span>()-&gt;<span class="built_in">GetSocketByName</span>(<span class="built_in">FName</span>(<span class="string">&quot;RightHandSocket&quot;</span>)) : <span class="literal">nullptr</span>;</span><br><span class="line">	<span class="keyword">switch</span> (WeaponState)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> EWeaponState::EWS_Initial:</span><br><span class="line">		<span class="built_in">ShowPickupWidget</span>(<span class="literal">false</span>);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span>  EWeaponState::EWS_Equipped :</span><br><span class="line">		<span class="built_in">ShowPickupWidget</span>(<span class="literal">false</span>);</span><br><span class="line">		<span class="comment">//关闭模拟物理</span></span><br><span class="line">		WeaponMesh-&gt;<span class="built_in">SetSimulatePhysics</span>(<span class="literal">false</span>);</span><br><span class="line">		<span class="comment">//关闭重力</span></span><br><span class="line">		WeaponMesh-&gt;<span class="built_in">SetEnableGravity</span>(<span class="literal">false</span>);</span><br><span class="line">		WeaponMesh-&gt;<span class="built_in">SetCollisionEnabled</span>(ECollisionEnabled::NoCollision); <span class="comment">// 关闭碰撞检测</span></span><br><span class="line">		<span class="keyword">if</span> (HandSocket &amp;&amp; BlasterCharacter)<span class="comment">//!!!踩了一天的坑，服务端附加了客户端也得附加</span></span><br><span class="line">		&#123;</span><br><span class="line">			HandSocket-&gt;<span class="built_in">AttachActor</span>(<span class="keyword">this</span>, BlasterCharacter-&gt;<span class="built_in">GetMesh</span>()); <span class="comment">//在插槽上将武器附加到身体上</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> EWeaponState::EWS_Dropped :</span><br><span class="line">	<span class="comment">//相关业务逻辑</span></span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>那么到此，关于拾取武器和同步的部分就完成了，希望以后看到这段代码我能轻点骂自己。</p>
-<p>最后的实现效果：</p>
-<img src="/2023/04/18/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%974-%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230418234250851.png" class="">
-
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%974-%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230418234250851.png" alt="image-20230418234250851"></p>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%976-%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419234602363.png" alt="image-20230419234602363"></p>
 
                 
             </div>
@@ -468,7 +448,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://backfire935.github.io/2023/04/18/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%974-%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">https://backfire935.github.io/2023/04/18/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%974-%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/</a>
+                    <a href="https://backfire935.github.io/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%976-%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/">https://backfire935.github.io/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%976-%E5%88%87%E6%8D%A2%E4%BA%BA%E7%A7%B0%E5%92%8C%E8%A7%86%E8%A7%92%E6%97%8B%E8%BD%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E5%90%8C%E6%AD%A5/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -586,13 +566,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%975-%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">
+                <a href="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%977-%E6%B7%B7%E5%90%88%E4%BA%BA%E7%A7%B0%E7%9A%84%E6%9D%90%E8%B4%A8%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%90%8C%E6%AD%A5-%E8%BA%AF%E5%B9%B2%E9%80%8F%E6%98%8E%E6%9C%89%E5%BD%B1%E5%AD%90/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="丢弃武器的同步">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="同步系列7-混合人称的材质设置和同步(躯干透明有影子)">
                         
-                        <span class="card-title">丢弃武器的同步</span>
+                        <span class="card-title">同步系列7-混合人称的材质设置和同步(躯干透明有影子)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -603,7 +583,7 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
                         </span>
                         <span class="publish-author">
                             
@@ -623,13 +603,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/20/%E5%8F%8C%E6%A8%A1%E5%9E%8BFPS%E5%AD%A6%E4%B9%A0/">
+                <a href="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%975-%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="双模型FPS学习">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="同步系列5-丢弃武器的同步">
                         
-                        <span class="card-title">双模型FPS学习</span>
+                        <span class="card-title">同步系列5-丢弃武器的同步</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -640,7 +620,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-20
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
                             </span>
                         <span class="publish-author">
                             
@@ -649,14 +629,6 @@
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/UE/">
-                        <span class="chip bg-color">UE</span>
-                    </a>
-                    
                 </div>
                 
             </div>

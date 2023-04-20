@@ -4,11 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="丢弃武器的同步, UE C++">
-    <meta name="description" content="项目仓库地址：https://github.com/Backfire935/BlasterAgain
-之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。
-首先还是输入绑定，没啥好说的
-12//按G丢弃武器EnhancedInput">
+    <meta name="keywords" content="同步系列2-玩家姓名的同步, UE C++">
+    <meta name="description" content="游戏角色在游戏开始后在头上显示自己的名字，方便玩家辨认队友，这个名字可以由玩家自己设置
+12UPROPERTY(EditAnywhere, Category = &amp;quot;Player Name&amp;quot;)		FString Local">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>丢弃武器的同步 | 李清水的笔记本</title>
+    <title>同步系列2-玩家姓名的同步 | 李清水的笔记本</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -337,12 +335,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">丢弃武器的同步</h1>
+                    <h1 class="description center-align post-title">同步系列2-玩家姓名的同步</h1>
                 </div>
             </div>
         </div>
@@ -378,7 +376,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-04-19
+                    2023-04-20
                 </div>
                 
 
@@ -399,50 +397,36 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>项目仓库地址：<a target="_blank" rel="noopener" href="https://github.com/Backfire935/BlasterAgain">https://github.com/Backfire935/BlasterAgain</a></p>
-<p>之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。</p>
-<p>首先还是输入绑定，没啥好说的</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//按G丢弃武器</span></span><br><span class="line">EnhancedInputComponent-&gt;<span class="built_in">BindAction</span>(IA_DropWeapon, ETriggerEvent::Triggered, <span class="keyword">this</span>, &amp;ABlasterCharacter::InputDropWeapon);</span><br></pre></td></tr></table></figure>
+                <p>游戏角色在游戏开始后在头上显示自己的名字，方便玩家辨认队友，这个名字可以由玩家自己设置</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, Category = <span class="string">&quot;Player Name&quot;</span>)</span><br><span class="line">		FString LocalPlayerName = <span class="built_in">TEXT</span>(<span class="string">&quot;Unknown Player&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<p>来看InputDropWeapon函数：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::InputDropWeapon</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (Combat)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">HasAuthority</span>())</span><br><span class="line">		&#123;</span><br><span class="line">			Combat-&gt;<span class="built_in">DropWeapon</span>();<span class="comment">//如果就在Server上就直接执行</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">ServerDropButtonPressed</span>();<span class="comment">//不然就执行RPC  </span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在角色蓝图中设置玩家姓名，我这里是在蓝图中直接设置的，后面也可以放给UI让玩家在进入游戏之前自己设置自己的名字或者后面加入账号功能后跟账号绑定。</p>
+<img src="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419225939177.png" class="">
 
-<p>老样子，首先判断下Combat组件是否存在，之后如果是Server端按下了丢弃按钮，直接去调Combat-&gt;DropWeapon()函数处理丢弃武器的业务逻辑。如果是Client按下了丢弃按钮，则执行ServerRPC，ServerDropButtonPressed()在服务端执行，然后由服务端通过WeaponState的属性复制后的RepNotify回调来在客户端执行丢弃的逻辑。这样所有的玩家才都能看到武器被之前拥有武器的玩家正常的丢弃，</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ServerDropButtonPressed_Implementation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//反正只在服务端调用，不用写HasAuthority </span></span><br><span class="line">	<span class="keyword">if</span> (Combat)</span><br><span class="line">	&#123;</span><br><span class="line">		Combat-&gt;<span class="built_in">DropWeapon</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419225939177.png" alt="image-20230419225939177"></p>
+<p>直接放最后运行的效果</p>
+<img src="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419230147754.png" class="">
 
-<p>又回到了熟悉的Combat-&gt;DropWeapon();Combat是啥我在<a href="https://backfire935.github.io/2023/04/18/%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">拾取武器的同步</a>中一节有讲：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCombatComponent::DropWeapon</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (EquippedWeapon)<span class="comment">//如果武器存在</span></span><br><span class="line">	&#123;</span><br><span class="line">		EquippedWeapon-&gt;<span class="built_in">Dropped</span>();<span class="comment">//如果已经装备了一件武器，就丢掉手上的</span></span><br><span class="line">		EquippedWeapon-&gt;<span class="built_in">SetOwner</span>(<span class="literal">nullptr</span>);<span class="comment">//将拥有者设置为空</span></span><br><span class="line">		EquippedWeapon = <span class="literal">nullptr</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419230147754.png" alt="image-20230419230147754"></p>
+<p>在BeginPlay中再初始化玩家名称是为了等角色所有的信息都加载好了比如控制器，避免无效。用到了两个函数，老样子一个ServerRPC一个ClientRPC。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::BeginPlay</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Super::<span class="built_in">BeginPlay</span>();</span><br><span class="line">	<span class="built_in">ServerSetPlayerName</span>(LocalPlayerName);</span><br><span class="line">	<span class="built_in">ServerSetMaterial</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UFUNCTION</span>(Client, Reliable)</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">ClientSetName</span><span class="params">(<span class="type">const</span> FString&amp; Name)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UFUNCTION</span>(Server, Reliable)</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">ServerSetPlayerName</span><span class="params">(<span class="type">const</span> FString&amp; PlayerName)</span></span>;</span><br></pre></td></tr></table></figure>
 
-<p>这里将EquippedWeapon的拥有者设为空，注意SetOnwer函数自动复制的，详见其实现：</p>
-<img src="/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%975-%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" class="">
+<p>两个函数都是用const FString&amp;传参，减少一次拷贝构造的消耗，来看具体实现。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ServerSetPlayerName_Implementation</span><span class="params">(<span class="type">const</span> FString&amp; PlayerName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	APlayerController* PlayerController = <span class="built_in">Cast</span>&lt;APlayerController&gt;(<span class="built_in">GetController</span>());</span><br><span class="line">	<span class="keyword">if</span> (PlayerController)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 在服务端设置玩家名称 Set player name in server</span></span><br><span class="line">		PlayerController-&gt;PlayerState-&gt;<span class="built_in">SetPlayerName</span>(PlayerName);</span><br><span class="line">		<span class="comment">// 调用ClientSetPlayerName函数在客户端设置玩家名称 use ClientSetPlayerName to set player name in client </span></span><br><span class="line">		<span class="built_in">ClientSetName</span>(PlayerName);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%975-%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093006345.png" alt="image-20230419093006345"></p>
-<p>然后EquippedWeapon指针置空，之后进入Weapon类的Dropped函数：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AWeapon::Dropped</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">SetWeaponState</span>(EWeaponState::EWS_Dropped);<span class="comment">//先将此件武器的状态的设为丢弃状态</span></span><br><span class="line">	<span class="built_in">ServerDropWeapon</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过调用控制器的玩家状态的设置玩家姓名函数，传入玩家名字，同理客户端也是，注释部分有解释。ClientRPC部分如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::ClientSetName_Implementation</span><span class="params">(<span class="type">const</span> FString&amp; Name)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//设置玩家名称 Set Player Name</span></span><br><span class="line">	APlayerController* PlayerController = <span class="built_in">Cast</span>&lt;APlayerController&gt;(<span class="built_in">GetController</span>());</span><br><span class="line">	<span class="keyword">if</span> (PlayerController-&gt;PlayerState)</span><br><span class="line">	&#123;</span><br><span class="line">		PlayerController-&gt;PlayerState-&gt;<span class="built_in">SetPlayerName</span>(Name);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>这里一个第一个是设置武器当前的状态，这样一会通过WeaponState的属性赋值就可以调用在客户端上的回调，第二个就是直接在服务端执行丢弃操作了；</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AWeapon::ServerDropWeapon_Implementation</span><span class="params">()</span><span class="comment">//这个用来处理Server端武器的掉落效果，客户端的效果由WeaponState触发的OnRep_WeaponState完成</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">FDetachmentTransformRules <span class="title">DetachRules</span><span class="params">(EDetachmentRule::KeepWorld, <span class="literal">true</span>)</span></span>;<span class="comment">//这个变量是解绑组件的规则，参数意思是自动计算相对转换，以便分离组件维护相同的世界转换。</span></span><br><span class="line">	WeaponMesh-&gt;<span class="built_in">DetachFromComponent</span>(DetachRules);<span class="comment">//不论组件被附加到什么上面都会拆下来，自动解绑被绑在一起的组件</span></span><br><span class="line">	<span class="comment">//开启模拟物理</span></span><br><span class="line">	WeaponMesh-&gt;<span class="built_in">SetSimulatePhysics</span>(<span class="literal">true</span>);</span><br><span class="line">	WeaponMesh-&gt;<span class="built_in">SetLinearDamping</span>(LinearDamping);</span><br><span class="line">	WeaponMesh-&gt;<span class="built_in">SetAngularDamping</span>(AngularDamping);</span><br><span class="line">	WeaponMesh-&gt;<span class="built_in">SetCollisionEnabled</span>(ECollisionEnabled::QueryAndPhysics); <span class="comment">// 启用碰撞检测和物理模拟</span></span><br><span class="line">	<span class="comment">//开启重力</span></span><br><span class="line">	WeaponMesh-&gt;<span class="built_in">SetEnableGravity</span>(<span class="literal">true</span>);</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么这样就可以实现开局同步玩家姓名的功能了。光说同步差点忘了说在哪显示了…因为显示都是在用户界面上操作的，你建好你自己的Widet类，然后加上这个：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UOverheadWidget::ShowPlayerName</span><span class="params">(APawn *InPawn)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">APlayerState* PlayerState = InPawn-&gt;<span class="built_in">GetPlayerState</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取玩家名字</span></span><br><span class="line"><span class="keyword">if</span> ( PlayerState != <span class="literal">nullptr</span>)</span><br><span class="line">&#123;</span><br><span class="line">	FString PlayerName = PlayerState-&gt;<span class="built_in">GetPlayerName</span>();</span><br><span class="line">	<span class="comment">// 这里可以根据需要将 FString 转换为 std::string 或其他类型</span></span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	FString LocalRoleString = FString::<span class="built_in">Printf</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;%s&quot;</span>), *PlayerName);</span><br><span class="line">	<span class="built_in">SetDisplayText</span>(LocalRoleString);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>而在SetWeaponState中，我们设置武器新的状态。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AWeapon::SetWeaponState</span><span class="params">(EWeaponState State)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	WeaponState = State;</span><br><span class="line"><span class="keyword">switch</span> (WeaponState)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">case</span> EWeaponState::EWS_Initial:</span><br><span class="line">	<span class="built_in">ShowPickupWidget</span>(<span class="literal">false</span>);</span><br><span class="line">	AreaSphere-&gt;<span class="built_in">SetCollisionEnabled</span>(ECollisionEnabled::QueryAndPhysics);</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span>  EWeaponState::EWS_Equipped:</span><br><span class="line">	<span class="built_in">ShowPickupWidget</span>(<span class="literal">false</span>);</span><br><span class="line">	AreaSphere-&gt;<span class="built_in">SetCollisionEnabled</span>(ECollisionEnabled::NoCollision);</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> EWeaponState::EWS_Dropped:</span><br><span class="line">	<span class="built_in">ShowPickupWidget</span>(<span class="literal">false</span>);</span><br><span class="line">	AreaSphere-&gt;<span class="built_in">SetCollisionEnabled</span>(ECollisionEnabled::QueryAndPhysics);</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>那么最后一步，RepNotify回调：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="built_in">UPROPERTY</span>(ReplicatedUsing= OnRep_WeaponState, VisibleAnywhere, Category = <span class="string">&quot;Weapon Properties&quot;</span>)</span><br><span class="line">EWeaponState WeaponState;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UFUNCTION</span>()</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">OnRep_WeaponState</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>这个是用来显示最后的玩家姓名的，或许我应该设置个保底…</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UOverheadWidget::ShowPlayerName</span><span class="params">(APawn *InPawn)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">APlayerState* PlayerState = InPawn-&gt;<span class="built_in">GetPlayerState</span>();</span><br><span class="line"><span class="comment">// 获取玩家名字</span></span><br><span class="line"><span class="keyword">if</span> ( PlayerState != <span class="literal">nullptr</span>)</span><br><span class="line">&#123;</span><br><span class="line">	FString PlayerName = PlayerState-&gt;<span class="built_in">GetPlayerName</span>();</span><br><span class="line">	<span class="comment">// 这里可以根据需要将 FString 转换为 std::string 或其他类型</span></span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	FString LocalRoleString = FString::<span class="built_in">Printf</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;%s&quot;</span>), *PlayerName);</span><br><span class="line">	<span class="built_in">SetDisplayText</span>(LocalRoleString);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">	FString LocalRoleString = FString::<span class="built_in">Printf</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;Unknown Player&quot;</span>));</span><br><span class="line">	<span class="built_in">SetDisplayText</span>(LocalRoleString);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AWeapon::OnRep_WeaponState</span><span class="params">()</span><span class="comment">//处理武器不同状态时客户端武器的物理效果</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ABlasterCharacter* BlasterCharacter = <span class="built_in">Cast</span>&lt;ABlasterCharacter&gt;(<span class="built_in">GetOwner</span>());</span><br><span class="line">	<span class="type">const</span> USkeletalMeshSocket* HandSocket = BlasterCharacter ? BlasterCharacter-&gt;<span class="built_in">GetMesh</span>()-&gt;<span class="built_in">GetSocketByName</span>(<span class="built_in">FName</span>(<span class="string">&quot;RightHandSocket&quot;</span>)) : <span class="literal">nullptr</span>;</span><br><span class="line">	<span class="keyword">switch</span> (WeaponState)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> EWeaponState::EWS_Initial:</span><br><span class="line">		<span class="built_in">ShowPickupWidget</span>(<span class="literal">false</span>);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span>  EWeaponState::EWS_Equipped :</span><br><span class="line">		<span class="comment">//相关逻辑</span></span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> EWeaponState::EWS_Dropped :</span><br><span class="line">		<span class="built_in">ShowPickupWidget</span>(<span class="literal">false</span>);</span><br><span class="line">		<span class="function">FDetachmentTransformRules <span class="title">DetachRules</span><span class="params">(EDetachmentRule::KeepWorld, <span class="literal">true</span>)</span></span>;<span class="comment">//这个变量是解绑组件的规则，参数意思是自动计算相对转换，以便分离组件维护相同的世界转换。</span></span><br><span class="line">		WeaponMesh-&gt;<span class="built_in">DetachFromComponent</span>(DetachRules);<span class="comment">//不论组件被附加到什么上面都会拆下来，自动解绑被绑在一起的组件</span></span><br><span class="line">		<span class="comment">//开启模拟物理</span></span><br><span class="line">		WeaponMesh-&gt;<span class="built_in">SetSimulatePhysics</span>(<span class="literal">true</span>);</span><br><span class="line">		WeaponMesh-&gt;<span class="built_in">SetLinearDamping</span>(LinearDamping);</span><br><span class="line">		WeaponMesh-&gt;<span class="built_in">SetAngularDamping</span>(AngularDamping);</span><br><span class="line">		WeaponMesh-&gt;<span class="built_in">SetCollisionEnabled</span>(ECollisionEnabled::QueryAndPhysics); <span class="comment">// 启用碰撞检测和物理模拟</span></span><br><span class="line">		<span class="comment">//开启重力</span></span><br><span class="line">		WeaponMesh-&gt;<span class="built_in">SetEnableGravity</span>(<span class="literal">true</span>);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就算没能拿到玩家姓名也能设置个未知玩家在头上摆着。最后在角色蓝图里调一下就行。</p>
+<img src="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419231922218.png" class="">
 
-<p>这样子玩家就可以在所有的客户端和服务单上正常执行丢弃武器的操作了，配合<a href="https://backfire935.github.io/2023/04/18/%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">拾取武器的同步</a>就可以正常的拾取丢弃再拾取了。</p>
-<img src="/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%975-%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" class="">
-
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%975-%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419093726007.png" alt="image-20230419093726007"></p>
-<p>（补充）2023年4月19日12:15:10</p>
-<p>写前面的内容的时候我想到一个问题，就是Combat的EquippedWeapon，关于它的属性设置都是由角色类调Combat中的函数来设置的，而角色类中调用Combat的函数都是只在服务端执行的，而Combat组件并未开启复制，换句话说，按理说EquippedWeapon的属性在修改后只是在服务端修改，在客户端是不生效的，但实际上生效了。比如这段</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCombatComponent::DropWeapon</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (EquippedWeapon)<span class="comment">//如果武器存在</span></span><br><span class="line">	&#123;</span><br><span class="line">		EquippedWeapon-&gt;<span class="built_in">Dropped</span>();<span class="comment">//如果已经装备了一件武器，就丢掉手上的</span></span><br><span class="line">		EquippedWeapon-&gt;<span class="built_in">SetOwner</span>(<span class="literal">nullptr</span>);<span class="comment">//将拥有者设置为空</span></span><br><span class="line">		EquippedWeapon = <span class="literal">nullptr</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段我认为EquippedWeapon &#x3D; nullptr;是只在服务端发生的，也就是说客户端丢掉武器后指针没有置空，实际可能武器脱离附加在角色身上后仍然能够开火，但这个bug并没有发生，这让我开始寻找。</p>
-<p>直到我看到了EquippedWeapon的定义</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">UPROPERTY</span>(Replicated)</span><br><span class="line">	 AWeapon* EquippedWeapon;</span><br></pre></td></tr></table></figure>
-
-<p>UE网络细节真的多…..</p>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/image-20230419231922218.png" alt="image-20230419231922218"></p>
 
                 
             </div>
@@ -469,7 +453,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://backfire935.github.io/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%975-%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">https://backfire935.github.io/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%975-%E4%B8%A2%E5%BC%83%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/</a>
+                    <a href="https://backfire935.github.io/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/">https://backfire935.github.io/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -587,13 +571,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/04/19/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%972-%E7%8E%A9%E5%AE%B6%E5%A7%93%E5%90%8D%E7%9A%84%E5%90%8C%E6%AD%A5/">
+                <a href="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%973-%E6%AD%A6%E5%99%A8%E6%8B%BE%E5%8F%96HUD%E6%98%BE%E7%A4%BA%E6%88%96%E9%9A%90%E8%97%8F%E7%9A%84%E5%90%8C%E6%AD%A5/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="玩家姓名的同步">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="同步系列3-武器拾取HUD显示或隐藏的同步">
                         
-                        <span class="card-title">玩家姓名的同步</span>
+                        <span class="card-title">同步系列3-武器拾取HUD显示或隐藏的同步</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -604,7 +588,7 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
                         </span>
                         <span class="publish-author">
                             
@@ -624,13 +608,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/04/18/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%974-%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">
+                <a href="/2023/03/20/%E5%8F%8C%E6%A8%A1%E5%9E%8BFPS%E5%AD%A6%E4%B9%A0/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="拾取武器的同步">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="双模型FPS学习">
                         
-                        <span class="card-title">拾取武器的同步</span>
+                        <span class="card-title">双模型FPS学习</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -641,7 +625,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-20
                             </span>
                         <span class="publish-author">
                             
@@ -650,6 +634,14 @@
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/UE/">
+                        <span class="chip bg-color">UE</span>
+                    </a>
+                    
                 </div>
                 
             </div>
