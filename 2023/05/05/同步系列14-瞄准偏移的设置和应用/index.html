@@ -4,9 +4,16 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="同步系列12-武器瞄准后不同动画状态下的速度同步, UE C++">
-    <meta name="description" content="实现在奔跑、行走、下蹲三种状态下，举起武器瞄准和放下武器移动六种速度的切换和同步。先设置好六种速度。
-1234567891011121314151617UPROPERTY(BlueprintReadWrite,EditAnywhere, C">
+    <meta name="keywords" content="同步系列14-瞄准偏移的设置和应用, UE C++">
+    <meta name="description" content="要让角色持有武器的时候上半身枪随鼠标的偏移走，需要创建瞄准偏移动画。因为我这里的角色分为手持和瞄准两种动画状态，所以需要创建两个瞄准偏移，先创建手持的。
+
+
+
+选择我们角色所使用的骨骼后就能创建成功。
+
+
+
+复制九份Aim_Space_Hi">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +25,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>同步系列12-武器瞄准后不同动画状态下的速度同步 | 李清水的笔记本</title>
+    <title>同步系列14-瞄准偏移的设置和应用 | 李清水的笔记本</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -335,12 +342,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">同步系列12-武器瞄准后不同动画状态下的速度同步</h1>
+                    <h1 class="description center-align post-title">同步系列14-瞄准偏移的设置和应用</h1>
                 </div>
             </div>
         </div>
@@ -376,7 +383,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-05-02
+                    2023-05-05
                 </div>
                 
 
@@ -397,37 +404,44 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>实现在奔跑、行走、下蹲三种状态下，举起武器瞄准和放下武器移动六种速度的切换和同步。先设置好六种速度。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadWrite,EditAnywhere, Category = <span class="string">&quot;Speed&quot;</span>)</span><br><span class="line">    <span class="type">float</span> RunSpeed = <span class="number">437.5f</span>;*<span class="comment">//**奔跑速度</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadWrite,EditAnywhere, Category = <span class="string">&quot;Speed&quot;</span>)</span><br><span class="line">    <span class="type">float</span> RunAimSpeed = <span class="number">337.5f</span>;*<span class="comment">//**奔跑瞄准速度</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadWrite,EditAnywhere, Category = <span class="string">&quot;Speed&quot;</span>)</span><br><span class="line">    <span class="type">float</span> WalkSpeed = <span class="number">210.f</span>;*<span class="comment">//**行走速度</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadWrite,EditAnywhere, Category = <span class="string">&quot;Speed&quot;</span>)</span><br><span class="line">    <span class="type">float</span> WalkAimSpeed = <span class="number">180.f</span>;*<span class="comment">//**行走瞄准速度</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadWrite,EditAnywhere, Category = <span class="string">&quot;Speed&quot;</span>)</span><br><span class="line">    <span class="type">float</span> CrouchSpeed = <span class="number">180.f</span>;*<span class="comment">//**下蹲速度</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadWrite,EditAnywhere, Category = <span class="string">&quot;Speed&quot;</span>)</span><br><span class="line">    <span class="type">float</span> CrouchAimSpeed = <span class="number">150.f</span>;*<span class="comment">//**下蹲瞄准速度</span></span><br></pre></td></tr></table></figure>
+                <p>要让角色持有武器的时候上半身枪随鼠标的偏移走，需要创建瞄准偏移动画。因为我这里的角色分为手持和瞄准两种动画状态，所以需要创建两个瞄准偏移，先创建手持的。</p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113458975.png" class="">
 
-<p>然后是瞄准的按键输入：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::InputAimingPressed</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (CombatComp)</span><br><span class="line">    &#123;</span><br><span class="line">       CombatComp-&gt;<span class="built_in">SetAiming</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::InputAimingReleased</span><span class="params">(<span class="type">const</span> FInputActionValue&amp; InputValue)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (CombatComp)</span><br><span class="line">    &#123;</span><br><span class="line">       CombatComp-&gt;<span class="built_in">SetAiming</span>(<span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113458975.png" alt="image-20230505113458975"></p>
+<p>选择我们角色所使用的骨骼后就能创建成功。</p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113653457.png" class="">
 
-<p>之后是跳转到CombatComp组件中进行控制：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCombatComponent::SetAiming</span><span class="params">(<span class="type">bool</span> bIsAiming)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    bAiming = bIsAiming;</span><br><span class="line">    <span class="built_in">ServerSetAiming</span>(bAiming);</span><br><span class="line">    <span class="keyword">if</span>(Character &amp;&amp; bAiming)<span class="comment">//是否在瞄准</span></span><br><span class="line">    &#123;</span><br><span class="line">       <span class="keyword">if</span>(Character-&gt;<span class="built_in">GetIsCrouch</span>())<span class="comment">//是否在下蹲</span></span><br><span class="line">       &#123;</span><br><span class="line">          Character-&gt;<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeedCrouched = Character-&gt;<span class="built_in">GetCrouchAimSpeed</span>();<span class="comment">//设置成下蹲瞄准的速度</span></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span><span class="comment">//站着</span></span><br><span class="line">       &#123;</span><br><span class="line">             Character-&gt;<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeed = Character-&gt;<span class="built_in">GetIsRunning</span>() ? Character-&gt;<span class="built_in">GetRunAimSpeed</span>() : Character-&gt;<span class="built_in">GetWalkAimSpeed</span>();<span class="comment">//是不是在奔跑 是设置成奔跑瞄准的速度  不是设置成行走瞄准的速度</span></span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(Character &amp;&amp; !bAiming)<span class="comment">//不再瞄准了</span></span><br><span class="line">    &#123;</span><br><span class="line">       <span class="keyword">if</span> (Character-&gt;<span class="built_in">GetIsCrouch</span>())<span class="comment">//在下蹲</span></span><br><span class="line">       &#123;</span><br><span class="line">          Character-&gt;<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeedCrouched = Character-&gt;<span class="built_in">GetCrouchSpeed</span>();<span class="comment">//恢复成下蹲的行走速度</span></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span><span class="comment">//站着</span></span><br><span class="line">       &#123;</span><br><span class="line">             Character-&gt;<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeed = Character-&gt;<span class="built_in">GetIsRunning</span>() ? Character-&gt;<span class="built_in">GetRunSpeed</span>() : Character-&gt;<span class="built_in">GetWalkSpeed</span>();<span class="comment">//是不是在奔跑，是设置成奔跑的速度 不是设置成行走的速度</span></span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCombatComponent::ServerSetAiming_Implementation</span><span class="params">(<span class="type">bool</span> bIsAiming)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    bAiming = bIsAiming;</span><br><span class="line">    <span class="keyword">if</span> (Character &amp;&amp; bAiming)<span class="comment">//是否在瞄准</span></span><br><span class="line">    &#123;</span><br><span class="line">       <span class="keyword">if</span> (Character-&gt;<span class="built_in">GetIsCrouch</span>())<span class="comment">//是否在下蹲</span></span><br><span class="line">       &#123;</span><br><span class="line">          Character-&gt;<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeedCrouched = Character-&gt;<span class="built_in">GetCrouchAimSpeed</span>();<span class="comment">//设置成下蹲瞄准的速度</span></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span><span class="comment">//站着</span></span><br><span class="line">       &#123;</span><br><span class="line">          Character-&gt;<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeed = Character-&gt;<span class="built_in">GetIsRunning</span>() ? Character-&gt;<span class="built_in">GetRunAimSpeed</span>() : Character-&gt;<span class="built_in">GetWalkAimSpeed</span>();<span class="comment">//是不是在奔跑 是设置成奔跑瞄准的速度  不是设置成行走瞄准的速度</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (Character &amp;&amp; !bAiming)不再瞄准了</span><br><span class="line">    &#123;</span><br><span class="line">       <span class="keyword">if</span> (Character-&gt;<span class="built_in">GetIsCrouch</span>())在下蹲</span><br><span class="line">       &#123;</span><br><span class="line">          Character-&gt;<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeedCrouched = Character-&gt;<span class="built_in">GetCrouchSpeed</span>();<span class="comment">//恢复成下蹲的行走速度</span></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span><span class="comment">//站着</span></span><br><span class="line">       &#123;</span><br><span class="line">          Character-&gt;<span class="built_in">GetCharacterMovement</span>()-&gt;MaxWalkSpeed = Character-&gt;<span class="built_in">GetIsRunning</span>() ? Character-&gt;<span class="built_in">GetRunSpeed</span>() : Character-&gt;<span class="built_in">GetWalkSpeed</span>();<span class="comment">//是不是在奔跑，是设置成奔跑的速度 不是设置成行走的速度</span></span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113653457.png" alt="image-20230505113653457"></p>
+<p>复制九份Aim_Space_Hip的动画，进去后调整到想要的动画帧数，右键红色的指针，移除指定帧之前的帧以及之后的帧，只保留当前姿势的帧。保存后就可以按如下格式命名：</p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113941790.png" class="">
 
-<p>然后我们在蓝图中看一下角色的速度是否会跟着发生改变。可以在蓝图中写一个函数连接tick来查看角色当前的速度</p>
-<img src="/2023/05/02/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123344145.png" class="">
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113941790.png" alt="image-20230505113941790"></p>
+<p>其中AO_Zero是AO_CC姿势的复制，用作设置为附加动画的基础姿势。其他所有的动画在附加设置那里设置动画类型为网格体空间，基础姿势类型为选择的动画帧，基础姿势动画选择为刚刚复制的AO_zero。这样九个方向的持枪动画就能用了。同理，瞄准动画的瞄准偏移也按照这种方法做，以最后做出来九个方向的瞄准动画和一个基础姿势动画，别忘了个九个瞄准动画添加基础姿势。</p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505114400339.png" class="">
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123344145.png" alt="image-20230502123344145"></p>
-<p>随后运行游戏</p>
-<p>行走未举枪</p>
-<img src="/2023/05/02/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123418918.png" class="">
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505114400339.png" alt="image-20230505114400339"></p>
+<p>在之前创建的两张瞄准偏移中添加对应的动画：</p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115102033.png" class="">
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123418918.png" alt="image-20230502123418918"></p>
-<p>&#x2F;&#x2F;行走举枪</p>
-<img src="/2023/05/02/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123436001.png" class="">
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115102033.png" alt="image-20230505115102033"></p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115034873.png" class="">
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123436001.png" alt="image-20230502123436001"></p>
-<p>&#x2F;&#x2F;冲刺未举枪</p>
-<img src="/2023/05/02/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123559858.png" class="">
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115034873.png" alt="image-20230505115034873"></p>
+<p>在前面的设置中横向和纵向我们设置了Yaw和Pitch，为了在动画蓝图中使用这两个值，需要在C++中获取。在角色的C++类中，添加</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AimOffset</span><span class="params">(<span class="type">float</span> DeltaTime)</span></span>;</span><br><span class="line"><span class="type">float</span> AO_Yaw;</span><br><span class="line"><span class="type">float</span> AO_Pitch;</span><br><span class="line">FRotator StartingAimRotation;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function">FORCEINLINE <span class="type">float</span> <span class="title">GetAO_Yaw</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> AO_Yaw;&#125;</span><br><span class="line"><span class="function">FORCEINLINE <span class="type">float</span> <span class="title">GetAO_Pitch</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> AO_Pitch;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::AimOffset</span><span class="params">(<span class="type">float</span> DeltaTime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(CombatComp &amp;&amp; CombatComp-&gt;EquippedWeapon == <span class="literal">nullptr</span>) <span class="keyword">return</span>;<span class="comment">//如果没这个组件或者手上没武器 是不需要执行这个函数的</span></span><br><span class="line">	AO_Pitch = <span class="built_in">GetBaseAimRotation</span>().Pitch;<span class="comment">//控制持枪动画的上下，不管是第一人称还是第三人称都需要</span></span><br><span class="line">	<span class="keyword">if</span>(AO_Pitch &gt; <span class="number">90.f</span> &amp;&amp; !<span class="built_in">IsLocallyControlled</span>())<span class="comment">//在网络传输过程中，Pitch会从float压缩成unsigned进行传输从而丢失正负，需要进行转换</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//将AO_Pitch从[270,360)映射到[-90,0];</span></span><br><span class="line">		<span class="function">FVector2D <span class="title">InRange</span><span class="params">(<span class="number">270.f</span>,<span class="number">360.f</span>)</span></span>;</span><br><span class="line">		<span class="function">FVector2d <span class="title">OutRange</span><span class="params">(<span class="number">-90.f</span>,<span class="number">0.f</span>)</span></span>;</span><br><span class="line">		AO_Pitch = FMath::<span class="built_in">GetMappedRangeValueClamped</span>(InRange,OutRange,AO_Pitch);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">IsFirstPerson</span>())<span class="comment">//第一人称枪在手，Yaw随鼠标走</span></span><br><span class="line">	&#123;</span><br><span class="line">		bUseControllerRotationYaw = <span class="literal">true</span>;</span><br><span class="line">		StartingAimRotation = <span class="built_in">FRotator</span>(<span class="number">0.f</span>, <span class="built_in">GetBaseAimRotation</span>().Yaw, <span class="number">0.f</span>);</span><br><span class="line">		AO_Yaw = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">		<span class="comment">//无需处理后面的</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//处理第三人称下的偏移</span></span><br><span class="line">	 FVector Velocity = <span class="built_in">GetVelocity</span>();</span><br><span class="line">	Velocity.Z = <span class="number">0.f</span>;</span><br><span class="line">	<span class="comment">//设置速度</span></span><br><span class="line">	 <span class="type">float</span> Speed = Velocity.<span class="built_in">Size</span>();</span><br><span class="line">	<span class="comment">//是否在空中</span></span><br><span class="line">	 <span class="type">bool</span> bIsInAir = <span class="built_in">GetCharacterMovement</span>()-&gt;<span class="built_in">IsFalling</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(Speed == <span class="number">0.f</span> &amp;&amp; !bIsInAir)<span class="comment">//静止状态没有跳跃</span></span><br><span class="line">	&#123;</span><br><span class="line">		 FRotator CurrentAimRotation = <span class="built_in">FRotator</span>(<span class="number">0.f</span>, <span class="built_in">GetBaseAimRotation</span>().Yaw, <span class="number">0.f</span>);</span><br><span class="line">		 FRotator DeltaAimRotation = UKismetMathLibrary::<span class="built_in">NormalizedDeltaRotator</span>(CurrentAimRotation,StartingAimRotation);</span><br><span class="line">		AO_Yaw = DeltaAimRotation.Yaw;</span><br><span class="line">		bUseControllerRotationYaw = <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(Speed &gt;<span class="number">0.f</span> || bIsInAir)<span class="comment">//奔跑或者跳跃</span></span><br><span class="line">	&#123;</span><br><span class="line">		StartingAimRotation = <span class="built_in">FRotator</span>(<span class="number">0.f</span>, <span class="built_in">GetBaseAimRotation</span>().Yaw, <span class="number">0.f</span>);</span><br><span class="line">		bUseControllerRotationYaw = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//AimOffset函数在Tick函数中调用</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123559858.png" alt="image-20230502123559858"></p>
-<p>&#x2F;&#x2F;冲刺举枪</p>
-<img src="/2023/05/02/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123617208.png" class="">
+<p>之后在动画实例的C++类中添加：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadOnly, Category = Anim, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line"><span class="type">float</span> AO_Yaw;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadOnly, Category = Anim, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line"><span class="type">float</span> AO_Pitch;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UBlasterAnimInstance::NativeUpdateAnimation</span><span class="params">(<span class="type">float</span> DeltaTime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	AO_Yaw = BlasterCharacter-&gt;<span class="built_in">GetAO_Yaw</span>();</span><br><span class="line">	AO_Pitch = BlasterCharacter-&gt;<span class="built_in">GetAO_Pitch</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/image-20230502123617208.png" alt="image-20230502123617208"></p>
-<p>下蹲的就不截图了，可以看得出来功能是正常的。</p>
+<p>随后在动画蓝图中创建AimOffset状态机<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505114848045.png" class=""></p>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505114848045.png" alt="image-20230505114848045"></p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115720118.png" class="">
+
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115720118.png" alt="image-20230505115720118"></p>
+<p>这样就做完了。可以看到玩家持有枪械的时候动画和瞄准的方向是一致的。关于瞄准时其它客户端Pitch的bug下一节说明。</p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115900332.png" class="">
+
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115900332.png" alt="image-20230505115900332"></p>
 
                 
             </div>
@@ -454,7 +468,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://backfire935.github.io/2023/05/02/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/">https://backfire935.github.io/2023/05/02/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9712-%E6%AD%A6%E5%99%A8%E7%9E%84%E5%87%86%E5%90%8E%E4%B8%8D%E5%90%8C%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E9%80%9F%E5%BA%A6%E5%90%8C%E6%AD%A5/</a>
+                    <a href="https://backfire935.github.io/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/">https://backfire935.github.io/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -568,9 +582,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="同步系列14-瞄准偏移的设置和应用">
+                        
+                        <span class="card-title">同步系列14-瞄准偏移的设置和应用</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            John Doe
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9713-%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E6%97%B6%E7%9A%84bug%E4%BF%AE%E5%A4%8D/">
                     <div class="card-image">
@@ -588,45 +641,8 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-05-05
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            John Doe
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2023/04/25/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9711-%E8%A3%85%E5%A4%87%E6%AD%A6%E5%99%A8%E8%A1%8C%E8%B5%B0%E6%97%B6%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%A7%BF%E6%80%81%E5%80%BE%E6%96%9C%E5%B9%B6%E6%9F%94%E5%92%8C%E5%8A%A8%E7%94%BB%E7%9A%84%E5%88%87%E6%8D%A2/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="同步系列11-装备武器行走时的模型姿态倾斜并柔和动画的切换">
-                        
-                        <span class="card-title">同步系列11-装备武器行走时的模型姿态倾斜并柔和动画的切换</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-25
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-05
                             </span>
                         <span class="publish-author">
                             
