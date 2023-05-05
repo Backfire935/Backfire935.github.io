@@ -4,16 +4,12 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="同步系列14-瞄准偏移的设置和应用, UE C++">
-    <meta name="description" content="要让角色持有武器的时候上半身枪随鼠标的偏移走，需要创建瞄准偏移动画。因为我这里的角色分为手持和瞄准两种动画状态，所以需要创建两个瞄准偏移，先创建手持的。
+    <meta name="keywords" content="同步系列15-Pitch的同步bug原因和解决方法, UE C++">
+    <meta name="description" content="在前面的内容里已经创建好了多人游戏中瞄准的动画，但是在测试中会发现一个问题，角色本地持枪后上下瞄准动画是正常的，但是在其他客户端上会产生明显的异常效果，如下：
 
 
 
-选择我们角色所使用的骨骼后就能创建成功。
-
-
-
-复制九份Aim_Space_Hi">
+当玩家持枪低于水平0度的时候，自己看动画是正常的，但是在别人看来缺突然把武">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -25,7 +21,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>同步系列14-瞄准偏移的设置和应用 | 李清水的笔记本</title>
+    <title>同步系列15-Pitch的同步bug原因和解决方法 | 李清水的笔记本</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -342,12 +338,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">同步系列14-瞄准偏移的设置和应用</h1>
+                    <h1 class="description center-align post-title">同步系列15-Pitch的同步bug原因和解决方法</h1>
                 </div>
             </div>
         </div>
@@ -404,44 +400,33 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>要让角色持有武器的时候上半身枪随鼠标的偏移走，需要创建瞄准偏移动画。因为我这里的角色分为手持和瞄准两种动画状态，所以需要创建两个瞄准偏移，先创建手持的。</p>
-<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113458975.png" class="">
+                <p>在前面的内容里已经创建好了多人游戏中瞄准的动画，但是在测试中会发现一个问题，角色本地持枪后上下瞄准动画是正常的，但是在其他客户端上会产生明显的异常效果，如下：</p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/image-20230505202159447.png" class="">
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113458975.png" alt="image-20230505113458975"></p>
-<p>选择我们角色所使用的骨骼后就能创建成功。</p>
-<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113653457.png" class="">
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/image-20230505202159447.png" alt="image-20230505202159447"></p>
+<p>当玩家持枪低于水平0度的时候，自己看动画是正常的，但是在别人看来缺突然把武器举上天了。我们在动画类中的AimOffset函数加上如下测试代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::AimOffset</span><span class="params">(<span class="type">float</span> DeltaTime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AO_Pitch = <span class="built_in">GetBaseAimRotation</span>().Pitch;<span class="comment">//**控制持枪动画的上下，不管是第一人称还是第三人称都需要</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">HasAuthority</span>() &amp;&amp; !<span class="built_in">IsLocallyControlled</span>())</span><br><span class="line">    &#123;</span><br><span class="line">       <span class="built_in">UE_LOG</span>(LogTemp, Warning,<span class="built_in">TEXT</span>(<span class="string">&quot;%.0F&quot;</span>),AO_Pitch);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113653457.png" alt="image-20230505113653457"></p>
-<p>复制九份Aim_Space_Hip的动画，进去后调整到想要的动画帧数，右键红色的指针，移除指定帧之前的帧以及之后的帧，只保留当前姿势的帧。保存后就可以按如下格式命名：</p>
-<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113941790.png" class="">
+<p>这段代码可以看到在其他客户端上你所控制的对应的角色的Pitch值，当我将武器不断向下瞄准直至低于水平面时，可以看到角度从1直接到了359而不是负数，又因为角度变成了359，所以在其他客户端看来我所控制的角色才突然朝天看。而问题出现在虚幻网络传输过程中。</p>
+<p>在虚幻的网络传输过程中，因为在联机游戏中往往有大量的信息需要传送，为了避免信息的拥堵，在网络传输过程中往往要对信息进行压缩，我们的Pitch数据正是在这一过程中因为数据压缩而发生了变化。从之前的博客我们可以知道，玩家的AO_Pitch值是从GetBaseAimRotation().Pitch拿到的，这里的Pitch值是写在CharacterMovementComponent组件里的，而我们知道，CharacterMovementComponent组件已经帮我们处理好了网络同步的问题，我们不需要手动同步关于角色移动组件的属性。不过这里问题就出在它帮我们处理的过程中。在虚幻5.2版本中，CharacterMovementComponent.h有一个叫PackYawAndPitchTo32的函数，在2766行。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FORCEINLINE uint32 <span class="title">UCharacterMovementComponent::PackYawAndPitchTo32</span><span class="params">(<span class="type">const</span> <span class="type">float</span> Yaw, <span class="type">const</span> <span class="type">float</span> Pitch)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">const</span> uint32 YawShort = FRotator::<span class="built_in">CompressAxisToShort</span>(Yaw);</span><br><span class="line">	<span class="type">const</span> uint32 PitchShort = FRotator::<span class="built_in">CompressAxisToShort</span>(Pitch);</span><br><span class="line">	<span class="type">const</span> uint32 Rotation32 = (YawShort &lt;&lt; <span class="number">16</span>) | PitchShort;</span><br><span class="line">	<span class="keyword">return</span> Rotation32;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505113941790.png" alt="image-20230505113941790"></p>
-<p>其中AO_Zero是AO_CC姿势的复制，用作设置为附加动画的基础姿势。其他所有的动画在附加设置那里设置动画类型为网格体空间，基础姿势类型为选择的动画帧，基础姿势动画选择为刚刚复制的AO_zero。这样九个方向的持枪动画就能用了。同理，瞄准动画的瞄准偏移也按照这种方法做，以最后做出来九个方向的瞄准动画和一个基础姿势动画，别忘了个九个瞄准动画添加基础姿势。</p>
-<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505114400339.png" class="">
+<p>这个函数就是压缩角色Pitch和Yaw在网络中传输的数据。我们点进CompressAxisToShort函数，这个函数名字很直观，压缩成更短的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FORCEINLINE uint16 TRotator&lt;T&gt;::<span class="built_in">CompressAxisToShort</span>( T Angle )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// map [0-&gt;360) to [0-&gt;65536) and mask off any winding</span></span><br><span class="line">    <span class="keyword">return</span> FMath::<span class="built_in">RoundToInt</span>(Angle * (T)<span class="number">65536.f</span> / (T)<span class="number">360.f</span>) &amp; <span class="number">0xFFFF</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505114400339.png" alt="image-20230505114400339"></p>
-<p>在之前创建的两张瞄准偏移中添加对应的动画：</p>
-<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115102033.png" class="">
+<p>可以看到这个函数可以将你传入的float类型的Pitch乘以65536再&#x2F;360后与0xFFFF这个16个1的十六进制数进行相与，从而得到一个uint16类型，从而压缩了数据长度。更方便的在网络中进行传输，但这样做得到的结果则是一个没有符号的值，于是别的客户端得到的你的角色就是一个永远不会朝地上看，你一朝地上看角色就会看天的情况。</p>
+<p>解决的办法是在AO_Pitch拿到值后进行一次检测，如果发现角度比90度大，那这个数据就是经过转换的，因为我们上下看，以水平为轴，角度只会从-90到90，而不是0到360。我们进行如下转换：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::AimOffset</span><span class="params">(<span class="type">float</span> DeltaTime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AO_Pitch = <span class="built_in">GetBaseAimRotation</span>().Pitch;*<span class="comment">//**控制持枪动画的上下，不管是第一人称还是第三人称都需要</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">HasAuthority</span>() &amp;&amp; !<span class="built_in">IsLocallyControlled</span>())</span><br><span class="line">    &#123;</span><br><span class="line">       <span class="built_in">UE_LOG</span>(LogTemp, Warning,<span class="built_in">TEXT</span>(<span class="string">&quot;%.0F&quot;</span>),AO_Pitch);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(AO_Pitch &gt; <span class="number">90.f</span> &amp;&amp; !<span class="built_in">IsLocallyControlled</span>())<span class="comment">//**在网络传输过程中，**Pitch**会从**float**压缩成**unsigned**进行传输从而丢失正负，需要进行转换</span></span><br><span class="line">    &#123;</span><br><span class="line">       <span class="comment">//**将**AO_Pitch**从**[270,360)**映射到**[-90,0];</span></span><br><span class="line">       <span class="function">FVector2D <span class="title">InRange</span><span class="params">(<span class="number">270.f</span>,<span class="number">360.f</span>)</span></span>;</span><br><span class="line">       <span class="function">FVector2d <span class="title">OutRange</span><span class="params">(<span class="number">-90.f</span>,<span class="number">0.f</span>)</span></span>;</span><br><span class="line">       AO_Pitch = FMath::<span class="built_in">GetMappedRangeValueClamped</span>(InRange,OutRange,AO_Pitch);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115102033.png" alt="image-20230505115102033"></p>
-<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115034873.png" class="">
+<p>从而得到正确的值</p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/image-20230505202630560.png" class="">
 
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115034873.png" alt="image-20230505115034873"></p>
-<p>在前面的设置中横向和纵向我们设置了Yaw和Pitch，为了在动画蓝图中使用这两个值，需要在C++中获取。在角色的C++类中，添加</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AimOffset</span><span class="params">(<span class="type">float</span> DeltaTime)</span></span>;</span><br><span class="line"><span class="type">float</span> AO_Yaw;</span><br><span class="line"><span class="type">float</span> AO_Pitch;</span><br><span class="line">FRotator StartingAimRotation;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function">FORCEINLINE <span class="type">float</span> <span class="title">GetAO_Yaw</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> AO_Yaw;&#125;</span><br><span class="line"><span class="function">FORCEINLINE <span class="type">float</span> <span class="title">GetAO_Pitch</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> AO_Pitch;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ABlasterCharacter::AimOffset</span><span class="params">(<span class="type">float</span> DeltaTime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(CombatComp &amp;&amp; CombatComp-&gt;EquippedWeapon == <span class="literal">nullptr</span>) <span class="keyword">return</span>;<span class="comment">//如果没这个组件或者手上没武器 是不需要执行这个函数的</span></span><br><span class="line">	AO_Pitch = <span class="built_in">GetBaseAimRotation</span>().Pitch;<span class="comment">//控制持枪动画的上下，不管是第一人称还是第三人称都需要</span></span><br><span class="line">	<span class="keyword">if</span>(AO_Pitch &gt; <span class="number">90.f</span> &amp;&amp; !<span class="built_in">IsLocallyControlled</span>())<span class="comment">//在网络传输过程中，Pitch会从float压缩成unsigned进行传输从而丢失正负，需要进行转换</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//将AO_Pitch从[270,360)映射到[-90,0];</span></span><br><span class="line">		<span class="function">FVector2D <span class="title">InRange</span><span class="params">(<span class="number">270.f</span>,<span class="number">360.f</span>)</span></span>;</span><br><span class="line">		<span class="function">FVector2d <span class="title">OutRange</span><span class="params">(<span class="number">-90.f</span>,<span class="number">0.f</span>)</span></span>;</span><br><span class="line">		AO_Pitch = FMath::<span class="built_in">GetMappedRangeValueClamped</span>(InRange,OutRange,AO_Pitch);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">IsFirstPerson</span>())<span class="comment">//第一人称枪在手，Yaw随鼠标走</span></span><br><span class="line">	&#123;</span><br><span class="line">		bUseControllerRotationYaw = <span class="literal">true</span>;</span><br><span class="line">		StartingAimRotation = <span class="built_in">FRotator</span>(<span class="number">0.f</span>, <span class="built_in">GetBaseAimRotation</span>().Yaw, <span class="number">0.f</span>);</span><br><span class="line">		AO_Yaw = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">		<span class="comment">//无需处理后面的</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//处理第三人称下的偏移</span></span><br><span class="line">	 FVector Velocity = <span class="built_in">GetVelocity</span>();</span><br><span class="line">	Velocity.Z = <span class="number">0.f</span>;</span><br><span class="line">	<span class="comment">//设置速度</span></span><br><span class="line">	 <span class="type">float</span> Speed = Velocity.<span class="built_in">Size</span>();</span><br><span class="line">	<span class="comment">//是否在空中</span></span><br><span class="line">	 <span class="type">bool</span> bIsInAir = <span class="built_in">GetCharacterMovement</span>()-&gt;<span class="built_in">IsFalling</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(Speed == <span class="number">0.f</span> &amp;&amp; !bIsInAir)<span class="comment">//静止状态没有跳跃</span></span><br><span class="line">	&#123;</span><br><span class="line">		 FRotator CurrentAimRotation = <span class="built_in">FRotator</span>(<span class="number">0.f</span>, <span class="built_in">GetBaseAimRotation</span>().Yaw, <span class="number">0.f</span>);</span><br><span class="line">		 FRotator DeltaAimRotation = UKismetMathLibrary::<span class="built_in">NormalizedDeltaRotator</span>(CurrentAimRotation,StartingAimRotation);</span><br><span class="line">		AO_Yaw = DeltaAimRotation.Yaw;</span><br><span class="line">		bUseControllerRotationYaw = <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(Speed &gt;<span class="number">0.f</span> || bIsInAir)<span class="comment">//奔跑或者跳跃</span></span><br><span class="line">	&#123;</span><br><span class="line">		StartingAimRotation = <span class="built_in">FRotator</span>(<span class="number">0.f</span>, <span class="built_in">GetBaseAimRotation</span>().Yaw, <span class="number">0.f</span>);</span><br><span class="line">		bUseControllerRotationYaw = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//AimOffset函数在Tick函数中调用</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/image-20230505202630560.png" alt="image-20230505202630560"></p>
+<p>现在我们来看一下log和结果</p>
+<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/image-20230505205007532.png" class="">
 
-<p>之后在动画实例的C++类中添加：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadOnly, Category = Anim, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line"><span class="type">float</span> AO_Yaw;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UPROPERTY</span>(BlueprintReadOnly, Category = Anim, meta = (AllowPrivateAccess = <span class="string">&quot;true&quot;</span>))</span><br><span class="line"><span class="type">float</span> AO_Pitch;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UBlasterAnimInstance::NativeUpdateAnimation</span><span class="params">(<span class="type">float</span> DeltaTime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	AO_Yaw = BlasterCharacter-&gt;<span class="built_in">GetAO_Yaw</span>();</span><br><span class="line">	AO_Pitch = BlasterCharacter-&gt;<span class="built_in">GetAO_Pitch</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>随后在动画蓝图中创建AimOffset状态机<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505114848045.png" class=""></p>
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505114848045.png" alt="image-20230505114848045"></p>
-<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115720118.png" class="">
-
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115720118.png" alt="image-20230505115720118"></p>
-<p>这样就做完了。可以看到玩家持有枪械的时候动画和瞄准的方向是一致的。关于瞄准时其它客户端Pitch的bug下一节说明。</p>
-<img src="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115900332.png" class="">
-
-<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/image-20230505115900332.png" alt="image-20230505115900332"></p>
+<p><img src="/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/image-20230505205007532.png" alt="image-20230505205007532"></p>
+<p>现在log中Pitch值正常从正变负，从其他客户端看动画也正常了。</p>
 
                 
             </div>
@@ -468,7 +453,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://backfire935.github.io/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/">https://backfire935.github.io/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/</a>
+                    <a href="https://backfire935.github.io/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">https://backfire935.github.io/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -586,13 +571,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+                <a href="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9716-FABRIK-IK%E4%BF%AE%E5%A4%8D%E6%89%8B%E9%83%A8%E5%8A%A8%E7%94%BB/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="同步系列15-Pitch的同步bug原因和解决方法">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="同步系列16-FABRIK IK修复手部动画">
                         
-                        <span class="card-title">同步系列15-Pitch的同步bug原因和解决方法</span>
+                        <span class="card-title">同步系列16-FABRIK IK修复手部动画</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -623,13 +608,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9713-%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E6%97%B6%E7%9A%84bug%E4%BF%AE%E5%A4%8D/">
+                <a href="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="同步系列13-切换动画状态时的bug修复">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="同步系列14-瞄准偏移的设置和应用">
                         
-                        <span class="card-title">同步系列13-切换动画状态时的bug修复</span>
+                        <span class="card-title">同步系列14-瞄准偏移的设置和应用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">

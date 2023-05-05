@@ -582,6 +582,90 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9716-FABRIK-IK%E4%BF%AE%E5%A4%8D%E6%89%8B%E9%83%A8%E5%8A%A8%E7%94%BB/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="同步系列16-FABRIK IK修复手部动画">
+                            
+                            <span class="card-title">同步系列16-FABRIK IK修复手部动画</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                不使用IK时，有时候动画和模型是分离的，并不贴合。
+
+
+
+遇到这种情况可以使用FABRIK。
+先在动画实例C++中创建我们需要的变量，因为我们要把左手附加在武器的某个位置上，所以我们需要左手的三维信息。
+1234567class BLAST
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-05
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                John Doe
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9715-Pitch%E7%9A%84%E5%90%8C%E6%AD%A5bug%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="同步系列15-Pitch的同步bug原因和解决方法">
+                            
+                            <span class="card-title">同步系列15-Pitch的同步bug原因和解决方法</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                在前面的内容里已经创建好了多人游戏中瞄准的动画，但是在测试中会发现一个问题，角色本地持枪后上下瞄准动画是正常的，但是在其他客户端上会产生明显的异常效果，如下：
+
+
+
+当玩家持枪低于水平0度的时候，自己看动画是正常的，但是在别人看来缺突然把武
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-05
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                John Doe
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2023/05/05/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%9714-%E7%9E%84%E5%87%86%E5%81%8F%E7%A7%BB%E7%9A%84%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%BA%94%E7%94%A8/">
                         <div class="card-image">
                             
@@ -955,87 +1039,6 @@
 之前做丢弃武器功能的时候遇到了点同步上的问题，这里纪录一下。
 首先还是输入绑定，没啥好说的
 12//按G丢弃武器EnhancedInput
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                John Doe
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%974-%E6%8B%BE%E5%8F%96%E6%AD%A6%E5%99%A8%E7%9A%84%E5%90%8C%E6%AD%A5/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="同步系列4-拾取武器的同步">
-                            
-                            <span class="card-title">同步系列4-拾取武器的同步</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                项目仓库地址: https://github.com/Backfire935/BlasterAgain
-今天来纪录一下我是如何实现拾取武器并在服务端和客户端上同步消息的。
-首先是角色类中输入组件函数中的输入绑定事件：
-12//按F拾取武器	
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                John Doe
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/20/%E5%90%8C%E6%AD%A5%E7%B3%BB%E5%88%973-%E6%AD%A6%E5%99%A8%E6%8B%BE%E5%8F%96HUD%E6%98%BE%E7%A4%BA%E6%88%96%E9%9A%90%E8%97%8F%E7%9A%84%E5%90%8C%E6%AD%A5/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="同步系列3-武器拾取HUD显示或隐藏的同步">
-                            
-                            <span class="card-title">同步系列3-武器拾取HUD显示或隐藏的同步</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                玩家在靠近地上无主的武器一定范围内，武器上方会弹出一个提示，告知玩家按某个按钮后拾取武器。离开一定范围后提示消失。同时我们希望这个弹出的按钮只会在本地显示，也就是说一个玩家能否看到提示和其它玩家是无关的。
-
-
-
-我们需要一个UserWidg
                             
                         </div>
                         <div class="publish-info">
