@@ -405,58 +405,86 @@
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> TestScript = &#123;&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在ReplicatedStorage下的ModuleScript&quot;</span>)</span><br><span class="line"><span class="keyword">return</span> TestScript</span><br></pre></td></tr></table></figure>
 
 <p>随后在脚本中改变三种脚本的父级到WorkSpace进行测试。运行后发现脚本存在的位置根本没有变化，因为压根没调用脚本…</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511192413791.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511192413791.png" alt="image-20230511192413791"></p>
 <p>不过无论在客户端还是服务端都能在ReplicatedStorage那里看到这三种脚本。它根本不执行，所以也不用测试转移到其他工作区下了。</p>
 <h1 id="2-Workspace下的脚本"><a href="#2-Workspace下的脚本" class="headerlink" title="2.Workspace下的脚本"></a>2.Workspace下的脚本</h1><h2 id="1-转移到ReplicatedStorage下"><a href="#1-转移到ReplicatedStorage下" class="headerlink" title="1.转移到ReplicatedStorage下"></a>1.转移到ReplicatedStorage下</h2><p>把之前的三个文件拖入Workspace下进行测试，创建一个Script文件夹，同时注释之前脚本中关于改变父级的内容。运行游戏</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511192924906.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511192924906.png" alt="image-20230511192924906"></p>
 <p>可以看到，虽然三个脚本都在workspace下，但是只有Script执行了，LocalScript和ModuleScript都没有执行。</p>
 <p>此时加入脚本文件父级的内容，将脚本的父级设为ReplicatedStorage，再次进行测试：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WorkSpace=game:GetService(<span class="string">&quot;ReplicatedStorage&quot;</span>)</span><br><span class="line">script.Parent = WorkSpace</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在Workspace下的LocalScript&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511193256324.png" class="">
 
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511193256324.png" alt="image-20230511193256324"></p>
 <p>可以看到运行后仍旧只有Script运行了，同时Script脚本转移到了ReplicatedStorage下，本地脚本和模块脚本都没有运行并保留在Workspace下。</p>
 <h2 id="2-转移到ServerScriptService下"><a href="#2-转移到ServerScriptService下" class="headerlink" title="2.转移到ServerScriptService下"></a>2.转移到ServerScriptService下</h2><p>改变三个脚本的父级关系如下</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在Workspace下的Script&quot;</span>)</span><br><span class="line">WorkSpace=game:GetService(<span class="string">&quot;ServerScriptService&quot;</span>)</span><br><span class="line">script.Parent = WorkSpace</span><br></pre></td></tr></table></figure>
 
-<p>结果依旧</p>
+<p>结果依旧<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511193946365.png" class=""></p>
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511193946365.png" alt="image-20230511193946365"></p>
 <p>但是这里注意到一件事，脚本转移到ServerScriptService是只发生在服务端上的，在服务端可以看到TestScript转移到了ServerScriptService下，而在客户端上，看到的事情就是TestScript脚本消失了。</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511194144252.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511194144252.png" alt="image-20230511194144252"></p>
 <h2 id="3-转移到StarterPlayer下"><a href="#3-转移到StarterPlayer下" class="headerlink" title="3.转移到StarterPlayer下"></a>3.转移到StarterPlayer下</h2><p>改变三个脚本父级如下：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在Workspace下的Script&quot;</span>)</span><br><span class="line">WorkSpace=game:GetService(<span class="string">&quot;StarterPlayer&quot;</span>)</span><br><span class="line">script.Parent = WorkSpace</span><br></pre></td></tr></table></figure>
 
 <p>结果同上 不再赘述</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511195731040.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511195731040.png" alt="image-20230511195731040"></p>
 <h1 id="3-ServerScriptService下的脚本"><a href="#3-ServerScriptService下的脚本" class="headerlink" title="3.ServerScriptService下的脚本"></a>3.ServerScriptService下的脚本</h1><h2 id="1-转移到Workspace下"><a href="#1-转移到Workspace下" class="headerlink" title="1.转移到Workspace下"></a>1.转移到Workspace下</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在ServerScriptService下的Script&quot;</span>)</span><br><span class="line">WorkSpace=game:GetService(<span class="string">&quot;Workspace&quot;</span>)</span><br><span class="line">script.Parent = WorkSpace</span><br></pre></td></tr></table></figure>
 
 <p>结果还是只有Script执行并跑到了WorkSpace下，但与此同时，在客户端上也能看到转移过去的TestScript文件。</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511200252818.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511200252818.png" alt="image-20230511200252818"></p>
 <h2 id="2-转移到ReplicatedStorage下"><a href="#2-转移到ReplicatedStorage下" class="headerlink" title="2.转移到ReplicatedStorage下"></a>2.转移到ReplicatedStorage下</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在ServerScriptService下的Script&quot;</span>)</span><br><span class="line">WorkSpace=game:GetService(<span class="string">&quot;ReplicatedStorage&quot;</span>)</span><br><span class="line">script.Parent = WorkSpace</span><br></pre></td></tr></table></figure>
 
 <p>还是只有Script一个脚本执行了，然后转移到了ReplicatedStorage下，同时客户端看不到ServerScriptService中的内容。</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511200744577.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511200744577.png" alt="image-20230511200744577"></p>
-<p>然后服务端可以看到<img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511200918892.png" alt="image-20230511200918892"></p>
+<p>然后服务端可以看到</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511200918892.png" class="">![image-20230511200918892](Roblox-几种Script在不同工作区下的执行情况/image-20230511200918892.png)
+
 <h2 id="3-转移到StarterPlayer下-1"><a href="#3-转移到StarterPlayer下-1" class="headerlink" title="3.转移到StarterPlayer下"></a>3.转移到StarterPlayer下</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在ServerScriptService下的Script&quot;</span>)</span><br><span class="line">WorkSpace=game:GetService(<span class="string">&quot;StarterPlayer&quot;</span>)</span><br><span class="line">script.Parent = WorkSpace</span><br></pre></td></tr></table></figure>
 
 <p>同上，没啥变化</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511201611341.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511201611341.png" alt="image-20230511201611341"></p>
 <p>可以看出ServerScriptService下的变换父级是移动而不是复制</p>
 <h1 id="4-StarterPlayer下的脚本"><a href="#4-StarterPlayer下的脚本" class="headerlink" title="4.StarterPlayer下的脚本"></a>4.StarterPlayer下的脚本</h1><p>挂靠在StarterPlayer下的StarterCharacterScripts下</p>
 <h2 id="1-转移到ReplicatedStorage下-1"><a href="#1-转移到ReplicatedStorage下-1" class="headerlink" title="1.转移到ReplicatedStorage下"></a>1.转移到ReplicatedStorage下</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在StarterPlayer下的Script&quot;</span>)</span><br><span class="line">WorkSpace=game:GetService(<span class="string">&quot;ReplicatedStorage&quot;</span>)</span><br><span class="line">script.Parent = WorkSpace</span><br></pre></td></tr></table></figure>
 
 <p>这里出现了“Something unexpectedly tried to set the parent of TestLocalScript to ReplicatedStorage while trying to set the parent of TestLocalScript. Current parent is Script.”暂时不知道是什么情况</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511202358741.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511202358741.png" alt="image-20230511202358741"></p>
 <p>然后LocalScript在客户端执行，文件结构上，无论是客户端还是服务端，Script脚本都复制到了ReplicatedStorage下。</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511203109940.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511203109940.png" alt="image-20230511203109940"></p>
 <h2 id="2-转移到Workspace下"><a href="#2-转移到Workspace下" class="headerlink" title="2.转移到Workspace下"></a>2.转移到Workspace下</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在StarterPlayer下的Script&quot;</span>)</span><br><span class="line">WorkSpace=game:GetService(<span class="string">&quot;Workspace&quot;</span>)</span><br><span class="line">script.Parent = WorkSpace</span><br></pre></td></tr></table></figure>
 
 <p>同样出现了 Something unexpectedly tried to set the parent of TestLocalScript to Workspace while trying to set the parent of TestLocalScript. Current parent is Script.</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511203225237.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511203225237.png" alt="image-20230511203225237"></p>
 <h2 id="3-转移到ServerScriptService下"><a href="#3-转移到ServerScriptService下" class="headerlink" title="3.转移到ServerScriptService下"></a>3.转移到ServerScriptService下</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;这是一个创建在StarterPlayer下的Script&quot;</span>)</span><br><span class="line">WorkSpace=game:GetService(<span class="string">&quot;ServerScriptService&quot;</span>)</span><br><span class="line">script.Parent = WorkSpace</span><br></pre></td></tr></table></figure>
 
 <p>在服务端上，Script转移到了ServerScriptService下，而LocalScript脚本在客户端执行了，一看LocalScript在哪吓一跳</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511203458269.png" class="">
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511203458269.png" alt="image-20230511203458269"></p>
-<p>LocalScript无论是客户端还是服务端都复制了一份到Workspace下的角色的Script下，突然想起来StarterPlayer下的脚本在游戏开始后就会复制一份到角色下，这里我才发现。而且可以看出来LocalScript和MoudleScript发生了复制，Script并没有。</p>
+<p>LocalScript无论是客户端还是服务端都复制了一份到Workspace下的角色的Script下，突然想起来StarterPlayer下的脚本在游戏开始后就会复制一份到角色下，这里我才发现。而且可以看出来LocalScript和MoudleScript发生了复制，Script并没有</p>
+<img src="/2023/05/11/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511203743496.png" class="">。
+
 <p><img src="/Roblox-%E5%87%A0%E7%A7%8DScript%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%83%85%E5%86%B5/image-20230511203743496.png" alt="image-20230511203743496"></p>
 <p>StarterPlayer的文件进行转移是复制，本身会再保留一份。</p>
 
